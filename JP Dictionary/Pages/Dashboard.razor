@@ -1,0 +1,18 @@
+﻿
+<h2>Welcome @User.Name!</h2>
+
+<div class="dashboard">
+    <div class="stat-row">
+        <span class="label">Total Words Unlocked:</span>
+        <span class="value">@TotalWords</span>
+    </div>
+
+    <div class="action-row">
+        <button class="main-button" @onclick="() => ChangePage(Pages.StudyVocab)">Study Vocab</button>
+        <span class="label">Today's Words: @WordsToStudy</span>
+    </div>
+
+    <button class="main-button" @onclick="() => ChangePage(Pages.UnlockedWords)">View Unlocked Words</button>
+
+    <button class="main-button" @onclick="UnlockNextTier">Unlock Next Tier</button>
+</div>

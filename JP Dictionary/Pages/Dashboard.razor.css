@@ -1,0 +1,35 @@
+﻿body {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    margin-left: 2rem;
+    color: #ffffff;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 500px;
+}
+
+.stat-row, .action-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label {
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+.value {
+    color: #ffffff;
+}

@@ -1,0 +1,55 @@
+﻿
+@*to do: implement mark as correct*@
+
+@if (!Finished)
+{
+    @if (!ShowResults)
+    {
+        <form @onsubmit="SubmitAnswer">
+            <span class="label">@CurrentCard.Question</span>
+            <span>@CurrentCard.Word</span>
+            <span class="label">Attempts Remaining: @AttemptsRemaining</span>
+    
+            <input type="text" @bind="Answer" />
+
+            <div>
+                <button class="main-button" type="submit">Submit</button>
+                <button class="main-button" @onclick="GiveUp">Give Up</button>
+            </div>
+    
+            <span class="label">Cards Remaining: @StudyCards.Count</span>
+        </form>
+    }
+    else
+    {
+        <form @onsubmit="ShowNextCard">
+            @if (CurrentCard.Correct)
+            {
+                <span class="label">Correct!</span>
+                <span>@CurrentCard.Word</span>
+                <span>@CurrentCard.OriginalFormatAnswer</span>
+                <button class ="main-button" type="submit">Next</button>
+            }
+            else
+            {
+                <span class="label">Incorrect...</span>
+                <span>@CurrentCard.Word</span>
+                <span>@CurrentCard.OriginalFormatAnswer</span>
+
+                <span class="label">Your Answer: @Answer</span>
+
+                <div>
+                    <button class="main-button" type="submit">Next</button>
+                    <button class="main-button">Mark As Correct</button>
+                </div>
+            }
+        </form>
+    }
+}
+else
+{
+    <div class="complete">
+        <h3>You've completed today's review!</h3>
+        <button class="main-button" @onclick="ToDashboard">Return To Dashboard</button>
+    </div>
+}

@@ -1,0 +1,12 @@
+﻿<h3>Login</h3>
+
+<span>Select a profile:</span>
+
+@foreach (var profile in Profiles)
+{
+    <button @onclick="() => LogIn(profile)">@profile.Name</button>
+}
+
+<span>Create Profile:</span>
+<input type="text" placeholder="Name" @bind="CreateName" />
+<button @onclick="CreateProfile">Create</button>

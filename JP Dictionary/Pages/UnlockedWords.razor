@@ -1,0 +1,82 @@
+﻿@using CsvHelper.Configuration;
+@using JP_Dictionary.Models;
+@using System.Globalization;
+@using CsvHelper;
+
+<h2>Unlocked Words</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Japanese
+            </th>
+            <th>
+                Romaji
+            </th>
+            <th>
+                Meaning
+            </th>
+            <th>
+                Streak
+            </th>
+            <th>
+                Next Review
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in TodaysWords)
+        {
+            <tr>
+                <td>
+                    @entry.Japanese
+                </td>
+                <td>
+                    @entry.Pronounciation
+                </td>
+                <td>
+                    @entry.Definitions
+                </td>
+                <td>
+                    @entry.CorrectStreak
+                </td>
+                <td>
+                    @HelperMethods.GetNextStudyDate(entry).ToShortDateString()
+                </td>
+                <td>
+                    <button class="main-button" @onclick="() => ResetStreak(entry)">Reset Streak</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    public List<StudyWord> TodaysWords = new();
+
+    [Parameter] public Profile User { get; set; }
+
+    protected override void OnInitialized()
+    {
+        LoadUnlockedWords();
+    }
+
+    private void LoadUnlockedWords()
+    {
+        TodaysWords = HelperMethods.LoadUnlockedWords(User); 
+    }
+
+    private void ResetStreak(StudyWord word)
+    {
+        var allWords = HelperMethods.LoadCoreWords();
+        var studyWord = allWords.First(x => x.Id == word.Id);
+
+        studyWord.CorrectStreak = 0;
+        studyWord.LastStudied = DateTime.MinValue;
+
+        HelperMethods.UpdateWords(allWords);
+        LoadUnlockedWords();
+    }
+}
