@@ -67,8 +67,6 @@ namespace JP_Dictionary.Pages
                 {
                     CurrentCard.Correct = true;
                     ShowResults = true;
-
-                    UpdateWord(true);
                 }
                 else
                 {
@@ -77,9 +75,6 @@ namespace JP_Dictionary.Pages
                     if (AttemptsRemaining == 0)
                     {
                         ShowResults = true;
-
-                        UpdateWord(false);
-                        ReaddFailedCard();
                     }
                 }
             }
@@ -87,21 +82,25 @@ namespace JP_Dictionary.Pages
 
         private void GiveUp()
         {
-            CurrentCard.Correct = false;
             ShowResults = true;
-
-            UpdateWord(false);
-            ReaddFailedCard();
         }
 
         private void ShowNextCard()
         {
-            ShowResults = false;
+            UpdateWord();
+
+            if (!CurrentCard.Correct)
+            {
+                ReaddFailedCard();
+            }
+
+            SetCurrentCard();
+
             ReadingAnswer = string.Empty;
             DefinitionAnswer = string.Empty;
             AttemptsRemaining = 3;
 
-            SetCurrentCard();
+            ShowResults = false;
         }
 
         private void SetCurrentCard()
@@ -116,30 +115,22 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private void UpdateWord(bool increase)
+        private void UpdateWord()
         {
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
 
-            if (CurrentCard != null && CurrentCard.Correct)
+            if (CurrentCard.Correct)
             {
-                if (increase)
-                {
-                    word.CorrectStreak++;
-                }
-                else
-                {
-                    word.CorrectStreak = 0;
-                }
-
+                word.CorrectStreak++;
                 word.LastStudied = DateTime.Today.Date;
-                HelperMethods.UpdateWords(StudyWords);
             }
-            else if (CurrentCard != null && !increase)
+            else
             {
                 word.CorrectStreak = 0;
                 word.LastStudied = DateTime.MinValue;
-                HelperMethods.UpdateWords(StudyWords);
             }
+
+            HelperMethods.UpdateWords(StudyWords);
         }
 
         private void ReaddFailedCard()

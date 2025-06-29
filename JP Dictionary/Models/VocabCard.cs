@@ -10,10 +10,4 @@
         public StudyWord StudyWord { get; set; } = new();
         public bool Correct { get; set; }
     }
-
-    public enum CardType
-    {
-        Definition,
-        Pronounciation
-    }
 }

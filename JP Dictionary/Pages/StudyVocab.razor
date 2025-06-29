@@ -1,8 +1,6 @@
 ﻿@layout MainLayout
 @page "/studyvocab"
 
-@*to do: implement mark as correct*@
-
 @if (!Finished)
 {
     @if (!ShowResults)
@@ -55,7 +53,7 @@
 
                 <div>
                     <button class="main-button" type="submit">Next</button>
-                    <button class="main-button">Mark As Correct</button>
+                    <button class="main-button" @onclick="() => CurrentCard.Correct = true">Mark As Correct</button>
                 </div>
             }
         </form>
