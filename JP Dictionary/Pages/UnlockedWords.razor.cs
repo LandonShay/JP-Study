@@ -25,19 +25,19 @@ namespace JP_Dictionary.Pages
 
         private void LoadPage()
         {
-            AllWords = HelperMethods.LoadCoreWords();
+            AllWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
             TodaysWords = HelperMethods.LoadUnlockedWords(User.Profile!);
         }
 
         private void ResetStreak(StudyWord word)
         {
-            var allWords = HelperMethods.LoadCoreWords();
+            var allWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
             var studyWord = allWords.First(x => x.Id == word.Id);
 
             studyWord.CorrectStreak = 0;
             studyWord.LastStudied = DateTime.MinValue;
 
-            HelperMethods.UpdateWords(allWords);
+            HelperMethods.UpdateWords(allWords, User.Profile!.Name);
             LoadPage();
         }
 
@@ -54,7 +54,7 @@ namespace JP_Dictionary.Pages
                 var word = AllWords.First(x => x.Id == EditingEntry.Id);
                 word.Definitions = EditingValue;
 
-                HelperMethods.UpdateWords(AllWords);
+                HelperMethods.UpdateWords(AllWords, User.Profile!.Name);
 
                 EditingEntry = null;
                 EditingValue = string.Empty;

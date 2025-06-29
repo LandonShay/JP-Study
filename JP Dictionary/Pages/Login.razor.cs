@@ -10,8 +10,12 @@ namespace JP_Dictionary.Pages
         public List<Profile> Profiles = new();
         public string CreateName = string.Empty;
 
+        #region Injections
+#nullable disable
         [Inject] public UserState UserState { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+#nullable disable
+        #endregion
 
         protected override void OnInitialized()
         {
@@ -20,7 +24,7 @@ namespace JP_Dictionary.Pages
 
         private void LoadProfiles()
         {
-            var filePath = @"L:\JP Dictionary\JP Dictionary\JP Dictionary\Data\Profiles.txt";
+            var filePath = HelperMethods.GetFilePath("Profiles.txt");
 
             if (File.Exists(filePath))
             {
@@ -62,6 +66,11 @@ namespace JP_Dictionary.Pages
                 {
                     profile.CurrentDay = 1;
                     profile.CurrentWeek++;
+
+                    if (profile.CurrentWeek == byte.MaxValue - 1)
+                    {
+                        profile.CurrentWeek--;
+                    }
                 }
             }
 
@@ -73,24 +82,57 @@ namespace JP_Dictionary.Pages
 
         private void CreateProfile()
         {
-            List<Profile> profiles;
-            var filePath = "Data/Profiles.txt";
+            var profiles = new List<Profile>();
 
-            if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
+            var directory = HelperMethods.GetFilePath("");
+            var profilesPath = HelperMethods.GetFilePath("Profiles.txt");
+            var wordsPath = HelperMethods.GetFilePath($"{CreateName}Words.csv");
+
+            if (!Directory.Exists(directory))
             {
-                var content = File.ReadAllText(filePath);
-                profiles = JsonSerializer.Deserialize<List<Profile>>(content) ?? new List<Profile>();
+                Directory.CreateDirectory(directory);
             }
-            else
+
+            if (!File.Exists(profilesPath))
             {
-                profiles = new List<Profile>();
+                using (File.Create(profilesPath)) { }
+            }
+
+            if (File.Exists(profilesPath))
+            {
+                string content;
+
+                using (var reader = new StreamReader(profilesPath))
+                {
+                    content = reader.ReadToEnd();
+                }
+
+                if (content.Length > 0)
+                {
+                    profiles = JsonSerializer.Deserialize<List<Profile>>(content) ?? new List<Profile>();
+                }
             }
 
             var profile = new Profile() { Name = CreateName };
             profiles.Add(profile);
 
             var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            using (var writer = new StreamWriter(profilesPath, false))
+            {
+                writer.Write(json);
+            }
+
+            // create personal words list
+            if (!File.Exists(wordsPath))
+            {
+                using (File.Create(wordsPath)) { }
+            }
+
+            if (File.Exists(wordsPath))
+            {
+                var coreWords = HelperMethods.LoadDefaultCoreWords();
+                HelperMethods.UpdateWords(coreWords, CreateName);
+            }
 
             CreateName = string.Empty;
             LoadProfiles();
