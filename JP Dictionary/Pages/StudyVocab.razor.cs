@@ -7,12 +7,16 @@ namespace JP_Dictionary.Pages
 {
     public partial class StudyVocab
     {
+        #region Injections
+#nullable disable
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+#nullable enable
+        #endregion
 
         public Queue<VocabCard> StudyCards = new();
         public List<StudyWord> StudyWords = new(); // store all words for easy updating
-        public VocabCard? CurrentCard;
+        public VocabCard CurrentCard = new();
 
         public string DefinitionAnswer = string.Empty;
         public string ReadingAnswer = string.Empty;
@@ -25,7 +29,7 @@ namespace JP_Dictionary.Pages
         {
             var studyCards = new List<VocabCard>();
 
-            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile);
+            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile!);
             StudyWords = HelperMethods.LoadCoreWords();
 
             foreach (var word in availableWords)
@@ -58,7 +62,7 @@ namespace JP_Dictionary.Pages
                 var cleanedReadingAnswer = ReadingAnswer.Trim().ToLower();
                 var cleanedDefinitionAnswer = DefinitionAnswer.Trim().ToLower();
 
-                if (CurrentCard.ReadingAnswers.Contains(cleanedReadingAnswer) &&
+                if (CurrentCard!.ReadingAnswers.Contains(cleanedReadingAnswer) &&
                     CurrentCard.DefinitionAnswers.Contains(cleanedDefinitionAnswer))
                 {
                     CurrentCard.Correct = true;
