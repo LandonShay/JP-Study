@@ -66,6 +66,11 @@ namespace JP_Dictionary.Pages
                 {
                     profile.CurrentDay = 1;
                     profile.CurrentWeek++;
+
+                    if (profile.CurrentWeek == byte.MaxValue - 1)
+                    {
+                        profile.CurrentWeek--;
+                    }
                 }
             }
 
