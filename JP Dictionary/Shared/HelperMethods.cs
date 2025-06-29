@@ -8,9 +8,39 @@ namespace JP_Dictionary.Shared
 {
     public static class HelperMethods
     {
-        public static List<StudyWord> LoadCoreWords()
+        public static string GetFilePath(string fileName)
         {
-            var filePath = @"L:\JP Dictionary\JP Dictionary\JP Dictionary\Data\CoreWords.csv";
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return Path.Combine(filePath, "JP Study", fileName);
+        }
+
+        public static List<StudyWord> LoadDefaultCoreWords()
+        {
+            var filePath = @"Data\CoreWords.csv";
+
+            if (File.Exists(filePath))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = true,
+                    Delimiter = ",",
+                    MissingFieldFound = null
+                };
+
+                using (var reader = new StreamReader(filePath))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    return csv.GetRecords<StudyWord>().ToList();
+                }
+            }
+
+            Console.WriteLine("Core words file not found, no words loaded");
+            return new List<StudyWord>();
+        }
+
+        public static List<StudyWord> LoadPersonalCoreWords(Profile user)
+        {
+            var filePath = GetFilePath($"{user.Name}Words.csv");
 
             if (File.Exists(filePath))
             {
@@ -34,7 +64,7 @@ namespace JP_Dictionary.Shared
 
         public static List<StudyWord> LoadUnlockedWords(Profile user)
         {
-            var allWords = LoadCoreWords();
+            var allWords = LoadPersonalCoreWords(user);
 
             return allWords.Where(x => (x.Week == user.CurrentWeek && x.Day <= user.CurrentDay) ||
                                        (x.Week < user.CurrentWeek)).ToList();
@@ -58,10 +88,11 @@ namespace JP_Dictionary.Shared
             return wordsToStudy;
         }
 
-        public static void UpdateWords(List<StudyWord> words)
+        public static void UpdateWords(List<StudyWord> words, string user)
         {
             var existingWords = new List<StudyWord>();
-            var filePath = @"L:\JP Dictionary\JP Dictionary\JP Dictionary\Data\CoreWords.csv";
+
+            var filePath = GetFilePath($"{user}Words.csv");
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -77,14 +108,21 @@ namespace JP_Dictionary.Shared
                 existingWords = csv.GetRecords<StudyWord>().ToList();
             }
 
-            foreach (var updatedWord in words)
+            if (existingWords.Count > 0)
             {
-                var index = existingWords.FindIndex(w => w.Id == updatedWord.Id);
-
-                if (index != -1)
+                foreach (var updatedWord in words)
                 {
-                    existingWords[index] = updatedWord;
+                    var index = existingWords.FindIndex(w => w.Id == updatedWord.Id);
+
+                    if (index != -1)
+                    {
+                        existingWords[index] = updatedWord;
+                    }
                 }
+            }
+            else
+            {
+                existingWords = words;
             }
 
             using (var writer = new StreamWriter(filePath))
@@ -109,7 +147,7 @@ namespace JP_Dictionary.Shared
         public static void SaveProfile(Profile profile)
         {
             List<Profile> profiles;
-            var filePath = "Data/Profiles.txt";
+            var filePath = GetFilePath("Profiles.txt");
 
             if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
             {

@@ -30,7 +30,7 @@ namespace JP_Dictionary.Pages
             var studyCards = new List<VocabCard>();
 
             var availableWords = HelperMethods.LoadWordsToStudy(User.Profile!);
-            StudyWords = HelperMethods.LoadCoreWords();
+            StudyWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
 
             foreach (var word in availableWords)
             {
@@ -130,7 +130,7 @@ namespace JP_Dictionary.Pages
                 word.LastStudied = DateTime.MinValue;
             }
 
-            HelperMethods.UpdateWords(StudyWords);
+            HelperMethods.UpdateWords(StudyWords, User.Profile!.Name);
         }
 
         private void ReaddFailedCard()
