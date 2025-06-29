@@ -10,15 +10,15 @@
     
             <div class="answer-area">
                 <label class="label">Reading</label>
-                <input type="text" @bind="ReadingAnswer" />
+                <input type="text" id="reading" @bind="ReadingAnswer" />
             </div>
             <div class="answer-area">
                 <label class="label">Definition</label>
-                <input type="text" @bind="DefinitionAnswer" />
+                <input type="text" id="definition" @bind="DefinitionAnswer" />
             </div>
 
             <div>
-                <button class="main-button" type="submit">Submit</button>
+                <button class="main-button" id="submit-answer" type="submit">Submit</button>
                 <button class="main-button" @onclick="GiveUp">Give Up</button>
             </div>
     
@@ -37,7 +37,7 @@
                 <span>@CurrentCard.OriginalFormatReading</span>
                 <span>@CurrentCard.OriginalFormatDefinition</span>
 
-                <button class ="main-button" type="submit">Next</button>
+                <button class ="main-button" id="correct-next" type="submit">Next</button>
             }
             else
             {
@@ -52,7 +52,7 @@
                 <span>@DefinitionAnswer</span>
 
                 <div>
-                    <button class="main-button" type="submit">Next</button>
+                    <button class="main-button" id="incorrect-next" type="submit">Next</button>
                     <button class="main-button" @onclick="() => CurrentCard.Correct = true">Mark As Correct</button>
                 </div>
             }
@@ -63,6 +63,6 @@ else
 {
     <div class="complete">
         <h3>You've completed today's review!</h3>
-        <button class="main-button" @onclick='() => ChangePage("/dashboard")'>Return To Dashboard</button>
+        <button class="main-button" id="return" @onclick='() => ChangePage("/dashboard")'>Return To Dashboard</button>
     </div>
 }

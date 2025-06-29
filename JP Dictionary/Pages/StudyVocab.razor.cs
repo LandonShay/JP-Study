@@ -1,6 +1,7 @@
 ﻿using JP_Dictionary.Models;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MoreLinq;
 
 namespace JP_Dictionary.Pages
@@ -9,6 +10,7 @@ namespace JP_Dictionary.Pages
     {
         #region Injections
 #nullable disable
+        [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
@@ -18,6 +20,8 @@ namespace JP_Dictionary.Pages
         public List<StudyWord> StudyWords = new(); // store all words for easy updating
         public VocabCard CurrentCard = new();
 
+        public string ElementToFocus = string.Empty;
+
         public string DefinitionAnswer = string.Empty;
         public string ReadingAnswer = string.Empty;
 
@@ -25,7 +29,7 @@ namespace JP_Dictionary.Pages
         public bool ShowResults;
         public bool Finished;
 
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
             var studyCards = new List<VocabCard>();
 
@@ -53,6 +57,18 @@ namespace JP_Dictionary.Pages
             }
 
             SetCurrentCard();
+
+            ElementToFocus = "reading";
+            await FocusElement(ElementToFocus);
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (ElementToFocus != string.Empty)
+            {
+                await FocusElement(ElementToFocus);
+                ElementToFocus = string.Empty;
+            }
         }
 
         private void SubmitAnswer()
@@ -67,6 +83,8 @@ namespace JP_Dictionary.Pages
                 {
                     CurrentCard.Correct = true;
                     ShowResults = true;
+
+                    ElementToFocus = "correct-next";
                 }
                 else
                 {
@@ -75,6 +93,7 @@ namespace JP_Dictionary.Pages
                     if (AttemptsRemaining == 0)
                     {
                         ShowResults = true;
+                        ElementToFocus = "incorrect-next";
                     }
                 }
             }
@@ -83,6 +102,7 @@ namespace JP_Dictionary.Pages
         private void GiveUp()
         {
             ShowResults = true;
+            ElementToFocus = "incorrect-next";
         }
 
         private void ShowNextCard()
@@ -101,6 +121,7 @@ namespace JP_Dictionary.Pages
             AttemptsRemaining = 3;
 
             ShowResults = false;
+            ElementToFocus = "reading";
         }
 
         private void SetCurrentCard()
@@ -112,6 +133,7 @@ namespace JP_Dictionary.Pages
             else
             {
                 Finished = true;
+                ElementToFocus = "return";
             }
         }
 
@@ -149,6 +171,11 @@ namespace JP_Dictionary.Pages
         private void ChangePage(string route)
         {
             Nav.NavigateTo(route);
+        }
+
+        private async Task FocusElement(string elementId)
+        {
+            await JS.InvokeVoidAsync("focusElementById", elementId);
         }
     }
 }
