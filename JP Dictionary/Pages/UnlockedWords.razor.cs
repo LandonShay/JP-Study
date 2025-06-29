@@ -9,6 +9,9 @@ namespace JP_Dictionary.Pages
         public List<StudyWord> AllWords = new();
         public List<StudyWord> TodaysWords = new();
 
+        private StudyWord? EditingEntry;
+        private string EditingValue = string.Empty;
+
         #region Injections
 #nullable disable
         [Inject] public UserState User { get; set; }
@@ -17,12 +20,12 @@ namespace JP_Dictionary.Pages
 
         protected override void OnInitialized()
         {
-            AllWords = HelperMethods.LoadCoreWords();
-            LoadUnlockedWords();
+            LoadPage();
         }
 
-        private void LoadUnlockedWords()
+        private void LoadPage()
         {
+            AllWords = HelperMethods.LoadCoreWords();
             TodaysWords = HelperMethods.LoadUnlockedWords(User.Profile!);
         }
 
@@ -35,7 +38,29 @@ namespace JP_Dictionary.Pages
             studyWord.LastStudied = DateTime.MinValue;
 
             HelperMethods.UpdateWords(allWords);
-            LoadUnlockedWords();
+            LoadPage();
+        }
+
+        private void StartEditing(StudyWord entry)
+        {
+            EditingEntry = entry;
+            EditingValue = entry.Definitions;
+        }
+
+        private void FinishEditing()
+        {
+            if (EditingEntry != null)
+            {
+                var word = AllWords.First(x => x.Id == EditingEntry.Id);
+                word.Definitions = EditingValue;
+
+                HelperMethods.UpdateWords(AllWords);
+
+                EditingEntry = null;
+                EditingValue = string.Empty;
+
+                LoadPage();
+            }
         }
     }
 }
