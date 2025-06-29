@@ -7,8 +7,8 @@ namespace JP_Dictionary.Pages
 {
     public partial class StudyVocab
     {
-        [Parameter] public Profile User { get; set; }
-        [Parameter] public EventCallback<Pages> OnChangePage { get; set; }
+        [Inject] public UserState User { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 
         public Queue<StudyCard> StudyCards = new();
         public List<StudyWord> StudyWords = new(); // store all words for easy updating
@@ -23,7 +23,7 @@ namespace JP_Dictionary.Pages
         {
             var studyCards = new List<StudyCard>();
 
-            var availableWords = HelperMethods.LoadWordsToStudy(User);
+            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile);
             StudyWords = HelperMethods.LoadCoreWords();
 
             foreach (var word in availableWords)
@@ -31,6 +31,7 @@ namespace JP_Dictionary.Pages
                 var studyCard = new StudyCard
                 {
                     Question = "What does this word mean?",
+                    CardType = CardType.Definition,
                     StudyWord = word,
                     Word = word.Japanese,
                     OriginalFormatAnswer = word.Definitions,
@@ -40,6 +41,7 @@ namespace JP_Dictionary.Pages
                 var studyCard2 = new StudyCard
                 {
                     Question = "How is this word pronounced?",
+                    CardType = CardType.Pronounciation,
                     StudyWord = word,
                     Word = word.Japanese,
                     OriginalFormatAnswer = word.Pronounciation,
@@ -155,9 +157,9 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private void ToDashboard()
+        private void ChangePage(string route)
         {
-            OnChangePage.InvokeAsync(Pages.Dashboard);
+            Nav.NavigateTo(route);
         }
     }
 }

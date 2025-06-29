@@ -13,9 +13,9 @@ h1:focus {
     outline: none;
 }
 
-a, .btn-link {
+/*a, .btn-link {
     color: #0071c1;
-}
+}*/
 
 .btn-primary {
     color: #fff;
@@ -45,6 +45,21 @@ a, .btn-link {
     .secondary-button:hover {
         background-color: #444;
         border-color: #777;
+    }
+
+input[type="text"] {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #555;
+    background-color: #1e1e1e;
+    color: #fff;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+    input[type="text"]:focus {
+        border-color: #888;
     }
 
 .content {

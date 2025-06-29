@@ -1,4 +1,6 @@
-﻿
+﻿@layout MainLayout
+@page "/studyvocab"
+
 @*to do: implement mark as correct*@
 
 @if (!Finished)
@@ -6,9 +8,9 @@
     @if (!ShowResults)
     {
         <form @onsubmit="SubmitAnswer">
+            <h2>@CurrentCard.CardType</h2>
             <span class="label">@CurrentCard.Question</span>
             <span>@CurrentCard.Word</span>
-            <span class="label">Attempts Remaining: @AttemptsRemaining</span>
     
             <input type="text" @bind="Answer" />
 
@@ -17,6 +19,7 @@
                 <button class="main-button" @onclick="GiveUp">Give Up</button>
             </div>
     
+            <span class="label">Attempts Remaining: @AttemptsRemaining</span>
             <span class="label">Cards Remaining: @StudyCards.Count</span>
         </form>
     }
@@ -50,6 +53,6 @@ else
 {
     <div class="complete">
         <h3>You've completed today's review!</h3>
-        <button class="main-button" @onclick="ToDashboard">Return To Dashboard</button>
+        <button class="main-button" @onclick='() => ChangePage("/dashboard")'>Return To Dashboard</button>
     </div>
 }
