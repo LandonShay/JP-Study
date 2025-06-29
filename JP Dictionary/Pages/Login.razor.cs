@@ -9,8 +9,8 @@ namespace JP_Dictionary.Pages
         public List<Profile> Profiles = new();
         public string CreateName = string.Empty;
 
-        [Parameter] public EventCallback<Pages> OnLogin { get; set; }
-        [Parameter] public EventCallback<Profile> OnSetUser { get; set; }
+        [Inject] public UserState UserState { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 
         protected override void OnInitialized()
         {
@@ -34,16 +34,26 @@ namespace JP_Dictionary.Pages
 
         private void LogIn(Profile profile)
         {
-            if (profile.LastLogin.AddDays(1).Date == DateTime.Now.Date || profile.LoginStreak == 0)
+            var today = DateTime.Now.Date;
+            var lastLoginDate = profile.LastLogin.Date;
+
+            if (lastLoginDate == today)
             {
+                // Already logged in today
+            }
+            else if (lastLoginDate == today.AddDays(-1))
+            {
+                // Logged in yesterday
                 profile.LoginStreak++;
             }
             else
             {
-                profile.LoginStreak = 0;
+                // Missed a day or first login
+                profile.LoginStreak = 1;
             }
 
-            if (profile.LastLogin.Date != DateTime.Now.Date)
+            // UPDATE DAY/WEEK ONLY IF FIRST LOGIN TODAY
+            if (lastLoginDate != today)
             {
                 profile.LastLogin = DateTime.Now;
                 profile.CurrentDay++;
@@ -56,9 +66,9 @@ namespace JP_Dictionary.Pages
             }
 
             SaveProfile(profile);
+            UserState.Profile = profile;
 
-            OnSetUser.InvokeAsync(profile);
-            OnLogin.InvokeAsync(Pages.Dashboard);
+            Nav.NavigateTo("/dashboard");
         }
 
         private void CreateProfile()

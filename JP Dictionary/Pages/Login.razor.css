@@ -1,0 +1,18 @@
+﻿
+.select-profile{
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.create-profile{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.label {
+    font-weight: bold;
+    color: #bbbbbb;
+}

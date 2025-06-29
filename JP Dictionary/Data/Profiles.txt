@@ -1,9 +1,9 @@
 [
   {
     "Name": "Landon",
-    "LastLogin": "2025-06-28T00:01:51.53242-04:00",
-    "LoginStreak": 1,
+    "LastLogin": "2025-06-29T15:22:25.0635126-04:00",
+    "LoginStreak": 2,
     "CurrentWeek": 1,
-    "CurrentDay": 2
+    "CurrentDay": 3
   }
 ]

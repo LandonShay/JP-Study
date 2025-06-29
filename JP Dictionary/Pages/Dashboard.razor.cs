@@ -7,8 +7,8 @@ namespace JP_Dictionary.Pages
 {
     public partial class Dashboard
     {
-        [Parameter] public Profile User { get; set; }
-        [Parameter] public EventCallback<Pages> OnChangePage { get; set; }
+        [Inject] public UserState User { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 
         private int WordsToStudy { get; set; }
         private int TotalWords { get; set; }
@@ -20,26 +20,26 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
-            WordsToStudy = HelperMethods.LoadWordsToStudy(User).Count;
-            TotalWords = HelperMethods.LoadUnlockedWords(User).Count;
+            WordsToStudy = HelperMethods.LoadWordsToStudy(User.Profile).Count;
+            TotalWords = HelperMethods.LoadUnlockedWords(User.Profile).Count;
         }
 
-        private void ChangePage(Pages page)
+        private void ChangePage(string route)
         {
-            OnChangePage.InvokeAsync(page);
+            Nav.NavigateTo(route);
         }
 
         private void UnlockNextTier()
         {
-            User.CurrentDay++;
+            User.Profile.CurrentDay++;
 
-            if (User.CurrentDay > 7)
+            if (User.Profile.CurrentDay > 7)
             {
-                User.CurrentDay = 1;
-                User.CurrentWeek++;
+                User.Profile.CurrentDay = 1;
+                User.Profile.CurrentWeek++;
             }
 
-            SaveProfile(User);
+            SaveProfile(User.Profile);
             LoadDashboard();
         }
 

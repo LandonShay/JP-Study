@@ -1,5 +1,7 @@
-﻿
-<h2>Welcome @User.Name!</h2>
+﻿@layout MainLayout
+@page "/dashboard"
+
+<h2>Welcome @User.Profile.Name!</h2>
 
 <div class="dashboard">
     <div class="stat-row">
@@ -8,11 +10,11 @@
     </div>
 
     <div class="action-row">
-        <button class="main-button" @onclick="() => ChangePage(Pages.StudyVocab)">Study Vocab</button>
+        <button class="main-button" @onclick='() => ChangePage("/studyvocab")'>Daily Vocab</button>
         <span class="label">Today's Words: @WordsToStudy</span>
     </div>
 
-    <button class="main-button" @onclick="() => ChangePage(Pages.UnlockedWords)">View Unlocked Words</button>
+    <button class="main-button" @onclick='() => ChangePage("/unlocked")'>View Unlocked Words</button>
 
     <button class="main-button" @onclick="UnlockNextTier">Unlock Next Tier</button>
 </div>
