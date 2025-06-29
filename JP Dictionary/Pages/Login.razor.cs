@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 
 namespace JP_Dictionary.Pages
 {
@@ -52,7 +53,6 @@ namespace JP_Dictionary.Pages
                 profile.LoginStreak = 1;
             }
 
-            // UPDATE DAY/WEEK ONLY IF FIRST LOGIN TODAY
             if (lastLoginDate != today)
             {
                 profile.LastLogin = DateTime.Now;
@@ -65,7 +65,7 @@ namespace JP_Dictionary.Pages
                 }
             }
 
-            SaveProfile(profile);
+            HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
 
             Nav.NavigateTo("/dashboard");
@@ -94,28 +94,6 @@ namespace JP_Dictionary.Pages
 
             CreateName = string.Empty;
             LoadProfiles();
-        }
-
-        private void SaveProfile(Profile profile)
-        {
-            List<Profile> profiles;
-            var filePath = "Data/Profiles.txt";
-
-            if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
-            {
-                var content = File.ReadAllText(filePath);
-                profiles = JsonSerializer.Deserialize<List<Profile>>(content) ?? new List<Profile>();
-            }
-            else
-            {
-                profiles = new List<Profile>();
-            }
-
-            profiles.RemoveAll(x => x.Name == profile.Name);
-            profiles.Add(profile);
-
-            var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
         }
     }
 }

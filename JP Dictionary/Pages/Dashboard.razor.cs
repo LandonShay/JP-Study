@@ -39,30 +39,8 @@ namespace JP_Dictionary.Pages
                 User.Profile.CurrentWeek++;
             }
 
-            SaveProfile(User.Profile);
+            HelperMethods.SaveProfile(User.Profile);
             LoadDashboard();
-        }
-
-        private void SaveProfile(Profile profile)
-        {
-            List<Profile> profiles;
-            var filePath = "Data/Profiles.txt";
-
-            if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
-            {
-                var content = File.ReadAllText(filePath);
-                profiles = JsonSerializer.Deserialize<List<Profile>>(content) ?? new List<Profile>();
-            }
-            else
-            {
-                profiles = new List<Profile>();
-            }
-
-            profiles.RemoveAll(x => x.Name == profile.Name);
-            profiles.Add(profile);
-
-            var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
         }
     }
 }

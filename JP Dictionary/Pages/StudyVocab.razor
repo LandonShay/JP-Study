@@ -1,18 +1,21 @@
 ﻿@layout MainLayout
 @page "/studyvocab"
 
-@*to do: implement mark as correct*@
-
 @if (!Finished)
 {
     @if (!ShowResults)
     {
         <form @onsubmit="SubmitAnswer">
-            <h2>@CurrentCard.CardType</h2>
-            <span class="label">@CurrentCard.Question</span>
-            <span>@CurrentCard.Word</span>
+            <h2>@CurrentCard.Word</h2>
     
-            <input type="text" @bind="Answer" />
+            <div class="answer-area">
+                <label class="label">Reading</label>
+                <input type="text" @bind="ReadingAnswer" />
+            </div>
+            <div class="answer-area">
+                <label class="label">Definition</label>
+                <input type="text" @bind="DefinitionAnswer" />
+            </div>
 
             <div>
                 <button class="main-button" type="submit">Submit</button>
@@ -28,22 +31,29 @@
         <form @onsubmit="ShowNextCard">
             @if (CurrentCard.Correct)
             {
-                <span class="label">Correct!</span>
-                <span>@CurrentCard.Word</span>
-                <span>@CurrentCard.OriginalFormatAnswer</span>
+                <h2>Correct!</h2>
+
+                <h3>@CurrentCard.Word</h3>
+                <span>@CurrentCard.OriginalFormatReading</span>
+                <span>@CurrentCard.OriginalFormatDefinition</span>
+
                 <button class ="main-button" type="submit">Next</button>
             }
             else
             {
-                <span class="label">Incorrect...</span>
-                <span>@CurrentCard.Word</span>
-                <span>@CurrentCard.OriginalFormatAnswer</span>
+                <h2>Incorrect</h2>
 
-                <span class="label">Your Answer: @Answer</span>
+                <h3>@CurrentCard.Word</h3>
+                <span>@CurrentCard.OriginalFormatReading</span>
+                <span>@CurrentCard.OriginalFormatDefinition</span>
+
+                <span class="label">Your Answer: @ReadingAnswer</span>
+                <span>@ReadingAnswer</span>
+                <span>@DefinitionAnswer</span>
 
                 <div>
                     <button class="main-button" type="submit">Next</button>
-                    <button class="main-button">Mark As Correct</button>
+                    <button class="main-button" @onclick="() => CurrentCard.Correct = true">Mark As Correct</button>
                 </div>
             }
         </form>

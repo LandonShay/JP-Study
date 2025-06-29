@@ -7,52 +7,44 @@ namespace JP_Dictionary.Pages
 {
     public partial class StudyVocab
     {
+        #region Injections
+#nullable disable
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+#nullable enable
+        #endregion
 
-        public Queue<StudyCard> StudyCards = new();
+        public Queue<VocabCard> StudyCards = new();
         public List<StudyWord> StudyWords = new(); // store all words for easy updating
-        public StudyCard? CurrentCard;
+        public VocabCard CurrentCard = new();
 
-        public string Answer = string.Empty;
+        public string DefinitionAnswer = string.Empty;
+        public string ReadingAnswer = string.Empty;
+
         public byte AttemptsRemaining = 3;
         public bool ShowResults;
         public bool Finished;
 
         protected override void OnInitialized()
         {
-            var studyCards = new List<StudyCard>();
+            var studyCards = new List<VocabCard>();
 
-            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile);
+            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile!);
             StudyWords = HelperMethods.LoadCoreWords();
 
             foreach (var word in availableWords)
             {
-                var studyCard = new StudyCard
+                var studyCard = new VocabCard
                 {
-                    Question = "What does this word mean?",
-                    CardType = CardType.Definition,
                     StudyWord = word,
                     Word = word.Japanese,
-                    OriginalFormatAnswer = word.Definitions,
-                    Answers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList()
+                    OriginalFormatDefinition = word.Definitions,
+                    OriginalFormatReading = word.Pronounciation,
+                    DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
+                    ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
                 };
-
-                var studyCard2 = new StudyCard
-                {
-                    Question = "How is this word pronounced?",
-                    CardType = CardType.Pronounciation,
-                    StudyWord = word,
-                    Word = word.Japanese,
-                    OriginalFormatAnswer = word.Pronounciation,
-                    Answers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
-                };
-
-                studyCard.Pair = studyCard2;
-                studyCard2.Pair = studyCard;
 
                 studyCards.Add(studyCard);
-                studyCards.Add(studyCard2);
             }
 
             foreach (var studyCard in studyCards.Shuffle())
@@ -65,45 +57,50 @@ namespace JP_Dictionary.Pages
 
         private void SubmitAnswer()
         {
-            var cleanedAnwer = Answer.Trim().ToLower();
-
-            if (CurrentCard.Answers.Contains(cleanedAnwer))
+            if (ReadingAnswer != string.Empty && DefinitionAnswer != string.Empty)
             {
-                CurrentCard.Correct = true;
-                ShowResults = true;
+                var cleanedReadingAnswer = ReadingAnswer.Trim().ToLower();
+                var cleanedDefinitionAnswer = DefinitionAnswer.Trim().ToLower();
 
-                UpdateWord(true);
-            }
-            else
-            {
-                AttemptsRemaining--;
-
-                if (AttemptsRemaining == 0)
+                if (CurrentCard!.ReadingAnswers.Contains(cleanedReadingAnswer) &&
+                    CurrentCard.DefinitionAnswers.Contains(cleanedDefinitionAnswer))
                 {
+                    CurrentCard.Correct = true;
                     ShowResults = true;
+                }
+                else
+                {
+                    AttemptsRemaining--;
 
-                    UpdateWord(false);
-                    ReaddFailedCard();
+                    if (AttemptsRemaining == 0)
+                    {
+                        ShowResults = true;
+                    }
                 }
             }
         }
 
         private void GiveUp()
         {
-            CurrentCard.Correct = false;
             ShowResults = true;
-
-            UpdateWord(false);
-            ReaddFailedCard();
         }
 
         private void ShowNextCard()
         {
-            ShowResults = false;
-            Answer = string.Empty;
-            AttemptsRemaining = 3;
+            UpdateWord();
+
+            if (!CurrentCard.Correct)
+            {
+                ReaddFailedCard();
+            }
 
             SetCurrentCard();
+
+            ReadingAnswer = string.Empty;
+            DefinitionAnswer = string.Empty;
+            AttemptsRemaining = 3;
+
+            ShowResults = false;
         }
 
         private void SetCurrentCard()
@@ -118,30 +115,22 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private void UpdateWord(bool increase)
+        private void UpdateWord()
         {
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
 
-            if (CurrentCard != null && CurrentCard.Correct && (CurrentCard.Pair == null || CurrentCard.Pair.Correct))
+            if (CurrentCard.Correct)
             {
-                if (increase)
-                {
-                    word.CorrectStreak++;
-                }
-                else
-                {
-                    word.CorrectStreak = 0;
-                }
-
+                word.CorrectStreak++;
                 word.LastStudied = DateTime.Today.Date;
-                HelperMethods.UpdateWords(StudyWords);
             }
-            else if (CurrentCard != null && !increase)
+            else
             {
                 word.CorrectStreak = 0;
                 word.LastStudied = DateTime.MinValue;
-                HelperMethods.UpdateWords(StudyWords);
             }
+
+            HelperMethods.UpdateWords(StudyWords);
         }
 
         private void ReaddFailedCard()

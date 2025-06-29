@@ -2,6 +2,7 @@
 using CsvHelper.Configuration;
 using JP_Dictionary.Models;
 using CsvHelper;
+using System.Text.Json;
 
 namespace JP_Dictionary.Shared
 {
@@ -103,6 +104,28 @@ namespace JP_Dictionary.Shared
             }
 
             return date;
+        }
+
+        public static void SaveProfile(Profile profile)
+        {
+            List<Profile> profiles;
+            var filePath = "Data/Profiles.txt";
+
+            if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
+            {
+                var content = File.ReadAllText(filePath);
+                profiles = JsonSerializer.Deserialize<List<Profile>>(content) ?? new List<Profile>();
+            }
+            else
+            {
+                profiles = new List<Profile>();
+            }
+
+            profiles.RemoveAll(x => x.Name == profile.Name);
+            profiles.Add(profile);
+
+            var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
         }
 
         private static int GetDelayFromStreak(int streak)

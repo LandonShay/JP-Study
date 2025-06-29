@@ -1,12 +1,7 @@
-﻿@using CsvHelper.Configuration;
-@using JP_Dictionary.Models;
-@using System.Globalization;
-@using CsvHelper;
-
-@layout MainLayout
+﻿@layout MainLayout
 @page "/unlocked"
 
-<h2>Unlocked Words</h2>
+<span>*You can edit definitions by clicking them</span>
 
 <table>
     <thead>
@@ -40,7 +35,16 @@
                     @entry.Pronounciation
                 </td>
                 <td>
-                    @entry.Definitions
+                    @if (EditingEntry == entry)
+                    {
+                        <input @bind="EditingValue" @onblur="FinishEditing" class="definition-input" />
+                    }
+                    else
+                    {
+                        <span @onclick="() => StartEditing(entry)" style="cursor: pointer;">
+                            @entry.Definitions
+                        </span>
+                    }
                 </td>
                 <td>
                     @entry.CorrectStreak
@@ -55,32 +59,3 @@
         }
     </tbody>
 </table>
-
-@code {
-    public List<StudyWord> TodaysWords = new();
-
-    [Inject] public UserState User { get; set; }
-    [Inject] public NavigationManager Nav { get; set; }
-
-    protected override void OnInitialized()
-    {
-        LoadUnlockedWords();
-    }
-
-    private void LoadUnlockedWords()
-    {
-        TodaysWords = HelperMethods.LoadUnlockedWords(User.Profile); 
-    }
-
-    private void ResetStreak(StudyWord word)
-    {
-        var allWords = HelperMethods.LoadCoreWords();
-        var studyWord = allWords.First(x => x.Id == word.Id);
-
-        studyWord.CorrectStreak = 0;
-        studyWord.LastStudied = DateTime.MinValue;
-
-        HelperMethods.UpdateWords(allWords);
-        LoadUnlockedWords();
-    }
-}
