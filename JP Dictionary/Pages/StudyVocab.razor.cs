@@ -16,18 +16,27 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
-        public Queue<VocabCard> StudyCards = new();
-        public List<StudyWord> StudyWords = new(); // store all words for easy updating
-        public VocabCard CurrentCard = new();
+        public Queue<VocabCard> StudyCards { get; set; } = new();
+        public List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
+        public VocabCard CurrentCard { get; set; } = new();
 
-        public string ElementToFocus = string.Empty;
+        public string ElementToFocus { get; set; } = string.Empty;
+        public string DefinitionAnswer { get; set; } = string.Empty;
+        public string ReadingAnswer { get; set; } = string.Empty;
 
-        public string DefinitionAnswer = string.Empty;
-        public string ReadingAnswer = string.Empty;
-
-        public byte AttemptsRemaining = 3;
-        public bool ShowResults;
-        public bool Finished;
+        public byte AttemptsRemaining { get; set; } = 3;
+        public bool ShowResults { get; set; }
+        public bool Finished { get; set; }
+        public bool Talking { get; set; }
+        private bool AutoSpeak
+        {
+            get => User.Profile!.AutoSpeak;
+            set
+            {
+                User.Profile!.AutoSpeak = value;
+                HelperMethods.SaveProfile(User.Profile);
+            }
+        }
 
         protected override async void OnInitialized()
         {
@@ -68,6 +77,11 @@ namespace JP_Dictionary.Pages
             {
                 await FocusElement(ElementToFocus);
                 ElementToFocus = string.Empty;
+            }
+
+            if (ShowResults && User.Profile!.AutoSpeak)
+            {
+                await TextToSpeech(CurrentCard.Word);
             }
         }
 
@@ -176,6 +190,21 @@ namespace JP_Dictionary.Pages
         private async Task FocusElement(string elementId)
         {
             await JS.InvokeVoidAsync("focusElementById", elementId);
+        }
+
+        private async Task TextToSpeech(string text)
+        {
+            if (!Talking)
+            {
+                Talking = true;
+                await JS.InvokeVoidAsync("speakText", text);
+                Talking = false;
+            }
+        }
+
+        private void SavePreferences()
+        {
+
         }
     }
 }

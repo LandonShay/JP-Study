@@ -7,5 +7,6 @@
         public int LoginStreak { get; set; }
         public byte CurrentWeek { get; set; } = 1;
         public byte CurrentDay { get; set; }
+        public bool AutoSpeak { get; set; } = true;
     }
 }

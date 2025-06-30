@@ -10,11 +10,11 @@
     
             <div class="answer-area">
                 <label class="label">Reading</label>
-                <input type="text" id="reading" @bind="ReadingAnswer" />
+                <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" />
             </div>
             <div class="answer-area">
                 <label class="label">Definition</label>
-                <input type="text" id="definition" @bind="DefinitionAnswer" />
+                <input type="text" id="definition" autocomplete="off" @bind="DefinitionAnswer" />
             </div>
 
             <div>
@@ -33,7 +33,10 @@
             {
                 <h2>Correct!</h2>
 
-                <h3>@CurrentCard.Word</h3>
+                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.Word)">
+                    <h3>@CurrentCard.Word</h3>
+                    <span>🔊</span>
+                </div>
                 <span>@CurrentCard.OriginalFormatReading</span>
                 <span>@CurrentCard.OriginalFormatDefinition</span>
 
@@ -43,11 +46,11 @@
             {
                 <h2>Incorrect</h2>
 
-                <h3>@CurrentCard.Word</h3>
+                <h3 @onclick="() => TextToSpeech(CurrentCard.Word)">@CurrentCard.Word 🔊</h3>
                 <span>@CurrentCard.OriginalFormatReading</span>
                 <span>@CurrentCard.OriginalFormatDefinition</span>
 
-                <span class="label">Your Answer: @ReadingAnswer</span>
+                <span class="label">Your Answer</span>
                 <span>@ReadingAnswer</span>
                 <span>@DefinitionAnswer</span>
 
@@ -58,6 +61,14 @@
             }
         </form>
     }
+
+    <div class="speech-toggle-container">
+        <label class="speech-toggle">
+            <input type="checkbox" id="auto-speech" @bind="AutoSpeak" />
+            <span class="custom-checkbox"></span>
+            Auto-Speak Results
+        </label>
+    </div>
 }
 else
 {
