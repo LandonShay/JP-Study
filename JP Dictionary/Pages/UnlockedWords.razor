@@ -3,29 +3,35 @@
 
 <span>*You can edit definitions by clicking them</span>
 
+<div class="table-controls">
+    <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
+</div>
 <table>
     <thead>
         <tr>
-            <th>
-                Japanese
+            <th @onclick="() => ToggleSort(nameof(StudyWord.Japanese))">
+                Japanese @SortIndicator(nameof(StudyWord.Japanese))
             </th>
-            <th>
-                Romaji
+            <th @onclick="() => ToggleSort(nameof(StudyWord.Pronounciation))">
+                Romaji @SortIndicator(nameof(StudyWord.Pronounciation))
             </th>
-            <th>
-                Definition
+            <th @onclick="() => ToggleSort(nameof(StudyWord.Definitions))">
+                Definition @SortIndicator(nameof(StudyWord.Definitions))
             </th>
-            <th>
-                Streak
+            <th @onclick="() => ToggleSort(nameof(StudyWord.CorrectStreak))">
+                Streak @SortIndicator(nameof(StudyWord.CorrectStreak))
             </th>
-            <th>
-                Next Review
+            <th @onclick="() => ToggleSort(nameof(StudyWord.MasteryTier))">
+                Mastery @SortIndicator(nameof(StudyWord.MasteryTier))
+            </th>
+            <th @onclick="() => ToggleSort(nameof(StudyWord.LastStudied))">
+                Next Review @SortIndicator(nameof(StudyWord.LastStudied))
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var entry in TodaysWords)
+        @foreach (var entry in FilteredWords)
         {
             <tr>
                 <td>
@@ -48,6 +54,9 @@
                 </td>
                 <td>
                     @entry.CorrectStreak
+                </td>
+                <td>
+                    @entry.MasteryTier
                 </td>
                 <td>
                     @HelperMethods.GetNextStudyDate(entry).ToShortDateString()
