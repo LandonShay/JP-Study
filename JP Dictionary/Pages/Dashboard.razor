@@ -1,17 +1,62 @@
 ﻿@layout MainLayout
 @page "/dashboard"
 
-<h2>Welcome @User.Profile.Name!</h2>
-
+<div class="welcome">
+    <h2>Welcome @User.Profile!.Name!</h2>
+    <h4>Login Streak: @User.Profile!.LoginStreak</h4>
+</div>
 <div class="dashboard">
-    <div class="stat-row">
-        <span class="label">Total Words Unlocked:</span>
-        <span class="value">@TotalWords</span>
+    <div class="major-stats">
+        <div class="stat-row">
+            <span class="label">Unlocked:</span>
+            <span class="value">@WordsUnlocked</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">Remaining:</span>
+            <span class="value">@RemainingWords</span>
+        </div>
     </div>
-
+    <div class="word-mastery">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Starting
+                    </th>
+                    <th>
+                        Familiar
+                    </th>
+                    <th>
+                        Good
+                    </th>
+                    <th>
+                        Expert
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @StartingCount
+                    </td>
+                    <td>
+                        @FamiliarCount
+                    </td>
+                    <td>
+                        @GoodCount
+                    </td>
+                    <td>
+                        @ExpertCount
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="action-row">
-        <button class="main-button" @onclick='() => ChangePage("/studyvocab")'>Daily Vocab</button>
-        <span class="label">Today's Words: @WordsToStudy</span>
+        <button class="main-button" id="core-study" @onclick='() => ChangePage("/studyvocab")'>
+            Daily Core
+            <span id="core-text">Remaining: @WordsToStudy</span>
+        </button>
     </div>
 
     <button class="main-button" @onclick='() => ChangePage("/unlocked")'>View Unlocked Words</button>

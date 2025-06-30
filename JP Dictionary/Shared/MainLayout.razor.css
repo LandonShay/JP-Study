@@ -13,18 +13,24 @@
     padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* THIS is the magic */
     align-items: center;
     gap: 1.5rem;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-    .sidebar h2 {
-        margin-bottom: 2rem;
-        font-size: 1.3rem;
-        color: #ffffff;
-        text-align: center;
-    }
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.sidebar-bottom {
+    width: 100%;
+}
+
 
 .nav-button {
     color: #ffffff;
