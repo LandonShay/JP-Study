@@ -40,5 +40,15 @@
             }
         };
     </script>
+    @*the below is for text to speech*@
+    <script>
+        window.speakText = function (text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP';
+                speechSynthesis.speak(utterance);
+            }
+        };
+    </script>
 </body>
 </html>
