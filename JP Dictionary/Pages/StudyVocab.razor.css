@@ -53,20 +53,6 @@ h3 {
         background-color: #404040;
     }
 
-/*.speech-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #f0f0f0;
-    margin-bottom: 1rem;
-}
-
-    .speech-toggle input[type="checkbox"] {
-        accent-color: purple;
-        width: 18px;
-        height: 18px;
-    }*/
-
 .speech-toggle-container {
     display: flex;
     justify-content: center;
@@ -84,7 +70,7 @@ h3 {
 }
 
     .speech-toggle input[type="checkbox"] {
-        display: none; /* hide the native checkbox */
+        display: none;
     }
 
 .custom-checkbox {
