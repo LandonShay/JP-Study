@@ -7,16 +7,16 @@
     {
         <form @onsubmit="SubmitAnswer">
             <h2>@CurrentCard.Word</h2>
-    
+
             <div class="answer-area">
                 <label class="label">Reading</label>
-                <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" />
-            </div>
-            <div class="answer-area">
-                <label class="label">Definition</label>
-                <input type="text" id="definition" autocomplete="off" @bind="DefinitionAnswer" />
+                <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
             </div>
 
+            <div class="answer-area">
+                <label class="label">Definition</label>
+                <input type="text" id="definition" autocomplete="off" @bind="DefinitionAnswer" class="@DefinitionStatus" />
+            </div>
             <div>
                 <button class="main-button" id="submit-answer" type="submit">Submit</button>
                 <button class="main-button" @onclick="GiveUp">Give Up</button>
@@ -46,7 +46,10 @@
             {
                 <h2>Incorrect</h2>
 
-                <h3 @onclick="() => TextToSpeech(CurrentCard.Word)">@CurrentCard.Word 🔊</h3>
+                            <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.Word)">
+                                <h3>@CurrentCard.Word</h3>
+                                <span>🔊</span>
+                            </div>
                 <span>@CurrentCard.OriginalFormatReading</span>
                 <span>@CurrentCard.OriginalFormatDefinition</span>
 

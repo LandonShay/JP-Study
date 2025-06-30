@@ -106,3 +106,19 @@ h3 {
 .speech-toggle input[type="checkbox"]:checked + .custom-checkbox::after {
     opacity: 1;
 }
+
+.input-correct {
+    border: 2px solid #4CAF50;
+    background-color: #223322;
+    color: #d0ffd0;
+}
+
+.input-incorrect {
+    border: 2px solid #e74c3c;
+    background-color: #331e1e;
+    color: #ffd0d0;
+}
+
+input[type="text"] {
+    transition: border 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}

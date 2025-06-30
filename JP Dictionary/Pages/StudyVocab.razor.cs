@@ -20,10 +20,15 @@ namespace JP_Dictionary.Pages
         public List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
         public VocabCard CurrentCard { get; set; } = new();
 
-        public string ElementToFocus { get; set; } = string.Empty;
+        // user's answers
         public string DefinitionAnswer { get; set; } = string.Empty;
         public string ReadingAnswer { get; set; } = string.Empty;
 
+        // css class for indicating correct or incorrect
+        private string DefinitionStatus { get; set; } = string.Empty;
+        private string ReadingStatus { get; set; } = string.Empty;
+
+        public string ElementToFocus { get; set; } = string.Empty; // controlled element focus
         public byte AttemptsRemaining { get; set; } = 3;
         public bool ShowResults { get; set; }
         public bool Finished { get; set; }
@@ -87,29 +92,55 @@ namespace JP_Dictionary.Pages
 
         private void SubmitAnswer()
         {
-            if (ReadingAnswer != string.Empty && DefinitionAnswer != string.Empty)
+            var readingCorrect = false;
+            var definitionCorrect = false;
+
+            ReadingStatus = string.Empty;
+            DefinitionStatus = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(ReadingAnswer))
             {
-                var cleanedReadingAnswer = ReadingAnswer.Trim().ToLower();
-                var cleanedDefinitionAnswer = DefinitionAnswer.Trim().ToLower();
+                var cleanedAnswer = ReadingAnswer.Trim().ToLower();
+                readingCorrect = CurrentCard.ReadingAnswers.Contains(cleanedAnswer);
+            }
 
-                if (CurrentCard!.ReadingAnswers.Contains(cleanedReadingAnswer) &&
-                    CurrentCard.DefinitionAnswers.Contains(cleanedDefinitionAnswer))
-                {
-                    CurrentCard.Correct = true;
-                    ShowResults = true;
+            if (!string.IsNullOrWhiteSpace(DefinitionAnswer))
+            {
+                var cleanedAnswer = DefinitionAnswer.Trim().ToLower();
+                definitionCorrect = CurrentCard.DefinitionAnswers.Contains(cleanedAnswer);
+            }
 
-                    ElementToFocus = "correct-next";
-                }
-                else
-                {
-                    AttemptsRemaining--;
+            if (readingCorrect && definitionCorrect)
+            {
+                CurrentCard.Correct = true;
+                ShowResults = true;
 
-                    if (AttemptsRemaining == 0)
-                    {
-                        ShowResults = true;
-                        ElementToFocus = "incorrect-next";
-                    }
-                }
+                ElementToFocus = "correct-next";
+                return;
+            }
+
+            if (readingCorrect)
+            {
+                ReadingStatus = "input-correct";
+                DefinitionStatus = "input-incorrect";
+            }
+            else if (definitionCorrect)
+            {
+                ReadingStatus = "input-incorrect";
+                DefinitionStatus = "input-correct";
+            }
+            else
+            {
+                ReadingStatus = "input-incorrect";
+                DefinitionStatus = "input-incorrect";
+            }
+
+            AttemptsRemaining--;
+
+            if (AttemptsRemaining == 0)
+            {
+                ShowResults = true;
+                ElementToFocus = "incorrect-next";
             }
         }
 
@@ -132,6 +163,10 @@ namespace JP_Dictionary.Pages
 
             ReadingAnswer = string.Empty;
             DefinitionAnswer = string.Empty;
+
+            ReadingStatus = string.Empty;
+            DefinitionStatus = string.Empty;
+
             AttemptsRemaining = 3;
 
             ShowResults = false;
@@ -200,11 +235,6 @@ namespace JP_Dictionary.Pages
                 await JS.InvokeVoidAsync("speakText", text);
                 Talking = false;
             }
-        }
-
-        private void SavePreferences()
-        {
-
         }
     }
 }
