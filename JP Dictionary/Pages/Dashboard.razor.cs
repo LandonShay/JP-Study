@@ -14,7 +14,13 @@ namespace JP_Dictionary.Pages
         #endregion
 
         private int WordsToStudy { get; set; }
-        private int TotalWords { get; set; }
+        private int WordsUnlocked { get; set; }
+        private int RemainingWords { get; set; }
+
+        private int StartingCount { get; set; }
+        private int FamiliarCount { get; set; }
+        private int GoodCount { get; set; }
+        private int ExpertCount { get; set; }
 
         protected override void OnInitialized()
         {
@@ -23,8 +29,16 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
+            var unlockedWords = HelperMethods.LoadUnlockedWords(User.Profile!);
+
             WordsToStudy = HelperMethods.LoadWordsToStudy(User.Profile!).Count;
-            TotalWords = HelperMethods.LoadUnlockedWords(User.Profile!).Count;
+            WordsUnlocked = unlockedWords.Count;
+            RemainingWords = HelperMethods.LoadDefaultCoreWords().Count - WordsUnlocked;
+
+            StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
+            FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
+            GoodCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Good);
+            ExpertCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Expert);
         }
 
         private void ChangePage(string route)

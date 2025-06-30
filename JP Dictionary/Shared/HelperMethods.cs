@@ -166,7 +166,7 @@ namespace JP_Dictionary.Shared
             File.WriteAllText(filePath, json);
         }
 
-        private static int GetDelayFromStreak(int streak)
+        public static int GetDelayFromStreak(int streak)
         {
             return streak switch
             {

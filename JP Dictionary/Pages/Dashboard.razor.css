@@ -6,17 +6,19 @@
     padding: 0;
 }
 
-h2 {
+.welcome{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-left: 2rem;
-    color: #ffffff;
 }
 
 .dashboard {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
     padding: 2rem;
-    max-width: 500px;
 }
 
 .stat-row, .action-row {
@@ -32,4 +34,49 @@ h2 {
 
 .value {
     color: #ffffff;
+}
+
+.major-stats{
+    display: flex;
+    gap: 15px;
+}
+
+.word-mastery{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mastery-tier{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    margin: 0
+}
+
+th, td {
+    border-right: 1px gray solid;
+}
+
+    th:last-child, td:last-child {
+        border-right: none;
+    }
+
+tbody tr:hover {
+    background-color: #2a2a2a;
+}
+
+#core-study{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px
+}
+
+#core-text{
+    font-style: italic;
+    font-size: 14px;
 }

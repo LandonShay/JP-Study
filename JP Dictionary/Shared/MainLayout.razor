@@ -9,10 +9,15 @@
     @if (!IsLoginPage)
     {
         <div class="sidebar">
-            <div class="nav-button" @onclick='() => Nav.NavigateTo("/dashboard")'>Dashboard</div>
-            <div class="nav-button" @onclick='() => Nav.NavigateTo("/studyvocab")'>Study Vocab</div>
-            <div class="nav-button" @onclick='() => Nav.NavigateTo("/unlocked")'>Unlocked Words</div>
-            <div class="nav-button" @onclick='() => Nav.NavigateTo("/")'>Log Out</div>
+            <div class="sidebar-top">
+                <div class="nav-button" @onclick='() => Nav.NavigateTo("/dashboard")'>Dashboard</div>
+                <div class="nav-button" @onclick='() => Nav.NavigateTo("/studyvocab")'>Study Vocab</div>
+                <div class="nav-button" @onclick='() => Nav.NavigateTo("/unlocked")'>Unlocked Words</div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="nav-button" @onclick='() => Nav.NavigateTo("/")'>Log Out</div>
+            </div>
         </div>
     }
 
@@ -20,3 +25,4 @@
         @Body
     </main>
 </div>
+
