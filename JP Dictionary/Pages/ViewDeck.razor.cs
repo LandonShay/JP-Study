@@ -8,11 +8,18 @@ namespace JP_Dictionary.Pages
     {
         public List<StudyWord> AllWords = new();
 
+        // sort/search
         private string? SortColumn = null;
         private bool SortDescending = false;
         private string SearchTerm = string.Empty;
-        private List<StudyWord> FilteredWords => GetFilteredAndSortedWords();
 
+        // pagination
+        private int CurrentPage = 1;
+        private int PageSize = 25;
+        private int TotalPages => (int)Math.Ceiling(GetFilteredAndSortedWords().Count / (double)PageSize);
+        private IEnumerable<StudyWord> PagedWords => GetFilteredAndSortedWords().Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+
+        // inline editing
         private StudyWord? EditingEntry;
         private string EditingValue = string.Empty;
 
@@ -141,6 +148,23 @@ namespace JP_Dictionary.Pages
 
             var arrow = SortDescending ? "▼" : "▲";
             return (MarkupString)$"<span class='sort-icon'>{arrow}</span>";
+        }
+        #endregion
+
+        #region Pagination
+        private void ChangePage(int page)
+        {
+            if (page < 1 || page > TotalPages) return;
+            CurrentPage = page;
+        }
+
+        private void SetPageSize(ChangeEventArgs e)
+        {
+            if (int.TryParse(e.Value?.ToString(), out int size))
+            {
+                PageSize = size;
+                CurrentPage = 1;
+            }
         }
         #endregion
     }

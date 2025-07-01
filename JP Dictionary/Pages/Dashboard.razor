@@ -20,7 +20,7 @@
                 @foreach (var deck in User.Profile.Decks)
                 {
                     <tr>
-                        <td class="deck-info">
+                        <td class="deck-info" @onclick="() => ToStudy(deck)">
                             <span class="deck-name">@deck</span>
                             <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck)</span>
                         </td>

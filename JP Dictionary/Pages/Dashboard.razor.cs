@@ -30,6 +30,11 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
+            StartingCount = 0;
+            FamiliarCount = 0;
+            GoodCount = 0;
+            ExpertCount = 0;
+
             var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
 
             WordsUnlocked = coreDeck.Count(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
@@ -56,6 +61,12 @@ namespace JP_Dictionary.Pages
         {
             var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
             return DeckMethods.LoadWordsToStudy(User.Profile!, deck).Count;
+        }
+
+        private void ToStudy(string deckName)
+        {
+            User.SelectedDeck = deckName;
+            Nav.NavigateTo("/studyvocab");
         }
 
         #region Decks

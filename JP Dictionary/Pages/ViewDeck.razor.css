@@ -1,7 +1,20 @@
 ﻿.table-controls {
     display: flex;
     justify-content: space-between;
-    margin: 35px 0 0 83px;
+    align-items: center;
+    margin: 35px 0 10px 0;
+    flex-wrap: wrap;
+}
+
+.left-controls {
+    display: flex;
+    align-items: center;
+}
+
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .search-box {
@@ -37,4 +50,71 @@ th {
     margin-left: 5px;
     font-size: 0.9rem;
     color: #ccc;
+}
+
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-size {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ccc;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    color: #ccc;
+}
+.table-container {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #444;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 0;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    z-index: 2;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+th:hover {
+    background-color: #333;
+    cursor: pointer;
+}
+
+tbody td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #444;
+    color: #ddd;
+    vertical-align: middle;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #252525;
+}
+
+tbody tr:hover {
+    background-color: #333;
 }

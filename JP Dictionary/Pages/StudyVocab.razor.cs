@@ -45,35 +45,35 @@ namespace JP_Dictionary.Pages
 
         protected override async void OnInitialized()
         {
-            //var studyCards = new List<VocabCard>();
+            var studyCards = new List<VocabCard>();
 
-            //var availableWords = HelperMethods.LoadWordsToStudy(User.Profile!);
-            //StudyWords = HelperMethods.LoadDeck(User.Profile!, "Core");
+            StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
 
-            //foreach (var word in availableWords)
-            //{
-            //    var studyCard = new VocabCard
-            //    {
-            //        StudyWord = word,
-            //        Word = word.Japanese,
-            //        OriginalFormatDefinition = word.Definitions,
-            //        OriginalFormatReading = word.Pronounciation,
-            //        DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
-            //        ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
-            //    };
+            foreach (var word in availableWords)
+            {
+                var studyCard = new VocabCard
+                {
+                    StudyWord = word,
+                    Word = word.Japanese,
+                    OriginalFormatDefinition = word.Definitions,
+                    OriginalFormatReading = word.Pronounciation,
+                    DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
+                    ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
+                };
 
-            //    studyCards.Add(studyCard);
-            //}
+                studyCards.Add(studyCard);
+            }
 
-            //foreach (var studyCard in studyCards.Shuffle())
-            //{
-            //    StudyCards.Enqueue(studyCard);
-            //}
+            foreach (var studyCard in studyCards.Shuffle())
+            {
+                StudyCards.Enqueue(studyCard);
+            }
 
-            //SetCurrentCard();
+            SetCurrentCard();
 
-            //ElementToFocus = "reading";
-            //await FocusElement(ElementToFocus);
+            ElementToFocus = "reading";
+            await FocusElement(ElementToFocus);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
