@@ -8,5 +8,6 @@
         public byte CurrentWeek { get; set; } = 1;
         public byte CurrentDay { get; set; }
         public bool AutoSpeak { get; set; } = true;
+        public List<string> Decks { get; set; } = new();
     }
 }

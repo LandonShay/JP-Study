@@ -13,7 +13,8 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
-        private int WordsToStudy { get; set; }
+        private string DeckName { get; set; } = string.Empty;
+
         private int WordsUnlocked { get; set; }
         private int RemainingWords { get; set; }
 
@@ -29,40 +30,78 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
-            var unlockedWords = HelperMethods.LoadUnlockedWords(User.Profile!);
+            var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
 
-            WordsToStudy = HelperMethods.LoadWordsToStudy(User.Profile!).Count;
-            WordsUnlocked = unlockedWords.Count;
-            RemainingWords = HelperMethods.LoadDefaultCoreWords().Count - WordsUnlocked;
+            WordsUnlocked = coreDeck.Count(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
+                                                (x.Week < User.Profile!.CurrentWeek));
+            RemainingWords = coreDeck.Count - WordsUnlocked;
 
-            StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
-            FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
-            GoodCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Good);
-            ExpertCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Expert);
-        }
-
-        private void ChangePage(string route)
-        {
-            Nav.NavigateTo(route);
-        }
-
-        private void UnlockNextTier()
-        {
-            User.Profile!.CurrentDay++;
-
-            if (User.Profile.CurrentDay > 7)
+            foreach (var deckName in User.Profile!.Decks)
             {
-                User.Profile.CurrentDay = 1;
-                User.Profile.CurrentWeek++;
+                var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
 
-                if (User.Profile.CurrentWeek == byte.MaxValue - 1)
-                {
-                    User.Profile.CurrentWeek--;
-                }
+                var unlockedWords = deck.FindAll(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
+                                                      (x.Week < User.Profile!.CurrentWeek));
+
+                StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
+                FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
+                GoodCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Good);
+                ExpertCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Expert);
             }
 
-            HelperMethods.SaveProfile(User.Profile);
-            LoadDashboard();
+            User.ResetSelectedDeck();
         }
+
+        private int GetRemainingWordsPerDeck(string deckName)
+        {
+            var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
+            return DeckMethods.LoadWordsToStudy(User.Profile!, deck).Count;
+        }
+
+        #region Decks
+        private void ToViewDeck(string deck)
+        {
+            User.SelectedDeck = deck;
+            Nav.NavigateTo("/viewdeck");
+        }
+
+        private void CreateDeck()
+        {
+            if (!User.Profile!.Decks.Contains(DeckName))
+            {
+                HelperMethods.CreateFile($"{User.Profile!.Name}Deck-{DeckName}.csv");
+                User.Profile.Decks.Add(DeckName);
+
+                DeckName = string.Empty;
+
+                HelperMethods.SaveProfile(User.Profile);
+                LoadDashboard();
+            }
+        }
+
+        private void DeleteDeck(string deckName)
+        {
+
+        }
+        #endregion
+
+        //private void UnlockNextTier()
+        //{
+        //    User.Profile!.CurrentDay++;
+
+        //    if (User.Profile.CurrentDay > 7)
+        //    {
+        //        User.Profile.CurrentDay = 1;
+        //        User.Profile.CurrentWeek++;
+
+        //        if (User.Profile.CurrentWeek == byte.MaxValue - 1)
+        //        {
+        //            User.Profile.CurrentWeek--;
+        //        }
+        //    }
+
+        //    HelperMethods.SaveProfile(User.Profile);
+        //    LoadDashboard();
+        //}
     }
 }

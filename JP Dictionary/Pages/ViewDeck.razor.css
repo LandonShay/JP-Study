@@ -1,7 +1,7 @@
 ﻿.table-controls {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
+    justify-content: space-between;
+    margin: 35px 0 0 83px;
 }
 
 .search-box {

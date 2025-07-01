@@ -1,9 +1,10 @@
 ﻿@layout MainLayout
-@page "/unlocked"
+@page "/viewdeck"
 
 <span>*You can edit definitions by clicking them</span>
 
 <div class="table-controls">
+    <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
     <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
 </div>
 <table>
@@ -27,6 +28,7 @@
             <th @onclick="() => ToggleSort(nameof(StudyWord.LastStudied))">
                 Next Review @SortIndicator(nameof(StudyWord.LastStudied))
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -63,6 +65,9 @@
                 </td>
                 <td>
                     <button class="main-button" @onclick="() => ResetStreak(entry)">Reset Streak</button>
+                </td>
+                <td>
+                    <button class="main-button" @onclick="() => DeleteCard(entry)">Delete</button>
                 </td>
             </tr>
         }

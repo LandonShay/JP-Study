@@ -5,60 +5,88 @@
     <h2>Welcome @User.Profile!.Name!</h2>
     <h4>Login Streak: @User.Profile!.LoginStreak</h4>
 </div>
-<div class="dashboard">
-    <div class="major-stats">
-        <div class="stat-row">
-            <span class="label">Unlocked:</span>
-            <span class="value">@WordsUnlocked</span>
-        </div>
-        <div class="stat-row">
-            <span class="label">Remaining:</span>
-            <span class="value">@RemainingWords</span>
-        </div>
-    </div>
-    <div class="word-mastery">
+<div class="dashboard-content">
+    <div class="decks">
+        <h4>Decks</h4>
         <table>
             <thead>
                 <tr>
-                    <th>
-                        Starting
-                    </th>
-                    <th>
-                        Familiar
-                    </th>
-                    <th>
-                        Good
-                    </th>
-                    <th>
-                        Expert
-                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        @StartingCount
-                    </td>
-                    <td>
-                        @FamiliarCount
-                    </td>
-                    <td>
-                        @GoodCount
-                    </td>
-                    <td>
-                        @ExpertCount
-                    </td>
-                </tr>
+                @foreach (var deck in User.Profile.Decks)
+                {
+                    <tr>
+                        <td class="deck-info">
+                            <span class="deck-name">@deck</span>
+                            <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck)</span>
+                        </td>
+                        <td>
+                            <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
+                        </td>
+                        <td>
+                            <button class="main-button" @onclick='() => DeleteDeck(deck)'>Delete</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
+        <div>
+            <input type="text" autocomplete="off" @bind="DeckName" />
+            <button class="main-button" @onclick='CreateDeck'>Create</button>
+        </div>
     </div>
-    <div class="action-row">
-        <button class="main-button" id="core-study" @onclick='() => ChangePage("/studyvocab")'>
-            Daily Core
-            <span id="core-text">Remaining: @WordsToStudy</span>
-        </button>
+    <div class="dashboard">
+        <h4>Deck Stats</h4>
+        <div class="word-mastery">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Starting
+                        </th>
+                        <th>
+                            Familiar
+                        </th>
+                        <th>
+                            Good
+                        </th>
+                        <th>
+                            Expert
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @StartingCount
+                        </td>
+                        <td>
+                            @FamiliarCount
+                        </td>
+                        <td>
+                            @GoodCount
+                        </td>
+                        <td>
+                            @ExpertCount
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h4>Core Stats</h4>
+        <div class="major-stats">
+            <div class="stat-row">
+                <span class="label">Unlocked:</span>
+                <span class="value">@WordsUnlocked</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Remaining:</span>
+                <span class="value">@RemainingWords</span>
+            </div>
+        </div>
     </div>
-
-    <button class="main-button" @onclick='() => ChangePage("/unlocked")'>View/Edit Core</button>
-    <button class="main-button" @onclick="UnlockNextTier">Unlock Next Tier</button>
 </div>
