@@ -11,8 +11,6 @@
         <div class="sidebar">
             <div class="sidebar-top">
                 <div class="nav-button" @onclick='() => Nav.NavigateTo("/dashboard")'>Dashboard</div>
-                <div class="nav-button" @onclick='() => Nav.NavigateTo("/studyvocab")'>Daily Core</div>
-                <div class="nav-button" @onclick='() => Nav.NavigateTo("/unlocked")'>View/Edit Core</div>
             </div>
 
             <div class="sidebar-bottom">
@@ -24,5 +22,7 @@
     <main class="main-content">
         @Body
     </main>
+
+    <GlobalToast />
 </div>
 

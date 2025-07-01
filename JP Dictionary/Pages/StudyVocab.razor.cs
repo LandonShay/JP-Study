@@ -47,8 +47,8 @@ namespace JP_Dictionary.Pages
         {
             var studyCards = new List<VocabCard>();
 
-            var availableWords = HelperMethods.LoadWordsToStudy(User.Profile!);
-            StudyWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
+            StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
 
             foreach (var word in availableWords)
             {
@@ -201,7 +201,7 @@ namespace JP_Dictionary.Pages
                 word.LastStudied = DateTime.MinValue;
             }
 
-            HelperMethods.UpdateWords(StudyWords, User.Profile!.Name);
+            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck);
         }
 
         private void ReaddFailedCard()

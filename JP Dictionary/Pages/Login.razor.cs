@@ -14,7 +14,7 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public UserState UserState { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
-#nullable disable
+#nullable enable
         #endregion
 
         protected override void OnInitialized()
@@ -43,17 +43,14 @@ namespace JP_Dictionary.Pages
             var lastLoginDate = profile.LastLogin.Date;
 
             if (lastLoginDate == today)
-            {
-                // Already logged in today
+            { // Already logged in today 
             }
             else if (lastLoginDate == today.AddDays(-1))
-            {
-                // Logged in yesterday
+            { // Logged in yesterday
                 profile.LoginStreak++;
             }
             else
-            {
-                // Missed a day or first login
+            { // Missed a day or first login
                 profile.LoginStreak = 1;
             }
 
@@ -83,20 +80,14 @@ namespace JP_Dictionary.Pages
         private void CreateProfile()
         {
             var profiles = new List<Profile>();
-
             var directory = HelperMethods.GetFilePath("");
-            var profilesPath = HelperMethods.GetFilePath("Profiles.txt");
-            var wordsPath = HelperMethods.GetFilePath($"{CreateName}Words.csv");
 
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
 
-            if (!File.Exists(profilesPath))
-            {
-                using (File.Create(profilesPath)) { }
-            }
+            var profilesPath = HelperMethods.CreateFile("Profiles.txt");
 
             if (File.Exists(profilesPath))
             {
@@ -113,7 +104,7 @@ namespace JP_Dictionary.Pages
                 }
             }
 
-            var profile = new Profile() { Name = CreateName };
+            var profile = new Profile() { Name = CreateName, Decks = new List<string>() { "Core" } };
             profiles.Add(profile);
 
             var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
@@ -122,16 +113,13 @@ namespace JP_Dictionary.Pages
                 writer.Write(json);
             }
 
-            // create personal words list
-            if (!File.Exists(wordsPath))
-            {
-                using (File.Create(wordsPath)) { }
-            }
+            // create core deck
+            var wordsPath = HelperMethods.CreateFile($"{CreateName}Deck-Core.csv");
 
             if (File.Exists(wordsPath))
             {
-                var coreWords = HelperMethods.LoadDefaultCoreWords();
-                HelperMethods.UpdateWords(coreWords, CreateName);
+                var coreWords = DeckMethods.LoadDefaultCoreWords();
+                DeckMethods.UpdateDeck(coreWords, CreateName, "Core");
             }
 
             CreateName = string.Empty;

@@ -4,7 +4,7 @@ namespace JP_Dictionary.Models
 {
     public class StudyWord
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public int Week { get; set; }
         public int Day { get; set; }
         public string Japanese { get; set; } = string.Empty;

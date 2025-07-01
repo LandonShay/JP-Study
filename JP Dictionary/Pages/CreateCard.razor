@@ -1,0 +1,41 @@
+﻿@page "/createcard"
+
+<form @onsubmit="Create">
+    <div class="create-page">
+        <div class="card-form">
+            <div class="form-group">
+                <label>Japanese</label>
+                <input type="text" autocomplete="off" @bind="Japanese" class="input-dark" />
+            </div>
+
+            <div class="form-group">
+                <label>Romaji</label>
+                <input type="text" autocomplete="off" @bind="Romaji" class="input-dark" />
+            </div>
+
+            <div class="form-group">
+                <label>Definitions</label>
+                <input type="text" autocomplete="off" @bind="Definitions" class="input-dark" />
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="main-button" @onclick="Create">Create</button>
+                <button class="main-button" @onclick='() => Nav.NavigateTo("/viewdeck")'>Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (ShowConfirmation)
+{
+    <div class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>Duplicate Detected</h3>
+            <p>This word already exists in <strong>@ConflictDeckName</strong>.</p>
+            <p>Add it to <strong>@User.SelectedDeck</strong> anyway?</p>
+
+            <button class="main-button" @onclick="AddWordToDeck">Yes, Add It</button>
+            <button class="main-button" @onclick="() => ShowConfirmation = false">Cancel</button>
+        </div>
+    </div>
+}

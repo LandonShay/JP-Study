@@ -4,22 +4,29 @@ using Microsoft.AspNetCore.Components;
 
 namespace JP_Dictionary.Pages
 {
-    public partial class UnlockedWords
+    public partial class ViewDeck
     {
         public List<StudyWord> AllWords = new();
-        public List<StudyWord> TodaysWords = new();
 
-        private string SearchTerm = "";
+        // sort/search
         private string? SortColumn = null;
         private bool SortDescending = false;
-        private List<StudyWord> FilteredWords => GetFilteredAndSortedWords();
+        private string SearchTerm = string.Empty;
 
+        // pagination
+        private int CurrentPage = 1;
+        private int PageSize = 25;
+        private int TotalPages => (int)Math.Ceiling(GetFilteredAndSortedWords().Count / (double)PageSize);
+        private IEnumerable<StudyWord> PagedWords => GetFilteredAndSortedWords().Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+
+        // inline editing
         private StudyWord? EditingEntry;
         private string EditingValue = string.Empty;
 
         #region Injections
 #nullable disable
         [Inject] public UserState User { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
 
@@ -30,19 +37,28 @@ namespace JP_Dictionary.Pages
 
         private void LoadPage()
         {
-            AllWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
-            TodaysWords = HelperMethods.LoadUnlockedWords(User.Profile!);
+            AllWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
         }
 
         private void ResetStreak(StudyWord word)
         {
-            var allWords = HelperMethods.LoadPersonalCoreWords(User.Profile!);
+            var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
             var studyWord = allWords.First(x => x.Id == word.Id);
 
             studyWord.CorrectStreak = 0;
             studyWord.LastStudied = DateTime.MinValue;
 
-            HelperMethods.UpdateWords(allWords, User.Profile!.Name);
+            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck);
+            LoadPage();
+        }
+
+        private void DeleteCard(StudyWord word)
+        {
+            var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+
+            deck.RemoveAll(x => x.Id == word.Id);
+            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, User.SelectedDeck);
+
             LoadPage();
         }
 
@@ -60,7 +76,7 @@ namespace JP_Dictionary.Pages
                 var word = AllWords.First(x => x.Id == EditingEntry.Id);
                 word.Definitions = EditingValue;
 
-                HelperMethods.UpdateWords(AllWords, User.Profile!.Name);
+                DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck);
 
                 EditingEntry = null;
                 EditingValue = string.Empty;
@@ -73,7 +89,7 @@ namespace JP_Dictionary.Pages
         #region Search/Sort
         private List<StudyWord> GetFilteredAndSortedWords()
         {
-            var query = TodaysWords.AsEnumerable();
+            var query = AllWords.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
@@ -132,6 +148,23 @@ namespace JP_Dictionary.Pages
 
             var arrow = SortDescending ? "▼" : "▲";
             return (MarkupString)$"<span class='sort-icon'>{arrow}</span>";
+        }
+        #endregion
+
+        #region Pagination
+        private void ChangePage(int page)
+        {
+            if (page < 1 || page > TotalPages) return;
+            CurrentPage = page;
+        }
+
+        private void SetPageSize(ChangeEventArgs e)
+        {
+            if (int.TryParse(e.Value?.ToString(), out int size))
+            {
+                PageSize = size;
+                CurrentPage = 1;
+            }
         }
         #endregion
     }
