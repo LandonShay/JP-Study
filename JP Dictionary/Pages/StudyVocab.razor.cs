@@ -201,7 +201,7 @@ namespace JP_Dictionary.Pages
                 word.LastStudied = DateTime.MinValue;
             }
 
-            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, "Core");
+            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck);
         }
 
         private void ReaddFailedCard()

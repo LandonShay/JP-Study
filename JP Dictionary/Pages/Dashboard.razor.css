@@ -6,45 +6,104 @@
     padding: 0;
 }
 
-.welcome{
+/* Dashboard Layout */
+.welcome {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-left: 2rem;
 }
 
-.dashboard-content{
+.dashboard-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     margin: 25px 0 0 0;
+    gap: 2rem;
 }
 
-.decks{
+/* Deck Table */
+.decks {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
+    max-width: 600px;
 }
 
-.deck-info{
+.deck-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+}
+
+    .deck-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #444;
+        color: #ddd;
+        vertical-align: middle;
+    }
+
+    .deck-table tr:hover {
+        background-color: #2a2a2a;
+    }
+
+.deck-info {
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
+.deck-text {
+    font-style: italic;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.deck-create {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Dashboard Stats */
 .dashboard {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     margin-top: 17px;
-    margin-left: 30px;
 }
 
-.stat-row, .action-row {
+.word-mastery table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+}
+
+.word-mastery th,
+.word-mastery td {
+    padding: 0.5rem 1rem;
+    border-right: 1px solid #444;
+    text-align: center;
+}
+
+    .word-mastery th:last-child,
+    .word-mastery td:last-child {
+        border-right: none;
+    }
+
+.word-mastery tbody tr:hover {
+    background-color: #2a2a2a;
+}
+
+.major-stats {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+}
+
+.stat-row {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .label {
@@ -56,51 +115,59 @@
     color: #ffffff;
 }
 
-.major-stats{
-    display: flex;
-    gap: 15px;
-}
+/* Delete Modal */
 
-.word-mastery{
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
 }
 
-.mastery-tier{
+.custom-modal {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    color: #f0f0f0;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1001;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-table {
-    margin: 0
-}
-
-th, td {
-    border-right: 1px gray solid;
-}
-
-    th:last-child, td:last-child {
-        border-right: none;
+    .custom-modal h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        color: #fff;
     }
 
-tbody tr:hover {
-    background-color: #2a2a2a;
-}
+    .custom-modal p {
+        margin: 0 0 1.5rem 0;
+        font-size: 1rem;
+        color: #ccc;
+    }
 
-#core-study{
+.modal-buttons {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px
+    justify-content: flex-end;
+    gap: 1rem;
 }
 
-.deck-name{
-
+.main-button.danger {
+    background-color: #b33636;
 }
 
-.deck-text{
-    font-style: italic;
-    font-size: 14px;
-}
+    .main-button.danger:hover {
+        background-color: #d44;
+    }
+

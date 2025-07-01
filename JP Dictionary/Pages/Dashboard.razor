@@ -8,33 +8,28 @@
 <div class="dashboard-content">
     <div class="decks">
         <h4>Decks</h4>
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var deck in User.Profile.Decks)
-                {
-                    <tr>
-                        <td class="deck-info" @onclick="() => ToStudy(deck)">
-                            <span class="deck-name">@deck</span>
-                            <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck)</span>
-                        </td>
-                        <td>
-                            <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
-                        </td>
-                        <td>
-                            <button class="main-button" @onclick='() => DeleteDeck(deck)'>Delete</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div>
+        <div class="table-container">
+            <table class="deck-table">
+                <tbody>
+                    @foreach (var deck in User.Profile.Decks)
+                    {
+                        <tr>
+                            <td class="deck-info" @onclick="() => ToStudy(deck)">
+                                <span class="deck-name">@deck</span>
+                                <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck)</span>
+                            </td>
+                            <td>
+                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
+                            </td>
+                            <td>
+                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="deck-create">
             <input type="text" autocomplete="off" @bind="DeckName" />
             <button class="main-button" @onclick='CreateDeck'>Create</button>
         </div>
@@ -90,3 +85,17 @@
         </div>
     </div>
 </div>
+
+@if (DeckToDelete != null)
+{
+    <div class="modal-backdrop">
+        <div class="custom-modal">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete <strong>@DeckToDelete</strong>? This cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="main-button danger" @onclick="ConfirmDeleteDeck">Delete</button>
+                <button class="main-button" @onclick="CancelDeleteDeck">Cancel</button>
+            </div>
+        </div>
+    </div>
+}

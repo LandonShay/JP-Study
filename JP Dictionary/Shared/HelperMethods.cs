@@ -102,6 +102,16 @@ namespace JP_Dictionary.Shared
             using var csv = new CsvWriter(writer, config);
             csv.WriteRecords(words);
         }
+
+        public static void DeleteFile(string fileName)
+        {
+            var filePath = GetFilePath(fileName);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
         #endregion
     }
 }

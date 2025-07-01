@@ -14,6 +14,7 @@ namespace JP_Dictionary.Pages
         #endregion
 
         private string DeckName { get; set; } = string.Empty;
+        private string? DeckToDelete { get; set; }
 
         private int WordsUnlocked { get; set; }
         private int RemainingWords { get; set; }
@@ -92,27 +93,47 @@ namespace JP_Dictionary.Pages
 
         private void DeleteDeck(string deckName)
         {
+            var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
+            deck.Clear();
 
+            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, deckName);
+
+            User.Profile.Decks.Remove(deckName);
+            HelperMethods.SaveProfile(User.Profile!);
+
+            HelperMethods.DeleteFile($"{User.Profile!.Name}Deck-{deckName}.csv");
+
+            LoadDashboard();
         }
         #endregion
 
-        //private void UnlockNextTier()
-        //{
-        //    User.Profile!.CurrentDay++;
+        #region Confirm Delete
+        private void PromptDeleteDeck(string deckName)
+        {
+            DeckToDelete = deckName;
+        }
 
-        //    if (User.Profile.CurrentDay > 7)
-        //    {
-        //        User.Profile.CurrentDay = 1;
-        //        User.Profile.CurrentWeek++;
+        private void ConfirmDeleteDeck()
+        {
+            if (DeckToDelete != null)
+            {
+                var deck = DeckMethods.LoadDeck(User.Profile!, DeckToDelete);
+                deck.Clear();
 
-        //        if (User.Profile.CurrentWeek == byte.MaxValue - 1)
-        //        {
-        //            User.Profile.CurrentWeek--;
-        //        }
-        //    }
+                DeckMethods.OverwriteDeck(deck, User.Profile!.Name, DeckToDelete);
+                User.Profile.Decks.Remove(DeckToDelete);
+                HelperMethods.SaveProfile(User.Profile!);
+                HelperMethods.DeleteFile($"{User.Profile!.Name}Deck-{DeckToDelete}.csv");
 
-        //    HelperMethods.SaveProfile(User.Profile);
-        //    LoadDashboard();
-        //}
+                DeckToDelete = null;
+                LoadDashboard();
+            }
+        }
+
+        private void CancelDeleteDeck()
+        {
+            DeckToDelete = null;
+        }
+        #endregion
     }
 }
