@@ -86,7 +86,7 @@ namespace JP_Dictionary.Pages
 
             if (ShowResults && User.Profile!.AutoSpeak)
             {
-                await TextToSpeech(CurrentCard.Word);
+                await TextToSpeech(CurrentCard.StudyWord.Audio);
             }
         }
 
@@ -227,12 +227,12 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("focusElementById", elementId);
         }
 
-        private async Task TextToSpeech(string text)
+        private async Task TextToSpeech(string audio)
         {
             if (!Talking)
             {
                 Talking = true;
-                await JS.InvokeVoidAsync("speakText", text);
+                await JS.InvokeVoidAsync("speakText", audio);
                 Talking = false;
             }
         }

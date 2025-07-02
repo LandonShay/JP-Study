@@ -4,6 +4,7 @@
 <div class="table-controls">
     <div class="left-controls">
         <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
+        <button class="main-button" @onclick="GenerateAudio">Generate Audio</button>
     </div>
     <div class="right-controls">
         <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
@@ -47,7 +48,13 @@
             @foreach (var entry in PagedWords)
             {
                 <tr>
-                    <td>@entry.Japanese</td>
+                    <td>
+                        @entry.Japanese
+                        @if (entry.HasAudio())
+                        {
+                            <span @onclick="() => TextToSpeech(entry.Audio)">🔊</span>
+                        }
+                    </td>
                     <td>@entry.Pronounciation</td>
                     <td>
                         @if (EditingEntry == entry)
@@ -81,3 +88,11 @@
     <button class="main-button" @onclick="@(() => ChangePage(CurrentPage + 1))" disabled="@(CurrentPage == TotalPages)">Next</button>
 </div>
 <span>*You can edit definitions by clicking them</span>
+
+@if (IsGeneratingAudio)
+{
+    <div class="progress-container">
+        <div class="progress-bar" style="width:@ProgressPercentage%"></div>
+        <span class="progress-text">@AudioProgress / @AudioTotal</span>
+    </div>
+}

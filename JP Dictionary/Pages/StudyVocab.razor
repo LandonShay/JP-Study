@@ -33,7 +33,7 @@
             {
                 <h2>Correct!</h2>
 
-                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.Word)">
+                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
                     <span>🔊</span>
                 </div>
@@ -46,10 +46,10 @@
             {
                 <h2>Incorrect</h2>
 
-                            <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.Word)">
-                                <h3>@CurrentCard.Word</h3>
-                                <span>🔊</span>
-                            </div>
+                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                    <h3>@CurrentCard.Word</h3>
+                    <span>🔊</span>
+                </div>
                 <span>@CurrentCard.OriginalFormatReading</span>
                 <span>@CurrentCard.OriginalFormatDefinition</span>
 

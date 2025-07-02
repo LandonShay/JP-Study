@@ -90,21 +90,6 @@ namespace JP_Dictionary.Pages
                 LoadDashboard();
             }
         }
-
-        private void DeleteDeck(string deckName)
-        {
-            var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
-            deck.Clear();
-
-            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, deckName);
-
-            User.Profile.Decks.Remove(deckName);
-            HelperMethods.SaveProfile(User.Profile!);
-
-            HelperMethods.DeleteFile($"{User.Profile!.Name}Deck-{deckName}.csv");
-
-            LoadDashboard();
-        }
         #endregion
 
         #region Confirm Delete

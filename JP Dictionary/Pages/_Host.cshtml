@@ -31,7 +31,7 @@
 
     <script src="_framework/blazor.server.js"></script>
 
-    @*the below is for controling focus via C# JSRuntime*@
+    @*the below is for controlling focus*@
     <script>
         window.focusElementById = function (id) {
             const el = document.getElementById(id);
@@ -42,12 +42,9 @@
     </script>
     @*the below is for text to speech*@
     <script>
-        window.speakText = function (text) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP';
-                speechSynthesis.speak(utterance);
-            }
+        window.speakText = function (base64Audio) {
+            const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
+            audio.play();
         };
     </script>
 </body>
