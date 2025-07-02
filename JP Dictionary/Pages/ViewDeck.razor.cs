@@ -1,6 +1,9 @@
-﻿using JP_Dictionary.Models;
-using JP_Dictionary.Shared;
+﻿using JP_Dictionary.Shared;
+using JP_Dictionary.Models;
+using JP_Dictionary.Services;
+using Google.Cloud.TextToSpeech.V1;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
 {
@@ -23,9 +26,18 @@ namespace JP_Dictionary.Pages
         private StudyWord? EditingEntry;
         private string EditingValue = string.Empty;
 
+        // audio generation
+        private int ProgressPercentage => AudioTotal == 0 ? 0 : (AudioProgress * 100 / AudioTotal);
+        private bool IsGeneratingAudio = false;
+        private int AudioProgress = 0;
+        private int AudioTotal = 0;
+        private bool Talking;
+
         #region Injections
 #nullable disable
+        [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
+        [Inject] public ToastService Toast { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
@@ -164,6 +176,72 @@ namespace JP_Dictionary.Pages
             {
                 PageSize = size;
                 CurrentPage = 1;
+            }
+        }
+        #endregion
+
+        #region Audio
+        private async void GenerateAudio()
+        {
+            IsGeneratingAudio = true;
+
+            try
+            {
+                var wordsWithoutAudio = AllWords.FindAll(x => x.Audio == string.Empty);
+
+                if (wordsWithoutAudio.Count > 0)
+                {
+                    Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", @"C:\Users\Landon\AppData\jp-study-tts-86eb099cbed5.json");
+
+                    var client = await TextToSpeechClient.CreateAsync();
+                    AudioTotal = wordsWithoutAudio.Count;
+
+                    for (int i = 0; i < wordsWithoutAudio.Count; i++)
+                    {
+                        AudioProgress = i + 1;
+                        var wordWithoutAudio = wordsWithoutAudio[i];
+                        var word = AllWords.First(x => x.Id == wordWithoutAudio.Id);
+
+                        var response = await client.SynthesizeSpeechAsync(new SynthesizeSpeechRequest
+                        {
+                            Input = new SynthesisInput { Text = wordWithoutAudio.Japanese },
+                            Voice = new VoiceSelectionParams { LanguageCode = "ja-JP", SsmlGender = SsmlVoiceGender.Female },
+                            AudioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Mp3 }
+                        });
+
+                        word.Audio = Convert.ToBase64String(response.AudioContent.ToByteArray());
+                        DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck);
+
+                        StateHasChanged();
+                    }
+
+                    Toast.ShowSuccess("Audio successfully generated!");
+                }
+                else
+                {
+                    Toast.ShowInfo("All cards in this deck already have audio");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Toast.ShowError("An error occured while generating audio");
+            }
+
+            IsGeneratingAudio = false;
+            AudioProgress = 0;
+            AudioTotal = 0;
+
+            StateHasChanged();
+        }
+
+        private async Task TextToSpeech(string audio)
+        {
+            if (!Talking)
+            {
+                Talking = true;
+                await JS.InvokeVoidAsync("speakText", audio);
+                Talking = false;
             }
         }
         #endregion

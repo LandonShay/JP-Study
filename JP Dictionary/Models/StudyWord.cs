@@ -20,6 +20,7 @@ namespace JP_Dictionary.Models
                 return GetMasteryTier(streak);
             }
         }
+        public string Audio { get; set; } = string.Empty;
 
         private static MasteryTier GetMasteryTier(int streak)
         {
@@ -37,6 +38,11 @@ namespace JP_Dictionary.Models
             }
 
             return MasteryTier.Expert; // days 30+
+        }
+
+        public bool HasAudio()
+        {
+            return Audio != string.Empty;
         }
     }
 

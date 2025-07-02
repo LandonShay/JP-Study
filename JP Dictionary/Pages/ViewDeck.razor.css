@@ -9,6 +9,7 @@
 .left-controls {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .right-controls {
@@ -117,4 +118,32 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
     background-color: #333;
+}
+
+.progress-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 24px;
+    margin: 1rem auto;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: #f0f0f0;
+    line-height: 24px;
 }
