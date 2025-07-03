@@ -227,12 +227,18 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("focusElementById", elementId);
         }
 
-        private async Task TextToSpeech(string audio)
+        private async Task TextToSpeech(string audioPath)
         {
             if (!Talking)
             {
                 Talking = true;
-                await JS.InvokeVoidAsync("speakText", audio);
+
+                var filePath = HelperMethods.GetFilePath(audioPath);
+                var bytes = await File.ReadAllBytesAsync(filePath);
+                var base64 = Convert.ToBase64String(bytes);
+
+                await JS.InvokeVoidAsync("speakText", base64);
+
                 Talking = false;
             }
         }

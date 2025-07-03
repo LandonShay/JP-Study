@@ -183,6 +183,13 @@ namespace JP_Dictionary.Pages
         #region Audio
         private async void GenerateAudio()
         {
+            var directoryPath = HelperMethods.GetFilePath("") + $@"\{User.Profile!.Name}Audio";
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             IsGeneratingAudio = true;
 
             try
@@ -199,6 +206,7 @@ namespace JP_Dictionary.Pages
                     for (int i = 0; i < wordsWithoutAudio.Count; i++)
                     {
                         AudioProgress = i + 1;
+
                         var wordWithoutAudio = wordsWithoutAudio[i];
                         var word = AllWords.First(x => x.Id == wordWithoutAudio.Id);
 
@@ -209,7 +217,17 @@ namespace JP_Dictionary.Pages
                             AudioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Mp3 }
                         });
 
-                        word.Audio = Convert.ToBase64String(response.AudioContent.ToByteArray());
+                        var audioAsBytes = response.AudioContent.ToByteArray();
+
+                        var fileName = $"{word.Japanese}.mp3";
+                        var filePath = Path.Combine(directoryPath, fileName);
+
+                        if (!File.Exists(filePath))
+                        {
+                            File.WriteAllBytes(filePath, audioAsBytes);
+                        }
+
+                        word.Audio = $@"{User.Profile!.Name}Audio\{fileName}";
                         DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck);
 
                         StateHasChanged();
@@ -235,12 +253,18 @@ namespace JP_Dictionary.Pages
             StateHasChanged();
         }
 
-        private async Task TextToSpeech(string audio)
+        private async Task TextToSpeech(string audioPath)
         {
             if (!Talking)
             {
                 Talking = true;
-                await JS.InvokeVoidAsync("speakText", audio);
+
+                var filePath = HelperMethods.GetFilePath(audioPath);
+                var bytes = await File.ReadAllBytesAsync(filePath);
+                var base64 = Convert.ToBase64String(bytes);
+
+                await JS.InvokeVoidAsync("speakText", base64);
+
                 Talking = false;
             }
         }
