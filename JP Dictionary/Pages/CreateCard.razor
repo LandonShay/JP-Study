@@ -32,7 +32,7 @@
         <div class="custom-modal">
             <h3>Duplicate Detected</h3>
             <p>This word already exists in <strong>@ConflictDeckName</strong>.</p>
-            <p>Add it to <strong>@User.SelectedDeck</strong> anyway?</p>
+            <p>Add it to <strong>@User.SelectedDeck!.Name</strong> anyway?</p>
 
             <button class="main-button" @onclick="AddWordToDeck">Yes, Add It</button>
             <button class="main-button" @onclick="() => ShowConfirmation = false">Cancel</button>

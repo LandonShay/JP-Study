@@ -81,6 +81,7 @@ namespace JP_Dictionary.Shared
             {
                 HasHeaderRecord = true,
                 Delimiter = ",",
+                HeaderValidated = null,
                 MissingFieldFound = null
             };
 

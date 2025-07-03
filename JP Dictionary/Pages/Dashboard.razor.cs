@@ -14,7 +14,8 @@ namespace JP_Dictionary.Pages
         #endregion
 
         private string DeckName { get; set; } = string.Empty;
-        private string? DeckToDelete { get; set; }
+        private DeckType DeckType { get; set; } = DeckType.Vocab;
+        private Deck? DeckToDelete { get; set; }
 
         private int WordsUnlocked { get; set; }
         private int RemainingWords { get; set; }
@@ -42,12 +43,12 @@ namespace JP_Dictionary.Pages
                                                 (x.Week < User.Profile!.CurrentWeek));
             RemainingWords = coreDeck.Count - WordsUnlocked;
 
-            foreach (var deckName in User.Profile!.Decks)
+            foreach (var deck in User.Profile!.Decks)
             {
-                var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
+                var words = DeckMethods.LoadDeck(User.Profile!, deck.Name);
 
-                var unlockedWords = deck.FindAll(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
-                                                      (x.Week < User.Profile!.CurrentWeek));
+                var unlockedWords = words.FindAll(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
+                                                       (x.Week < User.Profile!.CurrentWeek));
 
                 StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
                 FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
@@ -64,14 +65,14 @@ namespace JP_Dictionary.Pages
             return DeckMethods.LoadWordsToStudy(User.Profile!, deck).Count;
         }
 
-        private void ToStudy(string deckName)
+        private void ToStudy(Deck deck)
         {
-            User.SelectedDeck = deckName;
+            User.SelectedDeck = deck;
             Nav.NavigateTo("/studyvocab");
         }
 
         #region Decks
-        private void ToViewDeck(string deck)
+        private void ToViewDeck(Deck deck)
         {
             User.SelectedDeck = deck;
             Nav.NavigateTo("/viewdeck");
@@ -79,12 +80,19 @@ namespace JP_Dictionary.Pages
 
         private void CreateDeck()
         {
-            if (!User.Profile!.Decks.Contains(DeckName))
+            if (!User.Profile!.Decks.Select(x => x.Name).Contains(DeckName))
             {
+                var deck = new Deck
+                {
+                    Name = DeckName,
+                    Type = DeckType
+                };
+
                 HelperMethods.CreateFile($"{User.Profile!.Name}Deck-{DeckName}.csv");
-                User.Profile.Decks.Add(DeckName);
+                User.Profile.Decks.Add(deck);
 
                 DeckName = string.Empty;
+                DeckType = DeckType.Vocab;
 
                 HelperMethods.SaveProfile(User.Profile);
                 LoadDashboard();
@@ -93,21 +101,23 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Confirm Delete
-        private void PromptDeleteDeck(string deckName)
+        private void PromptDeleteDeck(Deck deck)
         {
-            DeckToDelete = deckName;
+            DeckToDelete = deck;
         }
 
         private void ConfirmDeleteDeck()
         {
             if (DeckToDelete != null)
             {
-                var deck = DeckMethods.LoadDeck(User.Profile!, DeckToDelete);
+                var deck = DeckMethods.LoadDeck(User.Profile!, DeckToDelete.Name);
                 deck.Clear();
 
-                DeckMethods.OverwriteDeck(deck, User.Profile!.Name, DeckToDelete);
+                DeckMethods.OverwriteDeck(deck, User.Profile!.Name, DeckToDelete.Name);
+
                 User.Profile.Decks.Remove(DeckToDelete);
                 HelperMethods.SaveProfile(User.Profile!);
+
                 HelperMethods.DeleteFile($"{User.Profile!.Name}Deck-{DeckToDelete}.csv");
 
                 DeckToDelete = null;

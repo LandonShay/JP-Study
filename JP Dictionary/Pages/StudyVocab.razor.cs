@@ -47,7 +47,7 @@ namespace JP_Dictionary.Pages
         {
             var studyCards = new List<VocabCard>();
 
-            StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
             var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
 
             foreach (var word in availableWords)
@@ -72,7 +72,15 @@ namespace JP_Dictionary.Pages
 
             SetCurrentCard();
 
-            ElementToFocus = "reading";
+            if (User.SelectedDeck!.Type != DeckType.Grammar)
+            {
+                ElementToFocus = "reading";
+            }
+            else
+            {
+                ElementToFocus = "definition";
+            }
+
             await FocusElement(ElementToFocus);
         }
 
@@ -84,7 +92,8 @@ namespace JP_Dictionary.Pages
                 ElementToFocus = string.Empty;
             }
 
-            if (ShowResults && User.Profile!.AutoSpeak)
+            if ((ShowResults && User.Profile!.AutoSpeak) || 
+               (!ShowResults && User.SelectedDeck!.Type == DeckType.Grammar && AttemptsRemaining == 3 && !Finished))
             {
                 await TextToSpeech(CurrentCard.StudyWord.Audio);
             }
@@ -102,6 +111,10 @@ namespace JP_Dictionary.Pages
             {
                 var cleanedAnswer = ReadingAnswer.Trim().ToLower();
                 readingCorrect = CurrentCard.ReadingAnswers.Contains(cleanedAnswer);
+            }
+            else if (User.SelectedDeck!.Type == DeckType.Grammar)
+            {
+                readingCorrect = true;
             }
 
             if (!string.IsNullOrWhiteSpace(DefinitionAnswer))
@@ -170,7 +183,15 @@ namespace JP_Dictionary.Pages
             AttemptsRemaining = 3;
 
             ShowResults = false;
-            ElementToFocus = "reading";
+
+            if (User.SelectedDeck!.Type != DeckType.Grammar)
+            {
+                ElementToFocus = "reading";
+            }
+            else
+            {
+                ElementToFocus = "definition";
+            }
         }
 
         private void SetCurrentCard()
@@ -201,7 +222,7 @@ namespace JP_Dictionary.Pages
                 word.LastStudied = DateTime.MinValue;
             }
 
-            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck);
+            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
         }
 
         private void ReaddFailedCard()

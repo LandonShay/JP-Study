@@ -6,12 +6,25 @@
     @if (!ShowResults)
     {
         <form @onsubmit="SubmitAnswer">
-            <h2>@CurrentCard.Word</h2>
-
-            <div class="answer-area">
-                <label class="label">Reading</label>
-                <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
-            </div>
+            @if (User.SelectedDeck!.Type == DeckType.Grammar)
+            {
+                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                    <h3>@CurrentCard.Word</h3>
+                    <span>🔊</span>
+                </div>
+            }
+            else
+            {
+                <h2>@CurrentCard.Word</h2>
+            }
+            
+            @if (User.SelectedDeck.Type != DeckType.Grammar)
+            {
+                <div class="answer-area">
+                    <label class="label">Reading</label>
+                    <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
+                </div>
+            }
 
             <div class="answer-area">
                 <label class="label">Definition</label>

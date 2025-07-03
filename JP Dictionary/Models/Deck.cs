@@ -1,0 +1,15 @@
+﻿namespace JP_Dictionary.Models
+{
+    public class Deck
+    {
+        public string Name { get; set; } = string.Empty;
+        public DeckType Type { get; set; }
+    }
+
+    public enum DeckType
+    {
+        Vocab,
+        Grammar,
+        Kanji
+    }
+}

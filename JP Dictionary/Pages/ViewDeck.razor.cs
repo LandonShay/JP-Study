@@ -49,27 +49,49 @@ namespace JP_Dictionary.Pages
 
         private void LoadPage()
         {
-            AllWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            AllWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
+        }
+
+        private string GetNextReview(StudyWord word)
+        {
+            if (User.SelectedDeck!.Name == "Core")
+            {
+                if (word.LastStudied == DateTime.MinValue && 
+                   (word.Week > User.Profile!.CurrentWeek ||
+                   (word.Week == User.Profile!.CurrentWeek && word.Day > User.Profile!.CurrentDay)))
+                {
+                    return "🔒";
+                }
+            }
+            else
+            {
+                if (word.LastStudied == DateTime.MinValue && word.Day > 7)
+                {
+                    return "🔒";
+                }
+            }
+
+            return HelperMethods.GetNextStudyDate(word).ToShortDateString();
         }
 
         private void ResetStreak(StudyWord word)
         {
-            var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
             var studyWord = allWords.First(x => x.Id == word.Id);
 
             studyWord.CorrectStreak = 0;
             studyWord.LastStudied = DateTime.MinValue;
 
-            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck);
+            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck!.Name);
             LoadPage();
         }
 
         private void DeleteCard(StudyWord word)
         {
-            var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
 
             deck.RemoveAll(x => x.Id == word.Id);
-            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, User.SelectedDeck);
+            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
 
             LoadPage();
         }
@@ -88,7 +110,7 @@ namespace JP_Dictionary.Pages
                 var word = AllWords.First(x => x.Id == EditingEntry.Id);
                 word.Definitions = EditingValue;
 
-                DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck);
+                DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck!.Name);
 
                 EditingEntry = null;
                 EditingValue = string.Empty;
@@ -228,7 +250,7 @@ namespace JP_Dictionary.Pages
                         }
 
                         word.Audio = $@"{User.Profile!.Name}Audio\{fileName}";
-                        DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck);
+                        DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck!.Name);
 
                         StateHasChanged();
                     }

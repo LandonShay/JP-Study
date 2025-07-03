@@ -35,20 +35,20 @@ namespace JP_Dictionary.Pages
                     Pronounciation = Romaji,
                     Definitions = Definitions,
                     Id = Guid.NewGuid().ToString(),
-                    Day = 1,
-                    Week = 1,
+                    Day = 10,
+                    Week = 255, // setting these high so they are locked for studying
                     LastStudied = DateTime.MinValue,
                     CorrectStreak = 0
                 };
 
-                foreach (var deckName in User.Profile!.Decks)
+                foreach (var deck in User.Profile!.Decks)
                 {
-                    var checkDeck = DeckMethods.LoadDeck(User.Profile, deckName);
+                    var checkDeck = DeckMethods.LoadDeck(User.Profile, deck.Name);
 
                     if (checkDeck.Any(x => x.Japanese == Japanese))
                     {
                         ShowConfirmation = true;
-                        ConflictDeckName = deckName;
+                        ConflictDeckName = deck.Name;
 
                         return;
                     }
@@ -60,11 +60,11 @@ namespace JP_Dictionary.Pages
 
         private void AddWordToDeck()
         {
-            var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck);
+            var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
             deck.Add(PendingWord);
 
-            DeckMethods.UpdateDeck(deck, User.Profile!.Name, User.SelectedDeck);
-            ToastService.ShowSuccess($"{PendingWord.Japanese} added to {User.SelectedDeck} deck");
+            DeckMethods.UpdateDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
+            ToastService.ShowSuccess($"{PendingWord.Japanese} added to {User.SelectedDeck.Name} deck");
 
             Japanese = string.Empty;
             Romaji = string.Empty;
