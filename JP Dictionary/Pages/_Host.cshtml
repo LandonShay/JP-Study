@@ -42,9 +42,14 @@
     </script>
     @*the below is for text to speech*@
     <script>
-        window.speakText = function (base64Audio) {
+        window.speakText = async function (base64Audio) {
             const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
-            audio.play();
+            await audio.play();
+
+            audio.onended = function () {
+                DotNet.invokeMethodAsync('JP Dictionary', 'SetTalkingFalse')
+                    .catch(err => console.error("SetTalkingFalse failed", err));
+            };
         };
     </script>
 </body>
