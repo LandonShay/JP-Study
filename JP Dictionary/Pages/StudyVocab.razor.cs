@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -13,6 +14,7 @@ namespace JP_Dictionary.Pages
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public ToastService Toast { get; set; }
 #nullable enable
         #endregion
 
@@ -31,7 +33,10 @@ namespace JP_Dictionary.Pages
         public string ElementToFocus { get; set; } = string.Empty; // controlled element focus
         public byte AttemptsRemaining { get; set; } = 3;
 
-        private bool TestReading { get; set; } = true;
+        // study options
+        private bool ShowTestOptionModal { get; set; } = true;
+        private bool TestReading { get; set; }
+
         public bool ShowResults { get; set; }
         public bool Finished { get; set; }
         public bool Talking { get; set; }
@@ -45,67 +50,78 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        protected override async void OnInitialized()
+        protected override void OnInitialized()
         {
-            var studyCards = new List<VocabCard>();
-
-            StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
-            var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
-
-            foreach (var word in availableWords)
+            try
             {
-                var studyCard = new VocabCard
+                var studyCards = new List<VocabCard>();
+
+                StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
+                var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
+
+                foreach (var word in availableWords)
                 {
-                    StudyWord = word,
-                    Word = word.Japanese,
-                    OriginalFormatDefinition = word.Definitions,
-                    OriginalFormatReading = word.Pronounciation,
-                    DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
-                    ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
-                };
+                    var studyCard = new VocabCard
+                    {
+                        StudyWord = word,
+                        Word = word.Japanese,
+                        OriginalFormatDefinition = word.Definitions,
+                        OriginalFormatReading = word.Pronounciation,
+                        DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
+                        ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
+                    };
 
-                studyCards.Add(studyCard);
+                    studyCards.Add(studyCard);
+                }
+
+                foreach (var studyCard in studyCards.Shuffle())
+                {
+                    StudyCards.Enqueue(studyCard);
+                }
             }
-
-            foreach (var studyCard in studyCards.Shuffle())
+            catch (Exception ex)
             {
-                StudyCards.Enqueue(studyCard);
+                Console.WriteLine(ex);
+                Toast.ShowError("An error occurred during initialization, see console for details");
             }
-
-            SetCurrentCard();
-
-            if (User.SelectedDeck!.Type == DeckType.Grammar || User.SelectedDeck.Type == DeckType.Vocab)
-            {
-                TestReading = true;
-            }
-
-            if (TestReading)
-            {
-                ElementToFocus = "reading";
-            }
-            else
-            {
-                ElementToFocus = "definition";
-            }
-
-            await FocusElement(ElementToFocus);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (ElementToFocus != string.Empty)
+            try
             {
-                await FocusElement(ElementToFocus);
-                ElementToFocus = string.Empty;
-            }
+                if (ElementToFocus != string.Empty)
+                {
+                    await FocusElement(ElementToFocus);
+                    ElementToFocus = string.Empty;
+                }
 
-            if ((ShowResults && User.Profile!.AutoSpeak) || 
-               (!ShowResults && User.SelectedDeck!.Type == DeckType.Grammar && AttemptsRemaining == 3 && !Finished))
+                if (!Talking &&
+                   ((ShowResults && User.Profile!.AutoSpeak) || 
+                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !Finished)))
+                {
+                    await TextToSpeech(CurrentCard.StudyWord.Audio);
+                }
+            }
+            catch (Exception ex)
             {
-                await TextToSpeech(CurrentCard.StudyWord.Audio);
+                Console.WriteLine(ex);
+                Toast.ShowError("An error occured during rendering, see console for details");
             }
         }
 
+        #region Study Options
+        private async Task ConfirmTestOptions()
+        {
+            ShowTestOptionModal = false;
+            SetCurrentCard();
+
+            ElementToFocus = TestReading ? "reading" : "definition";
+            await FocusElement(ElementToFocus);
+        }
+        #endregion
+
+        #region Submit
         private void SubmitAnswer()
         {
             var readingCorrect = false;
@@ -169,7 +185,9 @@ namespace JP_Dictionary.Pages
             ShowResults = true;
             ElementToFocus = "incorrect-next";
         }
+        #endregion
 
+        #region Cards
         private void ShowNextCard()
         {
             UpdateWord();
@@ -214,6 +232,20 @@ namespace JP_Dictionary.Pages
             }
         }
 
+        private void ReaddFailedCard()
+        {
+            var remainingCards = StudyCards.ToList();
+            remainingCards.Add(CurrentCard);
+
+            StudyCards.Clear();
+
+            foreach (var card in remainingCards.Shuffle())
+            {
+                StudyCards.Enqueue(card);
+            }
+        }
+        #endregion
+
         private void UpdateWord()
         {
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
@@ -232,24 +264,7 @@ namespace JP_Dictionary.Pages
             DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
         }
 
-        private void ReaddFailedCard()
-        {
-            var remainingCards = StudyCards.ToList();
-            remainingCards.Add(CurrentCard);
-
-            StudyCards.Clear();
-
-            foreach (var card in remainingCards.Shuffle())
-            {
-                StudyCards.Enqueue(card);
-            }
-        }
-
-        private void ChangePage(string route)
-        {
-            Nav.NavigateTo(route);
-        }
-
+        #region JS
         private async Task FocusElement(string elementId)
         {
             await JS.InvokeVoidAsync("focusElementById", elementId);
@@ -257,18 +272,37 @@ namespace JP_Dictionary.Pages
 
         private async Task TextToSpeech(string audioPath)
         {
-            if (!Talking)
+            try
             {
-                Talking = true;
+                if (!string.IsNullOrWhiteSpace(audioPath))
+                {
+                    if (!Talking)
+                    {
+                        Talking = true;
 
-                var filePath = HelperMethods.GetFilePath(audioPath);
-                var bytes = await File.ReadAllBytesAsync(filePath);
-                var base64 = Convert.ToBase64String(bytes);
+                        var filePath = HelperMethods.GetFilePath(audioPath);
+                        var bytes = await File.ReadAllBytesAsync(filePath);
+                        var base64 = Convert.ToBase64String(bytes);
 
-                await JS.InvokeVoidAsync("speakText", base64);
+                        await JS.InvokeVoidAsync("speakText", base64);
 
-                Talking = false;
+                        Talking = false;
+                    }
+                }
+                else
+                {
+                    if (CurrentCard.Word != string.Empty)
+                    {
+                        Toast.ShowWarning($"{CurrentCard.Word} does not have audio");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Toast.ShowError("An error occured during TTS, see console for details");
             }
         }
+        #endregion
     }
 }
