@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
 
@@ -10,6 +11,7 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public ToastService Toast { get; set; }
 #nullable enable
         #endregion
 
@@ -96,6 +98,10 @@ namespace JP_Dictionary.Pages
 
                 HelperMethods.SaveProfile(User.Profile);
                 LoadDashboard();
+            }
+            else
+            {
+                Toast.ShowWarning($"You already have a deck named {DeckName}. Please choose another name");
             }
         }
         #endregion

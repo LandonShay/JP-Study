@@ -6,7 +6,7 @@
     @if (!ShowResults)
     {
         <form @onsubmit="SubmitAnswer">
-            @if (User.SelectedDeck!.Type == DeckType.Grammar)
+            @if (User.SelectedDeck!.Type == DeckType.Grammar || User.SelectedDeck!.Type == DeckType.Vocab)
             {
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
@@ -18,7 +18,7 @@
                 <h2>@CurrentCard.Word</h2>
             }
             
-            @if (User.SelectedDeck.Type != DeckType.Grammar)
+            @if (TestReading)
             {
                 <div class="answer-area">
                     <label class="label">Reading</label>

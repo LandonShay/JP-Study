@@ -30,6 +30,8 @@ namespace JP_Dictionary.Pages
 
         public string ElementToFocus { get; set; } = string.Empty; // controlled element focus
         public byte AttemptsRemaining { get; set; } = 3;
+
+        private bool TestReading { get; set; } = true;
         public bool ShowResults { get; set; }
         public bool Finished { get; set; }
         public bool Talking { get; set; }
@@ -72,7 +74,12 @@ namespace JP_Dictionary.Pages
 
             SetCurrentCard();
 
-            if (User.SelectedDeck!.Type != DeckType.Grammar)
+            if (User.SelectedDeck!.Type == DeckType.Grammar || User.SelectedDeck.Type == DeckType.Vocab)
+            {
+                TestReading = true;
+            }
+
+            if (TestReading)
             {
                 ElementToFocus = "reading";
             }
@@ -112,7 +119,7 @@ namespace JP_Dictionary.Pages
                 var cleanedAnswer = ReadingAnswer.Trim().ToLower();
                 readingCorrect = CurrentCard.ReadingAnswers.Contains(cleanedAnswer);
             }
-            else if (User.SelectedDeck!.Type == DeckType.Grammar)
+            else if (!TestReading)
             {
                 readingCorrect = true;
             }
@@ -184,7 +191,7 @@ namespace JP_Dictionary.Pages
 
             ShowResults = false;
 
-            if (User.SelectedDeck!.Type != DeckType.Grammar)
+            if (TestReading)
             {
                 ElementToFocus = "reading";
             }
