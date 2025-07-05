@@ -71,7 +71,7 @@ namespace JP_Dictionary.Pages
                 }
 
                 // unlock 10 locked words from each deck for gradual study
-                foreach (var deck in UserState.Profile!.Decks.Where(x => x.Name != "Core"))
+                foreach (var deck in profile.Decks.Where(x => x.Name != "Core"))
                 {
                     var words = DeckMethods.LoadDeck(profile, deck.Name);
 
