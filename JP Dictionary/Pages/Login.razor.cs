@@ -69,10 +69,25 @@ namespace JP_Dictionary.Pages
                         profile.CurrentWeek--;
                     }
                 }
+
+                // unlock 10 locked words from each deck for gradual study
+                foreach (var deck in profile.Decks.Where(x => x.Name != "Core"))
+                {
+                    var words = DeckMethods.LoadDeck(profile, deck.Name);
+
+                    foreach (var word in words.Where(x => x.LastStudied == DateTime.MinValue).Take(10))
+                    {
+                        word.Week = profile.CurrentWeek;
+                        word.Day = profile.CurrentDay;
+                    }
+
+                    DeckMethods.OverwriteDeck(words, profile.Name, deck.Name);
+                }
             }
 
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
+
 
             Nav.NavigateTo("/dashboard");
         }
@@ -104,7 +119,7 @@ namespace JP_Dictionary.Pages
                 }
             }
 
-            var profile = new Profile() { Name = CreateName, Decks = new List<string>() { "Core" } };
+            var profile = new Profile() { Name = CreateName, Decks = new List<Deck>() { new Deck { Name = "Core", Type = DeckType.Vocab } } };
             profiles.Add(profile);
 
             var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });

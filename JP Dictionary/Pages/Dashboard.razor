@@ -15,8 +15,8 @@
                     {
                         <tr>
                             <td class="deck-info" @onclick="() => ToStudy(deck)">
-                                <span class="deck-name">@deck</span>
-                                <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck)</span>
+                                <span class="deck-name">@deck.Name</span>
+                                <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck.Name)</span>
                             </td>
                             <td>
                                 <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
@@ -29,8 +29,15 @@
                 </tbody>
             </table>
         </div>
+        <h4>Create Deck</h4>
         <div class="deck-create">
             <input type="text" autocomplete="off" @bind="DeckName" />
+            <select @bind="DeckType" class="deck-type-select">
+                @foreach (var type in Enum.GetValues(typeof(DeckType)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
             <button class="main-button" @onclick='CreateDeck'>Create</button>
         </div>
     </div>

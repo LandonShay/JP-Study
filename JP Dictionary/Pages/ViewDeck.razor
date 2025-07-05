@@ -70,7 +70,7 @@
                     </td>
                     <td>@entry.CorrectStreak</td>
                     <td>@entry.MasteryTier</td>
-                    <td>@HelperMethods.GetNextStudyDate(entry).ToShortDateString()</td>
+                    <td>@GetNextReview(entry)</td>
                     <td>
                         <button class="main-button" @onclick="() => ResetStreak(entry)">Reset Streak</button>
                     </td>
