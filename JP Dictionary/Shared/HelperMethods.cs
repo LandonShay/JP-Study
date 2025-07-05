@@ -3,6 +3,8 @@ using System.Globalization;
 using CsvHelper.Configuration;
 using JP_Dictionary.Models;
 using CsvHelper;
+using JP_Dictionary.Pages;
+using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Shared
 {
@@ -60,6 +62,14 @@ namespace JP_Dictionary.Shared
                 5 => 14,
                 _ => 30
             };
+        }
+
+        [JSInvokable]
+        public static Task SetTalkingFalse()
+        {
+            StudyVocab.Talking = false;
+            ViewDeck.Talking = false;
+            return Task.CompletedTask;
         }
 
         #region Files

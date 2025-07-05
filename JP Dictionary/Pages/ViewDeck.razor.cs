@@ -31,7 +31,7 @@ namespace JP_Dictionary.Pages
         private bool IsGeneratingAudio = false;
         private int AudioProgress = 0;
         private int AudioTotal = 0;
-        private bool Talking;
+        public static bool Talking { get; set; }
 
         #region Injections
 #nullable disable
@@ -286,8 +286,6 @@ namespace JP_Dictionary.Pages
                 var base64 = Convert.ToBase64String(bytes);
 
                 await JS.InvokeVoidAsync("speakText", base64);
-
-                Talking = false;
             }
         }
         #endregion

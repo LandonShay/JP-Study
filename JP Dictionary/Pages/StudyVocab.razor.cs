@@ -18,28 +18,28 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
-        public Queue<VocabCard> StudyCards { get; set; } = new();
-        public List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
-        public VocabCard CurrentCard { get; set; } = new();
+        private Queue<VocabCard> StudyCards { get; set; } = new();
+        private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
+        private VocabCard CurrentCard { get; set; } = new();
 
         // user's answers
-        public string DefinitionAnswer { get; set; } = string.Empty;
-        public string ReadingAnswer { get; set; } = string.Empty;
+        private string DefinitionAnswer { get; set; } = string.Empty;
+        private string ReadingAnswer { get; set; } = string.Empty;
 
         // css class for indicating correct or incorrect
         private string DefinitionStatus { get; set; } = string.Empty;
         private string ReadingStatus { get; set; } = string.Empty;
 
-        public string ElementToFocus { get; set; } = string.Empty; // controlled element focus
+        private string ElementToFocus { get; set; } = string.Empty; // controlled element focus
         public byte AttemptsRemaining { get; set; } = 3;
 
         // study options
         private bool ShowTestOptionModal { get; set; } = true;
         private bool TestReading { get; set; }
 
-        public bool ShowResults { get; set; }
-        public bool Finished { get; set; }
-        public bool Talking { get; set; }
+        private bool ShowResults { get; set; }
+        private bool Finished { get; set; }
+        public static bool Talking { get; set; }
         private bool AutoSpeak
         {
             get => User.Profile!.AutoSpeak;
@@ -54,6 +54,7 @@ namespace JP_Dictionary.Pages
         {
             try
             {
+                Console.WriteLine(typeof(Program).Assembly.GetName().Name);
                 var studyCards = new List<VocabCard>();
 
                 StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
@@ -96,9 +97,8 @@ namespace JP_Dictionary.Pages
                     ElementToFocus = string.Empty;
                 }
 
-                if (!Talking &&
-                   ((ShowResults && User.Profile!.AutoSpeak) || 
-                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !Finished)))
+                if ((ShowResults && User.Profile!.AutoSpeak) || 
+                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !Finished))
                 {
                     await TextToSpeech(CurrentCard.StudyWord.Audio);
                 }
@@ -285,8 +285,6 @@ namespace JP_Dictionary.Pages
                         var base64 = Convert.ToBase64String(bytes);
 
                         await JS.InvokeVoidAsync("speakText", base64);
-
-                        Talking = false;
                     }
                 }
                 else
