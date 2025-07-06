@@ -37,6 +37,10 @@ namespace JP_Dictionary.Pages
         private bool ShowTestOptionModal { get; set; } = true;
         private bool TestReading { get; set; }
 
+        // inline editing
+        private bool EditingDefinition { get; set; }
+        private string NewDefinition { get; set; } = string.Empty;
+
         private bool ShowResults { get; set; }
         private bool Finished { get; set; }
         public static bool Talking { get; set; }
@@ -243,6 +247,26 @@ namespace JP_Dictionary.Pages
             {
                 StudyCards.Enqueue(card);
             }
+        }
+        #endregion
+
+        #region Editing
+        private void StartEditing()
+        {
+            EditingDefinition = true;
+            NewDefinition = CurrentCard.OriginalFormatDefinition;
+        }
+
+        private void FinishEditing()
+        {
+            EditingDefinition = false;
+            CurrentCard.OriginalFormatDefinition = NewDefinition;
+            CurrentCard.StudyWord.Definitions = NewDefinition;
+
+            var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
+            word.Definitions = NewDefinition;
+
+            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
         }
         #endregion
 

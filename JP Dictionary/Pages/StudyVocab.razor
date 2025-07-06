@@ -76,7 +76,16 @@
                     <span>🔊</span>
                 </div>
                 <span>@CurrentCard.OriginalFormatReading</span>
-                <span>@CurrentCard.OriginalFormatDefinition</span>
+                @if (EditingDefinition)
+                {
+                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                }
+                else
+                {
+                    <span @onclick="StartEditing" style="cursor: pointer;">
+                        @CurrentCard.OriginalFormatDefinition
+                    </span>
+                }
 
                 <button class ="main-button" id="correct-next" type="submit">Next</button>
             }
@@ -89,7 +98,16 @@
                     <span>🔊</span>
                 </div>
                 <span>@CurrentCard.OriginalFormatReading</span>
-                <span>@CurrentCard.OriginalFormatDefinition</span>
+                @if (EditingDefinition)
+                {
+                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                }
+                else
+                {
+                    <span @onclick="StartEditing" style="cursor: pointer;">
+                        @CurrentCard.OriginalFormatDefinition
+                    </span>
+                }
 
                 <span class="label">Your Answer</span>
                 <span>@ReadingAnswer</span>
