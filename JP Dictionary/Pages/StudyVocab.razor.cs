@@ -30,6 +30,9 @@ namespace JP_Dictionary.Pages
         private string DefinitionStatus { get; set; } = string.Empty;
         private string ReadingStatus { get; set; } = string.Empty;
 
+        private Sentence? ExampleSentence { get; set; }
+        private bool ShowExampleSentenceTranslation { get; set; }
+
         private string ElementToFocus { get; set; } = string.Empty; // controlled element focus
         public byte AttemptsRemaining { get; set; } = 3;
 
@@ -43,7 +46,7 @@ namespace JP_Dictionary.Pages
 
         private bool ShowResults { get; set; }
         private bool FirstResults { get; set; } = true; // tracking if it's your first time being shown the results per word (to prevent unintentional auto-speak)
-        private bool Finished { get; set; }
+        private bool FinishedStudying { get; set; }
         public static bool Talking { get; set; }
         private bool AutoSpeak
         {
@@ -95,7 +98,7 @@ namespace JP_Dictionary.Pages
                 }
 
                 if ((ShowResults && User.Profile!.AutoSpeak && FirstResults) || 
-                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !Finished))
+                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying))
                 {
                     FirstResults = false;
                     await TextToSpeech(CurrentCard.StudyWord.Audio);
@@ -149,6 +152,8 @@ namespace JP_Dictionary.Pages
                 CurrentCard.Correct = true;
                 ShowResults = true;
 
+                FetchExampleSentence();
+
                 ElementToFocus = "correct-next";
                 return;
             }
@@ -175,6 +180,11 @@ namespace JP_Dictionary.Pages
             {
                 ShowResults = true;
                 ElementToFocus = "incorrect-next";
+            }
+
+            if (ShowResults)
+            {
+                FetchExampleSentence();
             }
         }
 
@@ -203,9 +213,13 @@ namespace JP_Dictionary.Pages
             ReadingStatus = string.Empty;
             DefinitionStatus = string.Empty;
 
-            AttemptsRemaining = 3;
             ShowResults = false;
             FirstResults = true;
+
+            ShowExampleSentenceTranslation = false;
+
+            AttemptsRemaining = 3;
+            ExampleSentence = null;
 
             if (TestReading)
             {
@@ -225,7 +239,7 @@ namespace JP_Dictionary.Pages
             }
             else
             {
-                Finished = true;
+                FinishedStudying = true;
                 ElementToFocus = "return";
             }
         }
@@ -281,6 +295,19 @@ namespace JP_Dictionary.Pages
             }
 
             DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
+        }
+
+        private void FetchExampleSentence()
+        {
+            var sentencesWithWord = User.Sentences.FindAll(x => x.Keywords.Contains(CurrentCard.Word));
+
+            if (sentencesWithWord.Count > 0)
+            {
+                ExampleSentence = sentencesWithWord.Shuffle().First();
+                return;
+            }
+
+            ExampleSentence = null;
         }
         #endregion
 

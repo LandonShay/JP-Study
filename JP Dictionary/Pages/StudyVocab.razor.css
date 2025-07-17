@@ -178,3 +178,13 @@ input[type="text"] {
 .jisho-logo{
     width: 40px;
 }
+
+.reading-definition{
+    display: flex;
+    gap: 30px;
+}
+
+.example-sentence-english{
+    font-style: italic;
+    font-size: 16px;
+}

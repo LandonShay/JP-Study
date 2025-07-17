@@ -30,7 +30,7 @@
     </div>
 }
 
-@if (!Finished)
+@if (!FinishedStudying)
 {
     @if (!ShowResults)
     {
@@ -75,18 +75,40 @@
                     <h3>@CurrentCard.Word</h3>
                     <span>🔊</span>
                 </div>
-                <span>@CurrentCard.OriginalFormatReading</span>
-                @if (EditingDefinition)
+                <div class="reading-definition">
+                    <div>
+                        <h4>Reading</h4>
+                        <span>@CurrentCard.OriginalFormatReading</span>
+                    </div>
+                    <div>
+                        <h4>Definition</h4>
+                        @if (EditingDefinition)
+                        {
+                            <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                        }
+                        else
+                        {
+                            <span @onclick="StartEditing" style="cursor: pointer;">
+                                @CurrentCard.OriginalFormatDefinition
+                            </span>
+                        }
+                    </div>
+                </div>
+                @if (ExampleSentence != null)
                 {
-                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                    <div>
+                        <h4>Example:</h4>
+                        <span>@ExampleSentence.JP</span>
+                    </div>
+                    @if (!ShowExampleSentenceTranslation)
+                    {
+                        <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
+                    }
+                    else
+                    {
+                        <span class="example-sentence-english">@ExampleSentence.EN</span>
+                    }
                 }
-                else
-                {
-                    <span @onclick="StartEditing" style="cursor: pointer;">
-                        @CurrentCard.OriginalFormatDefinition
-                    </span>
-                }
-
                 <button class ="main-button" id="correct-next" type="submit">Next</button>
                 <button class="main-button" type="button" @onclick="SearchJisho">
                     <img class="jisho-logo" src="images/jisho-logo.png" />
@@ -100,22 +122,51 @@
                     <h3>@CurrentCard.Word</h3>
                     <span>🔊</span>
                 </div>
-                <span>@CurrentCard.OriginalFormatReading</span>
-                @if (EditingDefinition)
+                <div class="reading-definition">
+                    <div>
+                        <h4>Reading</h4>
+                        <span>@CurrentCard.OriginalFormatReading</span>
+                    </div>
+                    <div>
+                        <h4>Definition</h4>
+                        @if (EditingDefinition)
+                        {
+                            <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                        }
+                        else
+                        {
+                            <span @onclick="StartEditing" style="cursor: pointer;">
+                                @CurrentCard.OriginalFormatDefinition
+                            </span>
+                        }
+                    </div>
+                </div>
+                <h3>Your Answer</h3>
+                <div class="reading-definition">
+                    <div>
+                        <h4>Reading</h4>
+                        <span>@ReadingAnswer</span>
+                    </div>
+                    <div>
+                        <h4>Definition</h4>
+                        <span>@DefinitionAnswer</span>
+                    </div>
+                </div>
+                @if (ExampleSentence != null)
                 {
-                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                    <div>
+                        <h4>Example:</h4>
+                        <span>@ExampleSentence.JP</span>
+                    </div>
+                    @if (!ShowExampleSentenceTranslation)
+                    {
+                        <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
+                    }
+                    else
+                    {
+                        <span class="example-sentence-english">@ExampleSentence.EN</span>   
+                    }
                 }
-                else
-                {
-                    <span @onclick="StartEditing" style="cursor: pointer;">
-                        @CurrentCard.OriginalFormatDefinition
-                    </span>
-                }
-
-                <span class="label">Your Answer</span>
-                <span>@ReadingAnswer</span>
-                <span>@DefinitionAnswer</span>
-
                 <div>
                     <button class="main-button" id="incorrect-next" type="submit">Next</button>
                     <button class="main-button" @onclick="() => CurrentCard.Correct = true">Mark As Correct</button>

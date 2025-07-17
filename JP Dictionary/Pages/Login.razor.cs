@@ -87,7 +87,7 @@ namespace JP_Dictionary.Pages
 
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
-
+            UserState.Sentences = HelperMethods.LoadExampleSentences();
 
             Nav.NavigateTo("/dashboard");
         }
