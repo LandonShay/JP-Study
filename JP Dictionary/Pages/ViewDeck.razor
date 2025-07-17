@@ -42,6 +42,7 @@
                 </th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -71,6 +72,11 @@
                     <td>@entry.CorrectStreak</td>
                     <td>@entry.MasteryTier</td>
                     <td>@GetNextReview(entry)</td>
+                    <td>
+                        <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Japanese)">
+                            <img class="jisho-logo" src="images/jisho-logo.png" />
+                        </button>
+                    </td>
                     <td>
                         <button class="main-button" @onclick="() => ResetStreak(entry)">Reset Streak</button>
                     </td>

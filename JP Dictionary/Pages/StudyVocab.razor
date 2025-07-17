@@ -34,7 +34,7 @@
 {
     @if (!ShowResults)
     {
-        <form @onsubmit="SubmitAnswer">
+        <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
             @if (!TestReading)
             {
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
@@ -66,7 +66,7 @@
     }
     else
     {
-        <form @onsubmit="ShowNextCard">
+        <form @onsubmit="ShowNextCard" @onsubmit:preventDefault>
             @if (CurrentCard.Correct)
             {
                 <h2>Correct!</h2>
@@ -88,6 +88,9 @@
                 }
 
                 <button class ="main-button" id="correct-next" type="submit">Next</button>
+                <button class="main-button" type="button" @onclick="SearchJisho">
+                    <img class="jisho-logo" src="images/jisho-logo.png" />
+                </button>
             }
             else
             {
@@ -117,6 +120,9 @@
                     <button class="main-button" id="incorrect-next" type="submit">Next</button>
                     <button class="main-button" @onclick="() => CurrentCard.Correct = true">Mark As Correct</button>
                 </div>
+                <button class="main-button" type="button" @onclick="SearchJisho">
+                    <img class="jisho-logo" src="images/jisho-logo.png" />
+                </button>
             }
         </form>
     }

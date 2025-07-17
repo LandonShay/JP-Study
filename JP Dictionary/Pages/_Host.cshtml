@@ -31,7 +31,7 @@
 
     <script src="_framework/blazor.server.js"></script>
 
-    @*the below is for controlling focus*@
+    @*For controlling focus*@
     <script>
         window.focusElementById = function (id) {
             const el = document.getElementById(id);
@@ -40,7 +40,7 @@
             }
         };
     </script>
-    @*the below is for text to speech*@
+    @*For text to speech*@
     <script>
         window.speakText = async function (base64Audio) {
             const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
@@ -50,6 +50,12 @@
                 DotNet.invokeMethodAsync('JP Dictionary', 'SetTalkingFalse')
                     .catch(err => console.error("SetTalkingFalse failed", err));
             };
+        };
+    </script>
+    @* For opening links in new tabs *@
+    <script>
+        window.openInNewTab = function (url) {
+            window.open(url, '_blank');
         };
     </script>
 </body>
