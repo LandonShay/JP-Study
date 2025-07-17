@@ -18,7 +18,6 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
     <PackageReference Include="Google.Cloud.TextToSpeech.V1" Version="3.12.0" />
-    <PackageReference Include="MeCab.DotNet" Version="1.2.0" />
     <PackageReference Include="morelinq" Version="4.4.0" />
     <PackageReference Include="Wacton.Desu" Version="6.2.0" />
   </ItemGroup>
