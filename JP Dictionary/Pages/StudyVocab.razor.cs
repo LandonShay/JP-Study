@@ -42,6 +42,7 @@ namespace JP_Dictionary.Pages
         private string NewDefinition { get; set; } = string.Empty;
 
         private bool ShowResults { get; set; }
+        private bool FirstResults { get; set; } = true; // tracking if it's your first time being shown the results per word (to prevent unintentional auto-speak)
         private bool Finished { get; set; }
         public static bool Talking { get; set; }
         private bool AutoSpeak
@@ -58,13 +59,10 @@ namespace JP_Dictionary.Pages
         {
             try
             {
-                Console.WriteLine(typeof(Program).Assembly.GetName().Name);
-                var studyCards = new List<VocabCard>();
-
                 StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
                 var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
 
-                foreach (var word in availableWords)
+                foreach (var word in availableWords.Shuffle())
                 {
                     var studyCard = new VocabCard
                     {
@@ -76,11 +74,6 @@ namespace JP_Dictionary.Pages
                         ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
                     };
 
-                    studyCards.Add(studyCard);
-                }
-
-                foreach (var studyCard in studyCards.Shuffle())
-                {
                     StudyCards.Enqueue(studyCard);
                 }
             }
@@ -101,9 +94,10 @@ namespace JP_Dictionary.Pages
                     ElementToFocus = string.Empty;
                 }
 
-                if ((ShowResults && User.Profile!.AutoSpeak) || 
+                if ((ShowResults && User.Profile!.AutoSpeak && FirstResults) || 
                    (!ShowResults && !TestReading && AttemptsRemaining == 3 && !Finished))
                 {
+                    FirstResults = false;
                     await TextToSpeech(CurrentCard.StudyWord.Audio);
                 }
             }
@@ -210,8 +204,8 @@ namespace JP_Dictionary.Pages
             DefinitionStatus = string.Empty;
 
             AttemptsRemaining = 3;
-
             ShowResults = false;
+            FirstResults = true;
 
             if (TestReading)
             {
@@ -270,6 +264,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
+        #region Result Actions
         private void UpdateWord()
         {
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
@@ -287,8 +282,15 @@ namespace JP_Dictionary.Pages
 
             DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
         }
+        #endregion
 
         #region JS
+        private async Task SearchJisho()
+        {
+            var link = Path.Combine("https://jisho.org/search/", CurrentCard.Word);
+            await JS.InvokeVoidAsync("openInNewTab", link);
+        }
+
         private async Task FocusElement(string elementId)
         {
             await JS.InvokeVoidAsync("focusElementById", elementId);

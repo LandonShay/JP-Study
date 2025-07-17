@@ -147,3 +147,7 @@ tbody tr:hover {
     color: #f0f0f0;
     line-height: 24px;
 }
+
+.jisho-logo {
+    width: 40px;
+}

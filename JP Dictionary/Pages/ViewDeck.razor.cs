@@ -47,6 +47,7 @@ namespace JP_Dictionary.Pages
             LoadPage();
         }
 
+        #region Loading
         private void LoadPage()
         {
             AllWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
@@ -73,6 +74,14 @@ namespace JP_Dictionary.Pages
 
             return HelperMethods.GetNextStudyDate(word).ToShortDateString();
         }
+        #endregion
+
+        #region Table Buttons
+        private async Task SearchJisho(string word)
+        {
+            var link = Path.Combine("https://jisho.org/search/", word);
+            await JS.InvokeVoidAsync("openInNewTab", link);
+        }
 
         private void ResetStreak(StudyWord word)
         {
@@ -95,6 +104,7 @@ namespace JP_Dictionary.Pages
 
             LoadPage();
         }
+        #endregion
 
         #region Definition Editing
         private void StartEditing(StudyWord entry)
