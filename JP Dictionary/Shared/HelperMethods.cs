@@ -1,10 +1,10 @@
-﻿using System.Text.Json;
-using System.Globalization;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using JP_Dictionary.Models;
-using CsvHelper;
 using JP_Dictionary.Pages;
 using Microsoft.JSInterop;
+using System.Globalization;
+using System.Text.Json;
 
 namespace JP_Dictionary.Shared
 {
@@ -98,6 +98,32 @@ namespace JP_Dictionary.Shared
             using var reader = new StreamReader(filePath);
             using var csv = new CsvReader(reader, config);
             return csv.GetRecords<StudyWord>().ToList();
+        }
+
+        public static List<Sentence> LoadExampleSentences()
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ",",
+                HeaderValidated = null,
+                MissingFieldFound = null
+            };
+
+            using var reader = new StreamReader(@"Data\ExampleSentences.csv");
+            using var csv = new CsvReader(reader, config);
+
+            var sentences = csv.GetRecords<Sentence>().ToList();
+
+            foreach (var sentence in sentences)
+            {
+                if (!string.IsNullOrEmpty(sentence.KeywordsAsString))
+                {
+                    sentence.Keywords = sentence.KeywordsAsString.Substring(0, sentence.KeywordsAsString.Length - 2).Split(";").ToList();
+                }
+            }
+
+            return sentences;
         }
 
         public static void WriteToCSVFile(string filePath, List<StudyWord> words)

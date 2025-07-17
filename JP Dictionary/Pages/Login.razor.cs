@@ -85,9 +85,12 @@ namespace JP_Dictionary.Pages
                 }
             }
 
+            var path = HelperMethods.GetFilePath("ExampleSentences.csv");
+            HelperMethods.CreateFile(path);
+
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
-
+            UserState.Sentences = HelperMethods.LoadExampleSentences();
 
             Nav.NavigateTo("/dashboard");
         }
