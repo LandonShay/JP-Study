@@ -52,12 +52,6 @@ namespace JP_Dictionary.Pages
             ExpertCount = 0;
             MasteredCount = 0;
 
-            //var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
-
-            //WordsUnlocked = coreDeck.Count(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
-            //                                    (x.Week < User.Profile!.CurrentWeek));
-            //RemainingWords = coreDeck.Count - WordsUnlocked;
-
             foreach (var deck in User.Profile!.Decks.OrderBy(x => x.SortOrder))
             {
                 var words = DeckMethods.LoadDeck(User.Profile!, deck.Name).FindAll(x => x.Unlocked);
@@ -70,12 +64,6 @@ namespace JP_Dictionary.Pages
             }
 
             User.ResetSelectedDeck();
-        }
-
-        private int GetRemainingWordsPerDeck(string deckName)
-        {
-            var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
-            return DeckMethods.LoadWordsToStudy(deck).Count;
         }
 
         private void ToStudy(Deck deck)

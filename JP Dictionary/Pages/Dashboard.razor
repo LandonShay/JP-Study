@@ -13,6 +13,8 @@
                 <tbody>
                     @foreach (var deck in User.Profile.Decks)
                     {
+                        var words = DeckMethods.LoadDeck(User.Profile, deck.Name);
+
                         <tr class="@(deck == DraggedDeck ? "dragging" : "")">
                             <td draggable="true" @ondragstart="() => OnDragStart(deck)" @ondrop="() => OnDrop(deck)" @ondragend="OnDragEnd">
                                 <i class="fa-solid fa-bars drag-bars"></i>
@@ -23,7 +25,8 @@
                                 {
                                     <span class="deck-text">(Paused)</span>
                                 }
-                                <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck.Name)</span>
+                                <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
+                                <span class="deck-text">Unlocked: @words.Count(x => x.Unlocked)/@words.Count</span>
                             </td>
                             <td>
                                 <button class="main-button" @onclick='() => ToViewDeck(deck)'>
@@ -107,17 +110,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <h4>Core Stats</h4>
-        <div class="major-stats">
-            <div class="stat-row">
-                <span class="label">Unlocked:</span>
-                <span class="value">@WordsUnlocked</span>
-            </div>
-            <div class="stat-row">
-                <span class="label">Remaining:</span>
-                <span class="value">@RemainingWords</span>
-            </div>
         </div>
     </div>
 </div>

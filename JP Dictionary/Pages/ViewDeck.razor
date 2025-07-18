@@ -78,10 +78,14 @@
                         </button>
                     </td>
                     <td>
-                        <button class="main-button" @onclick="() => ResetStreak(entry)">Reset Streak</button>
+                        <button class="main-button" @onclick="() => ResetStreak(entry)">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
                     </td>
                     <td>
-                        <button class="main-button" @onclick="() => DeleteCard(entry)">Delete</button>
+                        <button class="main-button" @onclick="() => DeleteCard(entry)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
             }
