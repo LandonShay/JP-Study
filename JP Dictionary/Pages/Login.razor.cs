@@ -60,12 +60,12 @@ namespace JP_Dictionary.Pages
             {
                 profile.LastLogin = DateTime.Now;
 
-                // unlock 10 locked words from each deck that isn't paused for gradual study
+                // unlock 15 locked words from each deck that isn't paused for gradual study
                 foreach (var deck in profile.Decks.Where(x => !x.Paused))
                 {
                     var words = DeckMethods.LoadDeck(profile, deck.Name);
 
-                    foreach (var word in words.OrderBy(x => x.StudyOrder).Where(x => !x.Unlocked).Take(10))
+                    foreach (var word in words.OrderBy(x => x.StudyOrder).Where(x => !x.Unlocked).Take(15))
                     {
                         word.Unlocked = true;
                     }

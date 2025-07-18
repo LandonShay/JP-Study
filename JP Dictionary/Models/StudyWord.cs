@@ -24,20 +24,24 @@ namespace JP_Dictionary.Models
 
         private static MasteryTier GetMasteryTier(int streak)
         {
-            if (streak < 8) // days 1-7
+            if (streak < 3)
             {
-                return MasteryTier.Starting;
+                return MasteryTier.Novice;
             }
-            else if (streak < 15) // days 8-14
+            else if (streak < 6)
             {
-                return MasteryTier.Familiar;
+                return MasteryTier.Beginner;
             }
-            else if (streak < 30) // days 14-30
+            else if (streak < 8)
             {
-                return MasteryTier.Good;
+                return MasteryTier.Proficient;
+            }
+            else if (streak < 10) // days 14-30
+            {
+                return MasteryTier.Expert;
             }
 
-            return MasteryTier.Expert; // days 30+
+            return MasteryTier.Mastered; // days 30+
         }
 
         public bool HasAudio()
@@ -48,9 +52,10 @@ namespace JP_Dictionary.Models
 
     public enum MasteryTier
     {
-        Starting,
-        Familiar,
-        Good,
-        Expert
+        Novice,
+        Beginner,
+        Proficient,
+        Expert,
+        Mastered
     }
 }

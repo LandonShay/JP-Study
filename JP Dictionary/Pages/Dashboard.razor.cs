@@ -25,10 +25,11 @@ namespace JP_Dictionary.Pages
         private int WordsUnlocked { get; set; }
         private int RemainingWords { get; set; }
 
-        private int StartingCount { get; set; }
-        private int FamiliarCount { get; set; }
-        private int GoodCount { get; set; }
+        private int NoviceCount { get; set; }
+        private int BeginnerCount { get; set; }
+        private int ProficientCount { get; set; }
         private int ExpertCount { get; set; }
+        private int MasteredCount { get; set; }
 
         protected override void OnInitialized()
         {
@@ -45,10 +46,11 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
-            StartingCount = 0;
-            FamiliarCount = 0;
-            GoodCount = 0;
+            NoviceCount = 0;
+            BeginnerCount = 0;
+            ProficientCount = 0;
             ExpertCount = 0;
+            MasteredCount = 0;
 
             //var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
 
@@ -58,14 +60,13 @@ namespace JP_Dictionary.Pages
 
             foreach (var deck in User.Profile!.Decks.OrderBy(x => x.SortOrder))
             {
-                var words = DeckMethods.LoadDeck(User.Profile!, deck.Name);
+                var words = DeckMethods.LoadDeck(User.Profile!, deck.Name).FindAll(x => x.Unlocked);
 
-                var unlockedWords = words.FindAll(x => x.Unlocked);
-
-                StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
-                FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
-                GoodCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Good);
-                ExpertCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Expert);
+                NoviceCount += words.Count(x => x.MasteryTier == MasteryTier.Novice);
+                BeginnerCount += words.Count(x => x.MasteryTier == MasteryTier.Beginner);
+                ProficientCount += words.Count(x => x.MasteryTier == MasteryTier.Proficient);
+                ExpertCount += words.Count(x => x.MasteryTier == MasteryTier.Expert);
+                MasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
             }
 
             User.ResetSelectedDeck();

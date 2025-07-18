@@ -71,32 +71,38 @@
                 <thead>
                     <tr>
                         <th>
-                            Starting
+                            Novice
                         </th>
                         <th>
-                            Familiar
+                            Beginner
                         </th>
                         <th>
-                            Good
+                            Proficient
                         </th>
                         <th>
                             Expert
+                        </th>
+                        <th>
+                            Mastered
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            @StartingCount
+                            @NoviceCount
                         </td>
                         <td>
-                            @FamiliarCount
+                            @BeginnerCount
                         </td>
                         <td>
-                            @GoodCount
+                            @ProficientCount
                         </td>
                         <td>
                             @ExpertCount
+                        </td>
+                        <td>
+                            @MasteredCount
                         </td>
                     </tr>
                 </tbody>
@@ -121,7 +127,7 @@
     <div class="modal-backdrop">
         <div class="custom-modal">
             <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete <strong>@DeckToDelete</strong>? This cannot be undone.</p>
+            <p>Are you sure you want to delete <strong>@DeckToDelete.Name</strong>? This cannot be undone.</p>
             <div class="modal-buttons">
                 <button class="main-button danger" @onclick="ConfirmDeleteDeck">Delete</button>
                 <button class="main-button" @onclick="CancelDeleteDeck">Cancel</button>
