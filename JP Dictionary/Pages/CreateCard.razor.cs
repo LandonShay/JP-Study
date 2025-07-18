@@ -31,12 +31,10 @@ namespace JP_Dictionary.Pages
             {
                 PendingWord = new StudyWord
                 {
-                    Japanese = Japanese,
-                    Pronounciation = Romaji,
+                    Word = Japanese,
+                    Romaji = Romaji,
                     Definitions = Definitions,
                     Id = Guid.NewGuid().ToString(),
-                    Day = 10,
-                    Week = 255, // setting these high so they are locked for studying
                     LastStudied = DateTime.MinValue,
                     CorrectStreak = 0
                 };
@@ -45,7 +43,7 @@ namespace JP_Dictionary.Pages
                 {
                     var checkDeck = DeckMethods.LoadDeck(User.Profile, deck.Name);
 
-                    if (checkDeck.Any(x => x.Japanese == Japanese))
+                    if (checkDeck.Any(x => x.Word == Japanese))
                     {
                         ShowConfirmation = true;
                         ConflictDeckName = deck.Name;
@@ -64,7 +62,7 @@ namespace JP_Dictionary.Pages
             deck.Add(PendingWord);
 
             DeckMethods.UpdateDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
-            ToastService.ShowSuccess($"{PendingWord.Japanese} added to {User.SelectedDeck.Name} deck");
+            ToastService.ShowSuccess($"{PendingWord.Word} added to {User.SelectedDeck.Name} deck");
 
             Japanese = string.Empty;
             Romaji = string.Empty;

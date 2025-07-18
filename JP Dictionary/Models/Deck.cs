@@ -4,6 +4,8 @@
     {
         public string Name { get; set; } = string.Empty;
         public DeckType Type { get; set; }
+        public bool Paused { get; set; }
+        public int SortOrder { get; set; }
     }
 
     public enum DeckType

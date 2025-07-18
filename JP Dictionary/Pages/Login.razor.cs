@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+using JP_Dictionary.Services;
 using JP_Dictionary.Models;
 using JP_Dictionary.Shared;
 
@@ -14,6 +15,7 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public UserState UserState { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public ToastService Toast { get; set; }
 #nullable enable
         #endregion
 
@@ -57,35 +59,24 @@ namespace JP_Dictionary.Pages
             if (lastLoginDate != today)
             {
                 profile.LastLogin = DateTime.Now;
-                profile.CurrentDay++;
 
-                if (profile.CurrentDay > 7)
-                {
-                    profile.CurrentDay = 1;
-                    profile.CurrentWeek++;
-
-                    if (profile.CurrentWeek == byte.MaxValue - 1)
-                    {
-                        profile.CurrentWeek--;
-                    }
-                }
-
-                // unlock 10 locked words from each deck for gradual study
-                foreach (var deck in profile.Decks.Where(x => x.Name != "Core"))
+                // unlock 15 locked words from each deck that isn't paused for gradual study
+                foreach (var deck in profile.Decks.Where(x => !x.Paused))
                 {
                     var words = DeckMethods.LoadDeck(profile, deck.Name);
 
-                    foreach (var word in words.Where(x => x.LastStudied == DateTime.MinValue).Take(10))
+                    foreach (var word in words.OrderBy(x => x.StudyOrder).Where(x => !x.Unlocked).Take(15))
                     {
-                        word.Week = profile.CurrentWeek;
-                        word.Day = profile.CurrentDay;
+                        word.Unlocked = true;
                     }
 
                     DeckMethods.OverwriteDeck(words, profile.Name, deck.Name);
                 }
             }
 
+            DeckMethods.CreateDefaultDecks(profile);
             HelperMethods.SaveProfile(profile);
+
             UserState.Profile = profile;
             UserState.Sentences = HelperMethods.LoadExampleSentences();
 
@@ -119,7 +110,7 @@ namespace JP_Dictionary.Pages
                 }
             }
 
-            var profile = new Profile() { Name = CreateName, Decks = new List<Deck>() { new Deck { Name = "Core", Type = DeckType.Vocab } } };
+            var profile = new Profile() { Name = CreateName, Decks = new List<Deck>() { new Deck { Name = "Core", Type = DeckType.Vocab, SortOrder = 1 } } };
             profiles.Add(profile);
 
             var json = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
@@ -128,14 +119,7 @@ namespace JP_Dictionary.Pages
                 writer.Write(json);
             }
 
-            // create core deck
-            var wordsPath = HelperMethods.CreateFile($"{CreateName}Deck-Core.csv");
-
-            if (File.Exists(wordsPath))
-            {
-                var coreWords = DeckMethods.LoadDefaultCoreWords();
-                DeckMethods.UpdateDeck(coreWords, CreateName, "Core");
-            }
+            DeckMethods.CreateDefaultDecks(profile);
 
             CreateName = string.Empty;
             LoadProfiles();

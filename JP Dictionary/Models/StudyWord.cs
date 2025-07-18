@@ -4,13 +4,12 @@ namespace JP_Dictionary.Models
 {
     public class StudyWord
     {
-        public string Id { get; set; }
-        public int Week { get; set; }
-        public int Day { get; set; }
-        public string Japanese { get; set; } = string.Empty;
-        public string Pronounciation { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
+        public string Word { get; set; } = string.Empty;
+        public string Romaji { get; set; } = string.Empty;
         public string Definitions { get; set; } = string.Empty;
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
+        public bool Unlocked { get; set; }
         public int CorrectStreak { get; set; }
         public MasteryTier MasteryTier
         {
@@ -21,23 +20,28 @@ namespace JP_Dictionary.Models
             }
         }
         public string Audio { get; set; } = string.Empty;
+        public int StudyOrder { get; set; }
 
         private static MasteryTier GetMasteryTier(int streak)
         {
-            if (streak < 8) // days 1-7
+            if (streak < 3)
             {
-                return MasteryTier.Starting;
+                return MasteryTier.Novice;
             }
-            else if (streak < 15) // days 8-14
+            else if (streak < 6)
             {
-                return MasteryTier.Familiar;
+                return MasteryTier.Beginner;
             }
-            else if (streak < 30) // days 14-30
+            else if (streak < 8)
             {
-                return MasteryTier.Good;
+                return MasteryTier.Proficient;
+            }
+            else if (streak < 10) // days 14-30
+            {
+                return MasteryTier.Expert;
             }
 
-            return MasteryTier.Expert; // days 30+
+            return MasteryTier.Mastered; // days 30+
         }
 
         public bool HasAudio()
@@ -48,9 +52,10 @@ namespace JP_Dictionary.Models
 
     public enum MasteryTier
     {
-        Starting,
-        Familiar,
-        Good,
-        Expert
+        Novice,
+        Beginner,
+        Proficient,
+        Expert,
+        Mastered
     }
 }

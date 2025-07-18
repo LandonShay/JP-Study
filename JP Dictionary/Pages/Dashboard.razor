@@ -13,16 +13,42 @@
                 <tbody>
                     @foreach (var deck in User.Profile.Decks)
                     {
-                        <tr>
+                        var words = DeckMethods.LoadDeck(User.Profile, deck.Name);
+
+                        <tr class="@(deck == DraggedDeck ? "dragging" : "")">
+                            <td draggable="true" @ondragstart="() => OnDragStart(deck)" @ondrop="() => OnDrop(deck)" @ondragend="OnDragEnd">
+                                <i class="fa-solid fa-bars drag-bars"></i>
+                            </td>
                             <td class="deck-info" @onclick="() => ToStudy(deck)">
                                 <span class="deck-name">@deck.Name</span>
-                                <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck.Name)</span>
+                                @if (deck.Paused)
+                                {
+                                    <span class="deck-text">(Paused)</span>
+                                }
+                                <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
+                                <span class="deck-text">Unlocked: @words.Count(x => x.Unlocked)/@words.Count</span>
                             </td>
                             <td>
-                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
+                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
                             </td>
                             <td>
-                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>Delete</button>
+                                <button class="main-button" @onclick='() => PauseDeck(deck)'>
+                                    @if (!deck.Paused)
+                                    {
+                                        <i class="fa-solid fa-pause"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-play"></i>
+                                    }
+                                </button>
+                            </td>
+                            <td>
+                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -48,47 +74,42 @@
                 <thead>
                     <tr>
                         <th>
-                            Starting
+                            Novice
                         </th>
                         <th>
-                            Familiar
+                            Beginner
                         </th>
                         <th>
-                            Good
+                            Proficient
                         </th>
                         <th>
                             Expert
+                        </th>
+                        <th>
+                            Mastered
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            @StartingCount
+                            @NoviceCount
                         </td>
                         <td>
-                            @FamiliarCount
+                            @BeginnerCount
                         </td>
                         <td>
-                            @GoodCount
+                            @ProficientCount
                         </td>
                         <td>
                             @ExpertCount
                         </td>
+                        <td>
+                            @MasteredCount
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <h4>Core Stats</h4>
-        <div class="major-stats">
-            <div class="stat-row">
-                <span class="label">Unlocked:</span>
-                <span class="value">@WordsUnlocked</span>
-            </div>
-            <div class="stat-row">
-                <span class="label">Remaining:</span>
-                <span class="value">@RemainingWords</span>
-            </div>
         </div>
     </div>
 </div>
@@ -98,7 +119,7 @@
     <div class="modal-backdrop">
         <div class="custom-modal">
             <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete <strong>@DeckToDelete</strong>? This cannot be undone.</p>
+            <p>Are you sure you want to delete <strong>@DeckToDelete.Name</strong>? This cannot be undone.</p>
             <div class="modal-buttons">
                 <button class="main-button danger" @onclick="ConfirmDeleteDeck">Delete</button>
                 <button class="main-button" @onclick="CancelDeleteDeck">Cancel</button>

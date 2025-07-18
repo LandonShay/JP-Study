@@ -30,6 +30,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="https://kit.fontawesome.com/e78fc5731d.js" crossorigin="anonymous"></script>
 
     @*For controlling focus*@
     <script>
@@ -56,6 +57,16 @@
     <script>
         window.openInNewTab = function (url) {
             window.open(url, '_blank');
+        };
+    </script>
+    @* For drag and drop table elements *@
+    <script>
+        window.enableDragDrop = function () {
+            document.querySelectorAll("td[draggable='true']").forEach(row => {
+                row.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                });
+            });
         };
     </script>
 </body>
