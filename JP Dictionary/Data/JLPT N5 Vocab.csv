@@ -1,0 +1,629 @@
+Id,Word,Hiragana,Romaji,Definitions,StudyOrder
+9df48ac4-5d87-4681-951f-b553a78301ad,どう,どう,dou,"how, in what way",1
+7617d8b7-c82b-4c2d-9a02-1136e38d19f3,さあ,さあ,saa,"come now, well",2
+68644b80-5b85-44dc-ba01-7f288c7f8735,あの,あの,ano,"that over there, like that, that way, that",3
+92ba076a-19a8-491a-8bd6-f4d2c3325a73,ええ,ええ,ee,yes,4
+b6caf698-a0ae-4a1a-9b07-7b89c3f67ab2,どれ,どれ,dore,which one,5
+bb0a707b-1ba9-4a0b-ba23-14016bbe1767,やる,やる,yaru,"to do, to give",6
+9f2568ca-8046-45bb-a84d-8452e6076294,この,この,kono,this,7
+761a2db1-c43c-464e-b79f-a995821ca226,よく,よく,yoku,"frequently, often, well, skillfully",8
+b3091dc3-0433-4aff-a858-18f92a87b177,どこ,どこ,doko,"where, what place",9
+112e1db4-918e-48d9-8390-6752407f365a,なぜ,なぜ,naze,why,10
+b3566620-624f-421f-8d16-5cb8e9aa13f6,もう,もう,mou,"already, again, more",11
+4f7de3ec-c46c-4758-ada9-840e67b1f87a,ここ,ここ,koko,"here, this place",12
+9469261a-5685-4fcf-9c60-e1863f19041f,どの,どの,dono,which,13
+ca31a640-043c-4ed9-9af1-cf931942d311,まだ,まだ,mada,"yet, still, besides",14
+6b545d3d-5eff-411a-a18e-90c9deb31008,あれ,あれ,are,that one,15
+f0df92f3-e0e7-4436-9893-b6c1a14c6117,うち,うち,uchi,"home, house, my place",16
+1a7c1cc7-c2d8-450d-9ae5-71ab743a1d7c,なる,なる,naru,to become,17
+bb0bccc4-a5d0-4df4-9d25-c343fe54fe17,いつ,いつ,itsu,when,18
+a0a1fdd2-1d08-4190-8112-d724dd666aa1,では,では,deha,"then, well, so",19
+2d1bd07d-7566-4dcb-a51d-f94bad784a74,でも,でも,demo,"but, however",20
+ee66c986-2fac-4ec4-baac-1df01cf7df54,そば,そば,soba,"near, close, beside, buckwheat noodle",21
+88e7031b-44a2-4fa3-a17e-510c1db146c9,はく,はく,haku,to put on,22
+0d3919d2-d214-4190-a02d-2ece47bc31f0,また,また,mata,"and, furthermore",23
+996e4602-2ef2-49d6-87f5-954b7dfdf5ab,~がる,がる,garu,feel,24
+1ca83106-1376-4bd8-94cc-5c9905bc474b,たて,たて,tate,"length, height",25
+0ceebd70-74fd-4760-b89a-7f92e350132d,どなた,どなた,donata,who,26
+436864c8-0e39-4b97-a2a0-61396742e4e3,しかし,しかし,shikashi,"however, but",27
+865aa367-2fdd-455e-8c34-ebbc886d6779,どうも,どうも,doumo,"Thank you, somehow",28
+84f929de-9d80-4a40-a7bd-0942e5a46e91,どっち,どっち,docchi,"which one, which way",29
+dc53eaf4-d05e-4908-af95-0977d29e35ad,いつも,いつも,itsumo,"always, usually, every time",30
+8626f77a-b48a-43ea-bb31-fb4b27efb233,とても,とても,totemo,"very, greatly, exceedingly",31
+71c7d29e-30ec-4a9e-a3b3-8bf6eedd3788,もっと,もっと,motto,more,32
+4933f613-5433-46d5-a30f-fb8afa341246,カメラ,カメラ,kamera,camera,33
+e162f73e-0693-4e88-8aa4-3bf4f915d7ca,こんな,こんな,konna,"such, like this",34
+6e036291-3661-43ee-9394-83087edc1498,どうぞ,どうぞ,douzo,"please, kindly, by all means",35
+f22253bd-e922-4356-856f-ee700aa21749,こっち,こっち,kocchi,"this person, this direction, this side, this way",36
+164fbe36-322c-42f2-80f5-fa065543087a,こちら,こちら,kochira,"this person, this way",37
+b0798435-998f-4a22-8e59-bc89526d03a7,～など,～など,nado,"et cetera, etc",38
+9bb2af7f-eea4-423d-bffe-96e0233cd6c4,マッチ,マッチ,macchi,match,39
+de13d021-955d-4d29-b615-f7e31215cbea,まずい,まずい,mazui,"terrible, unappetizing, unpleasant",40
+87ec59f2-afae-401a-b600-ce79afe03944,ホテル,ホテル,hoteru,hotel,41
+07943eaf-6edc-4114-98d8-6bedea296f7d,ボタン,ボタン,botan,button,42
+6bc2370f-3f00-4f49-9dc2-09ef6fda6447,ポスト,ポスト,posuto,"mailbox, post, position",43
+f35ccebe-26e3-4b75-b735-f63784cb8227,かかる,かかる,kakaru,"it takes, it takes (amount of time, money)",44
+abfe5adc-7053-4e2c-8bc9-d3c62a72210d,かける,かける,kakeru,"to dial, to call, to sit down",45
+269f524f-b2b2-4a26-8d12-b2107f459464,～だけ,～だけ,dake,"only, just",46
+3b7f5e78-caf7-4b20-bd27-0aa9dfd3f649,かぶる,かぶる,kaburu,"to wear, to put on",47
+fd9800fa-8622-44c9-bb5d-b4999b9c1485,どんな,どんな,donna,"what, what kind of",48
+ad6cbba6-fe16-43b7-ad29-27ccc68a5c31,みんな,みんな,minna,"all, everyone, everybody",49
+87bfe2e9-cca2-4cf6-82be-bd8a92380880,かばん,かばん,kaban,"bag, basket",50
+29080f7e-c0ef-44e9-a796-fad915d8aba1,あっち,あっち,acchi,over there,51
+5f6be34b-547a-4a68-af87-23b0bf9fbd57,～ずつ,～ずつ,zutsu,at a time,52
+16d1ebee-5098-45a8-baa3-5e220334f236,ズボン,ズボン,zubon,pants,53
+20d33ad2-0d32-4fee-9982-91d51f3f0c68,あちら,あちら,achira,this way,54
+cd0fa3ec-423e-4785-8426-ed25b20ef90c,つける,つける,tsukeru,"to turn on, to take",55
+31d1c0bb-6dd4-4118-b20b-1b787b7349e3,あそこ,あそこ,asoko,"there, over there, that place",56
+50ed2dae-11c3-4cb1-a295-a21535fee1d9,あなた,あなた,anata,you,57
+dfaafa0f-1cc6-486b-85b9-517f3890b52c,りっぱ,りっぱ,rippa,"splendid, fine",58
+bbacd511-99c2-4172-829f-473e99d86238,できる,できる,dekiru,"to be able to, can do",59
+84f18ec4-f257-4cfd-aa2f-6e01828bec40,たばこ,たばこ,tabako,"tobacco, cigarettes",60
+33179646-1776-49b2-b02f-5305c3ebed0c,すぐに,すぐに,suguni,"immediately, soon",61
+47633b07-810b-4929-8ede-a8ce1ebd4767,いいえ,いいえ,iie,"no, not at all",62
+d04e91d3-543a-4ebc-82ff-9888c4fdf9c0,いかが,いかが,ikaga,"how, in what way",63
+855b20f3-7195-4266-b493-07cdca343221,いくら,いくら,ikura,"how much, how many",64
+66cb170c-1a44-4f25-970d-a407f4db9f36,いくつ,いくつ,ikutsu,"how many, how old",65
+18971fdd-cdde-4cb3-8c8c-003b9a15c6c2,ネクタイ,ネクタイ,nekutai,"tie, necktie",66
+313f91ec-3710-4c81-b8f6-14d9c146c7af,ちょっと,ちょっと,chotto,"a little, somewhat",67
+ff729bd8-1c0f-4b83-a64c-cbe28ee0edcd,それでは,それでは,soredeha,"in that situation, well then",68
+190d550f-f8b1-4357-9db9-5f9b126ac7c8,うるさい,うるさい,urusai,"noisy, annoying",69
+2075bb61-51ae-470a-8529-9bb8f3563535,どうして,どうして,doushite,"why, for what reason",70
+54967a93-c4e3-4536-a377-e7f07167f09d,まっすぐ,まっすぐ,massugu,"straight, direct",71
+b3dcafd7-a38c-4769-ac47-324f3dbc8a46,にぎやか,にぎやか,nigiyaka,"bustling, busy",72
+9f864215-7f61-4a57-973d-b80ff6f7aa02,おととし,おととし,ototoshi,year before last,73
+30350e4b-7ddc-41d0-bd12-255aa5659d99,それから,それから,sorekara,"and then, after that",74
+5572c61d-dd25-4269-9b71-d425289fc206,おじいさん,おじいさん,ojiisan,"grandfather, male senior citizen",75
+eac58138-6635-4daa-9308-47a62888fee0,つまらない,つまらない,tsumaranai,"boring, dull, insignificant",76
+9d609100-352a-40f7-8551-7e3825a564ef,ゆっくりと,ゆっくりと,yukkurito,"slowly, at ease",77
+28cdce68-258c-4d22-943c-dbb326fd9777,おばあさん,おばあさん,obaasan,"grandmother, female senior-citizen",78
+bca18ab7-61bf-468d-b26b-e73e2398b528,～個,こ,ko,"counter, counter for small items",79
+1d68a1ec-ad3d-4738-a123-d4fb4d5ed676,おまわりさん,おまわりさん,omawarisan,"policeman, police",80
+0b3f3a7d-2af5-4357-9d5c-54a81098bed0,～語,ご,go,"word, language",81
+a8995d7a-86e3-4a77-97d5-c30f4b59d6a9,二,に,ni,two,82
+3286a26c-bea9-445d-8dc1-5b1edb7bdfb1,歯,は,ha,tooth,83
+5d8cb8b5-fab5-4a71-92ed-579f4796717e,九,く,ku,nine,84
+764dc824-be22-43da-a531-2683d9cda7a1,木,き,ki,"tree, wood, timber",85
+14e65493-4f8a-4d12-83c6-2a4f949f6431,戸,と,to,door,86
+04ccd827-5080-4fa8-9505-12235e8ccff6,五,ご,go,five,87
+af54b0e5-1821-4007-b045-790fc3486a88,いい; よい,いい; よい,ii; yoi,good,88
+a0c8462c-d608-4491-b80a-2b8908fcaba4,絵,え,e,"painting, picture, drawing",89
+8ad11651-a4f8-4487-9896-b0c90f13ca01,手,て,te,hand,90
+5f0e344e-7519-44bd-a67f-99ff00dc3768,四,し,shi,four,91
+511e4212-63b9-4237-a3a2-672fdfa374d2,目,め,me,eye(s),92
+feaaa144-fde7-4089-8cad-a6a9e1ccb2d3,箸,はし,hashi,chopsticks,93
+9abfca44-e05e-49bc-889e-0f27b594431e,橋,はし,hashi,bridge,94
+354976c5-27a9-4b79-8131-6cd8c8bcbe8e,箱,はこ,hako,box,95
+ea2393b9-fc6e-4483-8058-175fd59105eb,空,そら,sora,sky,96
+af6fe1d7-2782-46fe-ab12-927ed9a9d5fa,切る,きる,kiru,"to cut, to hang up",97
+0e937a80-9591-4671-a66e-67e30d770e73,撮る,とる,toru,"to take, to make",98
+923df7bd-8b0c-4239-b147-7b1db5acc57c,出る,でる,deru,"to appear, to leave",99
+f89633ba-e657-47bd-8e6c-1948ab9322c4,乗る,のる,noru,"to get on, to ride in, to board",100
+0f3b8a8c-ea8e-4be9-b30b-0a7739e262fc,飲む,のむ,nomu,to drink,101
+71af8933-0f79-4424-af60-10740701de8b,口,くち,kuchi,mouth,102
+c45867e8-8316-434b-8e58-8707873ccea3,靴,くつ,kutsu,"shoes, footwear",103
+a09f92c2-9fff-412b-9a36-1dc165b658e4,寝る,ねる,neru,"to sleep, to go to sleep, to go to bed",104
+f4319650-f80b-4c47-9ab3-75403ba0d0ca,国,くに,kuni,"country, place of origin",105
+97fbd2b0-1d96-4ba7-bd7d-eef932e17914,着る,きる,kiru,to wear,106
+bf596e84-ff37-45a2-b336-60bb660cfd07,下,した,shita,"under, below, beneath",107
+dedb79b1-ad4c-4c88-bcb4-32b5174f94c0,花,はな,hana,flower,108
+147faf62-a6fc-4a2a-8dd4-d0ef47476423,鼻,はな,hana,nose,109
+5155c9a8-1c21-47d7-804b-43098bc2e51a,紙,かみ,kami,paper,110
+cdf4b9e4-b2c8-42e9-9829-42dc71c8b0a2,出す,だす,dasu,"to take out, to hand in",111
+7affc6d7-b456-4b87-810d-04c3134ca41d,晩,ばん,ban,evening,112
+a8896137-5e5e-42d9-af3e-7c180d5d7259,半,はん,han,half,113
+69aff73f-2a7f-4396-8573-6a0eff5f6990,晴れ,はれ,hare,clear weather,114
+9743d3f8-0288-4ba8-aec6-f33ca82bf52a,立つ,たつ,tatsu,to stand up,115
+cbb0e122-8acc-421d-95c5-da3f43520efa,貼る,はる,haru,"to post, to paste, to attach",116
+ace96640-0c2e-4491-83a0-48c0caceb4d9,八,はち,hachi,eight,117
+ea5bbfb7-83c8-4132-81fd-013e7cbae70d,川; 河,かわ,kawa,river,118
+cbfc7ef4-65db-4f8d-af95-8b175e8d56a5,側,がわ,gawa,side,119
+a551814f-eab2-4b22-8e4c-09ab2075d880,春,はる,haru,spring,120
+42bd63be-17c6-48ff-9af8-8f049224e6e2,じゃ; じゃあ,じゃ; じゃあ,ja; jaa,"well, well then",121
+9fa6e01d-4ad0-4a7e-92d4-ee02be6124ca,母,はは,haha,mother,122
+53064190-f51b-4dd1-8f54-2dc6d1de0791,聞く,きく,kiku,"to hear, to listen, to ask",123
+e6e5bd45-dc22-4e53-8821-1dc4dc5c9f5a,七,しち,shichi,seven,124
+862c0adc-c353-47c8-af09-e3e2236b47d6,北,きた,kita,north,125
+7d205d9b-b023-4d61-a6c8-bdbbd3cccc77,死ぬ,しぬ,shinu,to die,126
+10ae4242-9152-43af-97b0-620433db1de4,猫,ねこ,neko,cat,127
+b244aab4-5152-4b2b-a7da-9296a3b07016,脱ぐ,ぬぐ,nugu,to take off,128
+7b33ea7e-7ff5-4d01-ae15-ec3ebd0e9006,取る,とる,toru,"to take, to get",129
+4569280b-09db-4a38-a4ff-90631d8d7e08,着く,つく,tsuku,"to arrive at, to reach",130
+0108c965-e6d5-4b3f-a64e-a5fc6580932c,背,せい,sei,"height, stature",131
+3c5fc9d0-23ad-4c1c-ac58-d9d14ad7ad52,声,こえ,koe,voice,132
+fe778d11-792e-4a39-8750-321a3b332d76,父,ちち,chichi,father,133
+9009c97b-2c4c-4257-b04e-9a5936bafbad,午後,ごご,gogo,"afternoon, P.M.",134
+ff2df4f6-f1f8-42fa-ae8c-762b5988b8b6,住む,すむ,sumu,"to reside, to live in",135
+fe290cfd-2f63-4fc9-ad5c-92fb63eae40b,先,さき,saki,"future, recent, previous",136
+33bfba71-b15a-4e80-9e6e-470d1ef57225,夏,なつ,natsu,summer,137
+50f2caaa-013b-484a-90bd-0cbd42daf427,飛ぶ,とぶ,tobu,"to fly, to hop",138
+cf680112-3ce9-4b3c-94b1-21b519df58cb,好き,すき,suki,"like, love",139
+e9daa672-0ac5-4d4b-86e0-6d4abd60a4cc,鳴く,なく,naku,to make sound,140
+31b5b804-c6ba-412e-ba02-d79d1ca9ade9,中,なか,naka,"inside, middle, among",141
+c5c010a0-29dc-4013-9353-e12057ece10d,次,つぎ,tsugi,next,142
+6f00b31c-7862-4e45-82bc-fbcc98f649ed,鳥,とり,tori,bird,143
+ecf1997f-5041-4eb1-ba28-8996f2bed943,吸う,すう,suu,"to breathe in, to suck",144
+88b44dea-097d-40c4-86d1-0ef62b21c964,十,とお,too,ten,145
+c6412b00-5885-46f0-bf4a-5e393b145ef7,咲く,さく,saku,to bloom,146
+e0e4e6eb-e8e6-4ab8-a1d9-211a90208d8d,差す,さす,sasu,to raise,147
+cfe14fa0-d6cb-430b-a694-3838ac31f807,来る,くる,kuru,to come,148
+96a453f6-086f-4ad9-83c3-aba9e6f9a584,塩,しお,shio,salt,149
+a85462cf-f378-4332-8af8-f71b432699fd,庭,にわ,niwa,garden,150
+6c27b5e1-017f-4786-9519-412e85a56b4b,西,にし,nishi,west,151
+86949df0-76fa-4590-8a91-5c53cd911fde,今朝,けさ,kesa,this morning,152
+84b8ca61-57a3-4539-883f-6eed2a353d5a,消す,けす,kesu,"to erase, to delete, to turn off power",153
+4331024f-5e4d-45dd-9f65-c75632212f57,知る,しる,shiru,"to know, to understand",154
+42a8b5a3-6b9a-4bd8-bc00-cfa1f7da7dc3,外,そと,soto,"outside, exterior",155
+85c33c1d-62f6-4e65-ae36-ed0ffa3494a2,～時,～じ,ji,"o clock, time",156
+cd191fb5-db25-454a-a18c-b13ae906cba7,三,さん,san,three,157
+dcb0a767-3349-467e-8d49-f7360eddfd74,年,とし,toshi,"year, age",158
+d0aba591-4979-48a5-85fa-a70c92806d1c,誰,だれ,dare,who,159
+f50630fa-3477-4e13-8df4-ce789b76bb2b,千,せん,sen,thousand,160
+fa697c9e-6d46-41f9-a234-3729dc43c3f2,地図,ちず,chizu,a map,161
+28e2dc0b-5a66-4246-a81f-7a68d6fb0d44,肉,にく,niku,meat,162
+e9595195-c23a-4f97-839c-b8e4c44f9431,～度,～ど,do,"counter for occurrences, degree, point",163
+20731e4f-0a40-4100-9a2c-a2e6ec3e2fa5,会う,あう,au,"to meet, to see",164
+a1de278d-8104-4208-b46c-09f7394d5acc,角,かど,kado,corner,165
+9a313b2c-5ac7-41f5-855f-d1b8fb5612a8,今,いま,ima,now,166
+b9028a35-042e-458f-b5c1-da37cc4f22e8,意味,いみ,imi,"meaning, significance",167
+e0dcf5bf-c406-41de-912c-40fead9aad75,持つ,もつ,motsu,"to hold, to carry, to possess",168
+704c0bba-a0a0-471b-98a0-9bd885f4f1cb,嫌,いや,iya,"disagreeable, detestable, unpleasant",169
+60f1af4c-d40a-434d-815f-d473cae1a23a,居る,いる,iru,"to be, is, to exist",170
+a20efe3a-c3e7-4860-a7d9-21fc038b4586,要る,いる,iru,to need,171
+8720bd18-1af6-43a8-b701-39b7b3f07237,色,いろ,iro,color,172
+f3ac2b57-fc94-4d6c-8907-3c6f3df014cb,上,うえ,ue,"above, up, over, on top of",173
+df5dcd80-9f5a-4c6c-8fb5-c9657a778bf0,村,むら,mura,village,174
+037a0abb-14d4-4d83-b67a-5f32e3f9e815,歌,うた,uta,a song,175
+cbbbbcd3-c0bd-4a49-9919-30a2fc0825cf,海,うみ,umi,"sea, beach",176
+d1cfe81a-e7ad-4f11-b0e1-470fdfe0c1c1,犬,いぬ,inu,dog,177
+c8fb3179-7942-4d67-82f5-431ce30f7253,売る,うる,uru,to sell,178
+76e973f8-da4b-49aa-afa8-e6c95bfd4e86,駅,えき,eki,station,179
+858feed4-b174-4447-8e8e-6c8cfae6867c,道,みち,michi,"road, street, way, directions",180
+df976718-6cbe-4ea9-908b-b121bd5ad6a4,店,みせ,mise,"store, shop",181
+cf7f85e7-74ce-442a-9d14-be468569fca0,水,みず,mizu,water,182
+3fcbaf7e-91a3-4e85-8821-6976f3e8f90a,右,みぎ,migi,right hand side,183
+e75bba3d-1ab4-416e-840b-6183d922447a,万,まん,man,ten thousand,184
+f5972598-1eb4-45f1-9043-14c756cabeea,置く,おく,oku,"to put, to lay, to place",185
+95b2c82a-e247-4816-bed1-5545823e491e,窓,まど,mado,window,186
+8d840477-792c-42d7-a3c2-399c11327977,待つ,まつ,matsu,to wait,187
+b5712389-45d6-4e7e-aa87-e5839445d6a8,町,まち,machi,"town, city",188
+c9a2d825-c58d-4da4-9acc-d680351ef394,押す,おす,osu,"to push, to press, to stamp",189
+e1eb5f80-ddfd-4ac5-a89b-8685ded0941b,耳,みみ,mimi,ear,190
+141f8d31-8438-47ec-a935-782950fa0b1b,前,まえ,mae,"before, in front",191
+50d22ee1-2ce3-4b63-8386-21f4dd9ba7bb,物,もの,mono,thing,192
+7bfb7725-f3fc-4f78-aff9-c47962cd22f8,～屋,～や,ya,shop,193
+cefcc00e-ef9e-4479-8d76-a945887a8cce,秋,あき,aki,"fall, autumn",194
+eee36675-d687-4bad-9146-37021890ca2d,開く,あく,aku,"to open, to become open",195
+3a7b62d9-dd1b-41c7-accf-91aed933e6fe,六,ろく,roku,six,196
+f0506b9c-1442-4265-8a68-dcc604b5991c,朝,あさ,asa,morning,197
+ad62ebdb-50a6-43c7-9ba2-5b9f6828ea59,零,れい,rei,"zero, nought",198
+bf710bbe-130e-4280-82ff-1d8dc54b7a1d,足; 脚,あし,ashi,"foot, leg",199
+db05b142-0fe4-4e2b-9b0e-4ba4ea070f13,夜,よる,yoru,"evening, night",200
+b85391af-130f-42ed-a7b8-de5673b49776,読む,よむ,yomu,to read,201
+958ee228-6031-43ad-979e-8de57b790d94,呼ぶ,よぶ,yobu,"to call, to invite",202
+aec64f79-a4a3-47f7-a7ce-2e181470646c,横,よこ,yoko,"beside, side, width",203
+2a9ff1b1-7f3d-4570-bef3-eb4133548f40,後,あと,ato,"after, since",204
+1a937b7d-6e22-4a3e-920d-5d2d379c0f4f,門,もん,mon,gate,205
+79ca7ce4-a0b1-4735-9b1e-e6121fb12b98,兄,あに,ani,"older brother, big brother",206
+b8254cb7-e732-45a3-bee7-55cdd5fc76a5,雪,ゆき,yuki,snow,207
+750b1c50-4ffa-48d1-a096-d677041ba948,雨,あめ,ame,rain,208
+2439ff1c-010d-4463-956c-06155b2d60d3,飴,あめ,ame,candy,209
+3b9ef66b-b549-4a08-a714-e3f5fc29f37c,在る,ある,aru,"to be, to have",210
+31b927e0-9c99-4d35-9814-aae7f53bb551,有る,ある,aru,"to be, to have",211
+7578dce6-2e7e-4d83-b257-774668eadec9,山,やま,yama,mountain,212
+42408b6f-ab25-4865-957e-07a0c4d05059,言う,いう,iu,to say,213
+fe2eb099-5031-4a66-8854-94ea9016b3b4,家,いえ,ie,"house, home",214
+7493d863-0ade-49c0-973c-10834d108c12,池,いけ,ike,pond,215
+85f98fb8-761a-4f4d-af86-bb8d7577d38a,椅子,いす,isu,chair,216
+d39ac13c-4695-4b63-adf8-ea6bc8fcbe5b,一,いち,ichi,one,217
+92a30af6-0c65-4485-a9e4-1aeab4ad170d,姉,あね,ane,"older sister, big sister",218
+9e905116-7c7d-4648-abf9-2331f4bfad55,本,ほん,hon,book,219
+5455a9e1-8dfa-491c-8563-0bcb1bc4189e,見る,みる,miru,"to see, to look",220
+28888f2c-b20b-45d1-b008-f492a86f1ca0,買う,かう,kau,to buy,221
+5c94b6fb-ef76-4d4c-a225-6b94b33fd936,服,ふく,fuku,clothes,222
+f28d3587-3fa1-4103-9f59-2544505650f6,弾く,ひく,hiku,"to play, (a string instrument or piano)",223
+d42c40d8-7ab5-48ba-bc54-c41d27e848af,書く,かく,kaku,to write,224
+ce678f16-1892-4a08-bc95-2ae34dc2e017,傘,かさ,kasa,"umbrella, parasol",225
+e8f59a51-a82d-4420-aade-69163bc1220b,冬,ふゆ,fuyu,winter,226
+b8d0bbf3-7eac-4a81-be29-20b4bf60fc45,貸す,かす,kasu,to lend,227
+f99d4c62-9626-4303-a535-ad5171ec0bbc,降る,ふる,furu,"to precipitate, to fall, (e.g., rain, snow, etc.)",228
+878dc3ef-1926-4414-8a72-17f3f86e0723,風,かぜ,kaze,"wind, breeze",229
+e4c2bb53-e1ec-4d6e-b825-913e1d27c790,鍵,かぎ,kagi,"a lock, a key",230
+c363a29f-dcf3-4292-b093-986b0f0be0f2,顔,かお,kao,face,231
+e18d968c-9f55-4495-99a8-23d93bd35fdb,吹く,ふく,fuku,"to blow, (wind, etc.)",232
+83204885-638c-4023-b0ef-2aa5ec8f6d50,昼,ひる,hiru,"noon, daytime",233
+035ffda3-bfbe-4806-990e-5b1f12a13c5d,風邪,かぜ,kaze,"cold, flu",234
+f6828b00-a52b-43dd-833d-033bb1ba1d39,下手,へた,heta,"unskillful, poor",235
+17a099a5-9177-4a6e-bdfe-be84d18e23f3,引く,ひく,hiku,"to pull, to draw, subtract",236
+6c174909-c442-48e3-b1f5-2b1b8d6ee204,部屋,へや,heya,room,237
+7e796915-3405-4331-84fd-2bba37407302,辺,へん,hen,"area, vicinity",238
+f720502b-4cfa-492f-a07b-858269efdf1f,暇,ひま,hima,"free time, leisure",239
+d4e89a8c-5743-4339-8239-d5eca558603c,方,かた,kata,"way, way of doing",240
+e32b4eeb-1239-4dd0-b6dd-fb48f6f6b1d0,人,ひと,hito,"man, person",241
+92a5b527-50c0-4a58-8e8c-c218f80f6ad6,外,ほか,hoka,"other, the rest",242
+5edb99aa-fce0-440c-bb6b-519e8adfb5f2,電気,でんき,denki,"electricity, light",243
+b2e943fc-1f1e-42f8-b209-30c5a81561fb,机,つくえ,tsukue,desk,244
+5ef7aafa-964d-4fe1-8fd9-af5469a0d3f3,天気,てんき,tenki,weather,245
+6178564b-693e-4b5b-a8d9-dd28b0ce0903,作る,つくる,tsukuru,"to make, to create",246
+03d0c32a-0954-4100-89f6-dd09421e5dff,二十日,はつか,hatsuka,"twenty days, twentieth (day of the month)",247
+da153d08-e8c8-4b0c-872d-aa523ba44f2d,手紙,てがみ,tegami,letter,248
+ef97fb80-7821-4ba0-81d6-ef59438ec4af,一つ,ひとつ,hitotsu,one thing,249
+26703fab-5aef-4ac2-b030-5136edbc21b3,話,はなし,hanashi,"talk, story",250
+3da5b016-9ff7-4c19-812b-0e52398ba5b2,強い,つよい,tsuyoi,"strong, powerful",251
+97a4ed92-0d07-449e-b4cb-272951466cb6,出口,でぐち,deguchi,an exit,252
+386ebb5b-0116-434e-8626-277665983c77,昨夜,ゆうべ,yuube,last night,253
+717394f5-9348-4fe5-b541-b42edcd4f748,話す,はなす,hanasu,to speak,254
+ab78033c-2b4f-4a18-9685-0086be2169d9,八つ,やっつ,yattsu,eight things,255
+93a64b4d-16fd-41a5-8218-9640b0bbd4c2,早い,はやい,hayai,early,256
+95bacbe5-74ed-4883-a00b-cc60139c386b,欲しい,ほしい,hoshii,"to want, in need of",257
+11d6819b-8b37-4b15-8158-ba0c7d9b4bf9,左,ひだり,hidari,left,258
+a181adff-7c30-47a4-9329-61b4abcd6de0,私,わたし,watashi,"I, myself",259
+052b1917-67b8-4a87-9e94-bb8bca99f7b8,分かる,わかる,wakaru,to understand,260
+c83a8105-940e-45b9-89d3-92a19f380b53,若い,わかい,wakai,young,261
+3a39ebac-4074-4a1b-aabb-baac9476ba13,東,ひがし,higashi,east,262
+9d2bd536-888e-4e54-80c2-584790a25248,～匹,～ひき,hiki,counter for small animals,263
+d294d090-5a7d-4e3e-b647-ae352811c0cc,廊下,ろうか,rouka,corridor,264
+17a42b0e-ecf3-489d-9954-b70f3672f551,頼む,たのむ,tanomu,"to request, to ask",265
+9e87937f-8917-4e6f-8dee-c92d0ab3a2cb,晴れる,はれる,hareru,to be sunny,266
+f53a7d94-3b70-4efc-95a9-dc5c184d50f9,多分,たぶん,tabun,"perhaps, probably, maybe",267
+c6187b49-e07e-43f5-bcd0-a2b273be3b38,食べる,たべる,taberu,to eat,268
+cb821eb3-f480-4841-9df9-182748fb75db,卵,たまご,tamago,egg,269
+03946311-10a7-4016-b0de-25d592c41fbe,誰か,だれか,dareka,someone,270
+4d1461b2-daad-4079-b101-04f8fa814449,弱い,よわい,yowai,weak,271
+c2403a67-8103-4598-aaea-fc36ae45d983,近い,ちかい,chikai,"near, close by, short",272
+5d3963e6-11ad-4653-a0c1-41df157b83e3,違う,ちがう,chigau,"to be different, to differ, wrong",273
+da242eb8-02a9-4138-b441-07ea82332e70,近く,ちかく,chikaku,"nearby, in the neighborhood",274
+00ee0d43-534f-477e-a949-5c862e776013,四つ,よっつ,yottsu,four things,275
+215f43b0-a8cd-430c-b294-a22e1ccf0a42,電話,でんわ,denwa,a telephone,276
+1b799276-b9fe-4282-bd5c-a02c2e85f3fb,低い,ひくい,hikui,"short, low",277
+9bf23b4e-1f88-46de-ada7-6dbdc1767b96,使う,つかう,tsukau,to use,278
+ca5e6ea5-d97d-42d0-82f0-c8b105c9bcca,速い,はやい,hayai,"fast, quick",279
+772e5d66-358b-4293-83d5-9e44b8588beb,八日,ようか,youka,"eight days, eighth day of the month",280
+441e4e69-ee2e-4f3d-a1f9-b8921847efb7,四日,よっか,yokka,"four days, fourth day of the month",281
+626ad6b0-8922-4596-9573-051f78cfeb87,野菜,やさい,yasai,vegetable,282
+87105719-f221-4598-b29c-c1580c84dc7f,休み,やすみ,yasumi,"holiday, day off, absence",283
+b15ea99c-4ac1-4ccc-8056-b5cab4e913a7,～番,～ばん,ban,"st, th best, number",284
+b05af571-c532-4302-a094-cf16c48d3a6b,南,みなみ,minami,South,285
+ee0da499-de82-445f-bc4e-ef847b3eec93,緑,みどり,midori,green,286
+88527add-a418-4060-be51-75266306fd51,三つ,みっつ,mittsu,three things,287
+ba66645e-15f2-4915-b39b-65c88b38f0c7,三日,みっか,mikka,"three days, third day of the month",288
+cdac035f-d7cc-48b9-8011-853c03793bfa,古い,ふるい,furui,"old, aged, ancient",289
+1655bf4e-5852-413b-a42e-b45bfe86a9f8,長い,ながい,nagai,"long, lengthy",290
+75f2521e-dcdd-4a85-8da6-a6e3656730b0,見せる,みせる,miseru,"to show, to display",291
+659f18e9-9082-407b-821a-3564acb9c2ec,～分,～ふん,fun,minutes,292
+dc38a48e-2c26-4e25-a7f7-af0390032b49,無くす,なくす,nakusu,to lose something,293
+a52bb0cc-4aa0-4c4f-8506-e5d96838e3e7,止まる,とまる,tomaru,to come to a halt,294
+df68d94b-1441-4366-b9ee-b8b757e3b79d,温い,ぬるい,nurui,lukewarm,295
+8c01fea6-dd9b-46a3-98e7-f8557f461a88,丸い; 円い,まるい,marui,"round, circular",296
+01089d04-6466-4d71-b222-71077fe498e7,便利,べんり,benri,"convenient, handy",297
+8bd905ee-4877-456d-8979-9b338b09204d,七つ,ななつ,nanatsu,seven things,298
+312a8a44-b651-4e45-a6aa-6a41edd5df86,七日,なのか,nanoka,"seven days, seventh day (of the month)",299
+be65f6c8-3911-42c3-8b27-5ca28de0bae0,名前,なまえ,namae,name,300
+ff302fab-e7c6-451b-b923-b4a1f95ad750,習う,ならう,narau,to learn,301
+a85d5243-85b4-452f-a2dd-2310000b176e,荷物,にもつ,nimotsu,"luggage, baggage",302
+9e874290-8c8a-4148-bc40-fe07027282a4,帽子,ぼうし,boushi,"hat, cap",303
+d51c5645-90fe-4a51-a421-fe89441caa9c,並ぶ,ならぶ,narabu,"to line up, to stand in a line",304
+36af6be5-9e61-48d9-ab6f-09c584347780,曲る,まがる,magaru,"to turn, to bend",305
+4e621e6f-c84f-47fd-8dae-fdb8a47de5ad,磨く,みがく,migaku,"to brush, to polish",306
+bb3bc0d5-3b77-4696-b63b-ac3eb77b11fe,休む,やすむ,yasumu,"to rest, to have a break, to get time off",307
+f94aba2e-013d-4d45-b122-065e2b0aec07,太い,ふとい,futoi,"fat, thick",308
+0f56ba85-6987-4cff-a97e-4e7e32873011,六日,むいか,muika,"six days, sixth day of month",309
+d5b9eec7-c09d-4be6-ae32-3f2dfad46333,安い,やすい,yasui,"inexpensive, cheap",310
+993d4d15-8aef-4d21-8a77-0a36a5b524b3,二十歳,はたち,hatachi,20 years old,311
+5736f5f7-a686-482c-9666-81cd0d8a6887,細い,ほそい,hosoi,"thin, slender, fine",312
+0e805d44-88b2-4e19-a61c-f4996a0c036a,走る,はしる,hashiru,to run,313
+73fa2efc-30ad-446b-846d-cb565ee2eb18,初め; 始め,はじめ,hajime,"beginning, start",314
+4a306e2b-da91-4034-ae9a-44422f43c92a,一人,ひとり,hitori,one person,315
+7486fe8b-0fd7-4b3d-98ec-c25654e36134,遠い,とおい,tooi,"far, distant",316
+4b5ba21b-6ec2-4166-b0c7-16f0131fdcc2,十日,とおか,tooka,"ten days, tenth day of the month",317
+0825697d-dd05-41ac-90b1-2ca7239e0f32,～時,～とき,toki,at the time of,318
+cae32232-38c6-4c9f-b840-e823d516e39b,百,ひゃく,hyaku,hundred,319
+982557d8-494e-460d-b8d9-76901e2115d1,登る,のぼる,noboru,to climb,320
+955ca922-e9ec-48ee-80e4-ff82bb1caea3,広い,ひろい,hiroi,"spacious, wide, broad",321
+1bfa22e3-d1e4-4914-a877-e9158cb6d0b4,葉書,はがき,hagaki,postcard,322
+a96cd11e-153c-46d2-808f-12f4f8a5bd08,入る,はいる,hairu,"to enter, to contain, to hold",323
+f6b1cb0c-b2ac-4bf7-b3a3-c4321ff469a9,所,ところ,tokoro,place,324
+a4679892-bc53-49f8-83a2-38fefa1c85e3,眼鏡,めがね,megane,eye glasses,325
+4621b58a-25f8-4125-9800-9b738963e8b7,二つ,ふたつ,futatsu,two things,326
+693b6db3-c4f6-4e37-9364-7833a67c602b,二人,ふたり,futari,two people,327
+f7ecd1b1-2d96-4df9-b7a3-f626d20feb4e,六つ,むっつ,muttsu,six things,328
+cbee0a8f-bae3-439e-8a90-af4911771d47,二日,ふつか,futsuka,"two days, second day of the month",329
+319e93e4-57be-4f5d-a7a1-bdec5b5d0c6e,向こう,むこう,mukou,"beyond, over there",330
+244e0ec1-7aff-46be-9a60-ed5ea278f83f,隣,となり,tonari,"next to, next door to",331
+b8637c72-7a26-468b-8088-d11a49bdd436,時計,とけい,tokei,"watch, clock",332
+125a1c1d-338c-4553-adec-4848d584243e,高い,たかい,takai,"tall, high, expensive",333
+516d31fe-7e62-4f3b-a951-2bea7f08e39e,背広,せびろ,sebiro,suit,334
+6d521bd9-f25d-464e-afcd-39216cd10831,借りる,かりる,kariru,"to borrow, to owe",335
+d4f9456f-79db-4360-8b41-edf1eaab251a,漢字,かんじ,kanji,"kanji, Chinese character",336
+41ec49eb-6502-47f9-88d4-d8912bb883e3,軽い,かるい,karui,"light, non-serious, minor",337
+9f9bbffd-8cdf-4918-9e90-1720b3f6e9ef,体,からだ,karada,"body, health",338
+cc01ca4e-abad-45bc-a85e-30e28a733183,辛い,からい,karai,"hot and spicy, salty",339
+3bb20f9b-2910-400d-a40a-08976d578408,花瓶,かびん,kabin,vase,340
+85db0b4a-8a01-4f8f-b10b-6864c9b7a60b,家庭,かてい,katei,"home, family",341
+7df37848-4f80-4133-98da-eaf593eea633,家族,かぞく,kazoku,family,342
+da9f12e8-dec1-4d6d-a7c5-bdd05d038c85,消える,きえる,kieru,"to vanish, to disappear",343
+173b0a64-9a82-48b2-82a2-f52fa512fa9c,掛ける,かける,kakeru,"to put on, to hang",344
+e0a1b8f4-478a-4d80-9afd-49ff510d8cf0,返す,かえす,kaesu,to return something,345
+9c6aab56-9202-40cc-a043-88738aa875c6,～階,～かい,～kai,"counter, counter for stories (floors) of a building",346
+914760ff-9bbd-49e6-9171-a96befd88466,～回,～かい,～kai,"times, counter",347
+de6ed350-afdb-4237-8f19-c67cd4e7535c,女,おんな,onna,"woman, female",348
+68909efd-cc24-4f9a-90bc-180638d6c070,終る,おわる,owaru,"to finish, to close",349
+9c4e4818-e097-43bc-a95b-8139a6345e69,降りる,おりる,oriru,to get off,350
+ede6489e-da73-4631-a068-55b6c25a4b60,泳ぐ,およぐ,oyogu,to swim,351
+9872342d-1a99-496a-b6a8-abf498dc9852,帰る,かえる,kaeru,"to go back, to go home, to return",352
+4fdedad2-050c-476d-9a6b-1a4092443354,重い,おもい,omoi,"heavy, serious",353
+8eb5a8fc-3e15-4f4b-b886-752ef1acc156,切手,きって,kitte,"stamps, stamp, postal stamps",354
+7510fca6-f214-4489-80a6-2d8f762592e8,昨日,きのう,kinou,yesterday,355
+89ea0f60-2b85-43db-befb-0fcb536ed0d7,御飯,ごはん,gohan,"rice, meal",356
+76bdc239-9263-4da5-b013-927b88553102,子供,こども,kodomo,child,357
+41bfe513-bef9-4abb-bad8-ff8f97a77769,言葉,ことば,kotoba,word,358
+a11aec7c-d3e8-490d-8a26-9c668293eaf2,今年,ことし,kotoshi,this year,359
+2db15adb-f5bc-4646-9fa8-f7e10002a165,午前,ごぜん,gozen,"morning, A.M.",360
+71181dd3-099a-4a24-8369-a7d15b39661d,元気,げんき,genki,"healthy, energetic",361
+b58c4bcb-e338-47ba-a46c-89d3e5cca669,黒い,くろい,kuroi,"black, dark",362
+4efbcdcf-2bd4-40ea-8589-cbb75b37494d,切符,きっぷ,kippu,ticket,363
+5f13fa80-00a4-4bc3-aa6b-64f15121a7b1,車,くるま,kuruma,"car, vehicle",364
+999bd6d3-5a50-41b4-af28-752529243fb2,曇る,くもる,kumoru,"to become cloudy, to become dim",365
+d1b57a40-40a5-4eee-9f34-ba303ad2d893,曇り,くもり,kumori,"cloudiness, cloudy weather",366
+b59f4294-8e11-4055-896c-c4a0b9892e08,薬,くすり,kusuri,medicine,367
+cbce98b2-2fe9-4939-b54e-4ca0a335689c,綺麗,きれい,kirei,"pretty, clean, tidy",368
+26dfe4af-f4ba-4667-9943-e5293755ed4a,嫌い,きらい,kirai,dislike,369
+8c30a1d9-9936-4cca-ad6a-9e6960a93277,今日,きょう,kyou,"today, this day",370
+62fc0ba9-5263-4ebd-b78b-5c79b977ae64,九,きゅう,kyuu,nine,371
+94aad933-306c-43a1-95ab-e7606ec01721,暗い,くらい,kurai,"dark, gloomy",372
+c96635cb-ab19-4777-bddd-4e63c4a39958,お風呂,おふろ,ofuro,a bath,373
+87fab681-f3e8-45c0-8e1d-f1e5d0c23670,同じ,おなじ,onaji,"same, identical",374
+daf2e480-26b8-4361-922e-b8bfb4812cf2,お腹,おなか,onaka,stomach,375
+c03ae9a6-b231-45de-bdea-c5d4909c3e2d,医者,いしゃ,isha,"doctor, physician",376
+541507c1-32ec-4be0-b6af-683879917ba8,歩く,あるく,aruku,to walk,377
+73ad83bc-16a1-4931-87f6-5f46ef146435,洗う,あらう,arau,to wash,378
+ddd86027-79f7-4a0f-a61b-ac4af34ea870,余り,あまり,amari,"not very, surplus",379
+aafab419-18e9-4826-abe5-27c82cc2e7dc,甘い,あまい,amai,"generous, sweet",380
+14d9a5c8-0bcc-4cbe-ac2e-26461efd67c7,浴びる,あびる,abiru,"to bathe, to shower",381
+0d39c0d3-5413-4a3e-ab81-ad912509d622,厚い,あつい,atsui,"kind, thick, deep",382
+54ad08bf-9a91-463e-ab3b-a73478296f45,痛い,いたい,itai,"hurt, painful, sore",383
+dd5cc6a3-bfa1-4a1a-a04c-eed3bf447805,熱い,あつい,atsui,hot,384
+ee2f1319-4993-4e45-bb13-e491e7b89e2f,頭,あたま,atama,head,385
+ed1588a7-ef1d-4f5d-aefa-2a81133a2e1c,遊ぶ,あそぶ,asobu,"to play, to spend time pleasantly, to hang out",386
+28ce4189-8fa6-4b70-b3a3-2e3c7a29c80f,明日,あした,ashita,tomorrow,387
+9b1828b6-4887-4416-b6e3-54b6d00bf7c9,上げる,あげる,ageru,"to raise, to lift",388
+a44a9e35-e3ba-4cc1-b4ce-dade999e24b7,開ける,あける,akeru,to open,389
+67cb315b-1184-431d-bbce-90ee9ed0762b,赤い,あかい,akai,red,390
+391d7ccc-954a-4d83-9127-ed121b61973b,青い,あおい,aoi,blue,391
+ad0ebf48-ee61-4c96-827b-296fcbd95cc8,暑い,あつい,atsui,"hot, warm",392
+8a76aaaf-e1a2-40e9-a590-888c6cd5a7f3,五日,いつか,itsuka,"five days, fifth day of the month",393
+41a475f4-1307-4eee-a0d4-f7cb1c19379f,五つ,いつつ,itsutsu,five things,394
+c7477fff-bc60-40d7-89e9-450f04b07a5b,入れる,いれる,ireru,to put in,395
+6a3cd599-36f2-46b1-a0f4-1197294e6dac,大人,おとな,otona,adult,396
+682dbf8d-1253-447f-9e1b-ddebfface865,男,おとこ,otoko,"man, male",397
+f28aa6bd-c2b4-49cb-b30c-8da6157076b8,お茶,おちゃ,ocha,tea,398
+c5204eee-6c52-4026-9801-48f5e6e9d12d,遅い,おそい,osoi,"slow, late",399
+fd20a95a-a381-4563-82aa-c93d6a26c687,お皿,おさら,osara,"plate, dish",400
+192b0dbd-3157-42ba-968e-fb0d28f54bb8,お酒,おさけ,osake,"sake, alcohol",401
+b73dd626-1c7e-4ce0-a8f8-b9a06a49b38f,起きる,おきる,okiru,"to get up, to happen",402
+e062b272-b8b3-4e8e-ac71-ab820aaee44b,お金,おかね,okane,money,403
+1b6ab990-9cd8-4d0b-bdcb-5ce54e218f6a,お菓子,おかし,okashi,"confections, sweets, snack, snacks",404
+fd680b05-d6ca-4644-8aed-1b3c943a3c3c,多い,おおい,ooi,"many, there are a lot",405
+9f1ab865-0aa7-49b2-ab08-2523974c3d8e,～円,～えん,en,Yen,406
+300fe9ba-6018-4e17-89c2-33ddc747a5f8,英語,えいご,eigo,English,407
+a65efd93-f429-4fd5-a5b0-09adb0eccf95,映画,えいが,eiga,"movie, film",408
+75c265b2-5541-4e26-b017-b2ba4ffcfc6f,上着,うわぎ,uwagi,"coat, jacket",409
+25fd56ed-0cb5-4602-b83e-ea991104274a,歌う,うたう,utau,to sing,410
+1613618e-6e4b-4641-8414-501304e0ed9b,薄い,うすい,usui,"thin, weak",411
+7bcbb79f-ce0a-4843-84e1-96f96b1aeb36,後ろ,うしろ,ushiro,"back, behind, rear",412
+afc2c908-ab60-4987-be5f-8e38147a66f8,困る,こまる,komaru,"to be bothered, to have difficulty",413
+969c0904-7caf-4fda-a277-b06d6575bfaf,～ころ; ～ごろ,～ころ; ～ごろ,"koro, goro","about, toward, approximately",414
+8b240e62-3b7d-42bc-9048-fe6eaf835149,悪い,わるい,warui,"bad, sinful, inferior",415
+339316a2-db4c-423a-be79-646a53341143,～台,～だい,dai,"counter for vehicles, machines, counter",416
+58edb282-fcc2-4467-b0ac-ed00e8e98948,寒い,さむい,samui,cold,417
+04072604-6581-4f5e-a5c9-7191d9536caa,散歩,さんぽ,sanpo,"walk, stroll",418
+4ae4f63f-a7f1-48b3-b2fa-f9595625a015,時間,じかん,jikan,time,419
+bb959905-6eb0-498a-aa7c-18e6b1d99e32,少し,すこし,sukoshi,"little, few",420
+081906da-d261-46c9-984f-0a2556a4ff61,仕事,しごと,shigoto,"work, job, occupation, employment",421
+389d5c0a-c021-4fa1-8974-bd1a5f63f725,静か,しずか,shizuka,"quiet, calm",422
+740aa95f-5da4-4dcb-91cf-78ce85e1e639,字引,じびき,jibiki,dictionary,423
+1fe28517-87d6-4e96-a2e3-7ed7545994c3,白い,しろい,shiroi,white,424
+438927e7-e1bf-42fd-8ce3-9689b2d0324d,自分,じぶん,jibun,"myself, oneself",425
+20662642-296e-4d5b-9f06-c1a95fc48f13,閉まる,しまる,shimaru,"to close, to be closed",426
+f6749518-ea68-49db-93b3-5c62c57b16d9,閉める,しめる,shimeru,"to close, to shut",427
+a120d506-9dae-4500-9d83-f53e435224a0,締める,しめる,shimeru,"to tie, to fasten, to tighten",428
+cff5b984-20fa-4e0e-b1aa-ba91d73f6091,全部,ぜんぶ,zenbu,"all, entire, whole",429
+65ee6005-c87b-43eb-9a91-c0f9635e4d31,十,じゅう,juu,ten,430
+5bef6fa0-95d4-493c-ae57-6d17fe24d624,掃除,そうじ,souji,"cleaning, sweeping",431
+0969f6d4-1a28-444d-bf9a-963563a2a35c,砂糖,さとう,satou,sugar,432
+57f81a9b-bad4-45f6-9c0f-d2221a0829a6,座る,すわる,suwaru,to sit,433
+708c01f7-858e-44c2-ba73-504053ed4652,辞書,じしょ,jisho,dictionary,434
+7dc245f0-5bf0-4ce8-afa0-e3583028810c,生徒,せいと,seito,"student, pupil",435
+e135808a-c91f-4598-bb63-d6c8f163e1f4,～歳,～さい,sai,years old,436
+3e462416-90d4-4bbd-8985-a319ffc164ab,雑誌,ざっし,zasshi,"magazine, journal",437
+ea710ca2-64e6-4434-9451-e06b0d82eccf,～冊,～さつ,satsu,"counter, counter for books",438
+7a0937b1-40b3-4998-8073-12690fb3344d,狭い,せまい,semai,narrow,439
+13c03570-1729-4469-970b-62ac8720b6a1,魚,さかな,sakana,fish,440
+e66071fd-e046-4d59-93a4-9684218a4ab0,渡る,わたる,wataru,"to cross over, to go across",441
+84c1bcad-ae5f-4bf2-a9c2-56834bdfef30,財布,さいふ,saifu,wallet,442
+d5b00a0a-b372-4a97-bc48-1f749fd64ccb,有名,ゆうめい,yuumei,famous,443
+d8ef20aa-77bd-4274-b05e-2a04e278e977,伯母さん; 叔母さん,おばさん,obasan,aunt,444
+30063511-1e62-46be-b2de-e8ce264a2c35,夕飯,ゆうはん,yuuhan,"dinner, supper, evening meal",445
+a5467ae5-7e33-40c1-8510-688cb3869569,小さな,ちいさな,chiisana,"small, little",446
+7c488757-85fe-4bde-9aab-c58d7f2a6e9c,新聞,しんぶん,shinbun,newspaper,447
+20f9b606-a6f2-4783-93cf-69816731cfb1,夕方,ゆうがた,yuugata,evening,448
+716f60bc-a02b-46c3-99f8-065b31754d41,一昨日,おととい,ototoi,the day before yesterday,449
+ff5f9ed3-9b8e-4e76-88f5-b6cb32959ec5,食べ物,たべもの,tabemono,food,450
+0bae2277-11dd-4ec9-910c-c506b6c63e98,洗濯,せんたく,sentaku,"washing, laundry",451
+404096ba-6a19-4001-add6-dffea6ca9835,色々,いろいろ,iroiro,various,452
+b017e06a-5d5b-4420-b5b1-baafe6046971,覚える,おぼえる,oboeru,"to learn, to remember, to memorize",453
+2dde3092-e3ac-46aa-a612-8a66085aa4ce,封筒,ふうとう,fuutou,envelope,454
+bc94ceef-d041-4020-9dc9-c4430ed308dc,そうして; そして,そうして; そして,soushite; soshite,"and, like that",455
+fa0a2a77-edcb-4f81-b6e9-fa0b3a58b5fd,出かける,でかける,dekakeru,"to go out, to depart",456
+152fe762-cb2b-43f2-a5ed-c2d6c7666508,洋服,ようふく,youfuku,"Western-style clothes, western clothes",457
+8cc517b5-5f18-451a-b754-bf76c87d5674,豚肉,ぶたにく,butaniku,pork,458
+44deaa82-0709-4baf-97fa-ff6bb0ef3cd2,上手,じょうず,jouzu,"be good at, skillful",459
+23cd5516-36a7-4a93-92ac-d4d06e57a7fb,今晩,こんばん,konban,"tonight, this evening",460
+51bf65d9-8e59-4886-af23-d00f7fb78215,音楽,おんがく,ongaku,Music,461
+9cf26a69-5040-40e8-9465-59955bb7d3fd,冷たい,つめたい,tsumetai,cold,462
+8688251a-0a25-4055-a4b5-5438990d982b,醤油,しょうゆ,shouyu,soy sauce,463
+8bdec374-99e4-4a11-9a65-146eb1ba8b85,入口,いりぐち,iriguchi,entrance,464
+0fa743a8-b568-41fa-b4b1-b83c796e815c,小さい,ちいさい,chiisai,"small, little",465
+10fba22b-99c9-48ad-af95-53529ffa0888,勤める,つとめる,tsutomeru,to work for,466
+ecccd42e-cf99-4087-bb49-86aad495f8ed,危ない,あぶない,abunai,"dangerous, critical",467
+1fb70095-6a69-4743-af83-feb39de57f27,丈夫,じょうぶ,joubu,"strong, solid, durable",468
+6aa3d877-f806-4253-a30f-9614015cfef2,少ない,すくない,sukunai,"a little, a few",469
+7fd9dc0d-9ef0-4740-b357-42d58afe11cd,本当,ほんとう,hontou,"real, true",470
+5ce98570-4c63-466b-b4b3-3881d6d8f83d,皆さん,みなさん,minasan,"all of you, everyone",471
+038c0458-dc39-425c-80a2-5f2f0bfb1cf9,鉛筆,えんぴつ,enpitsu,pencil,472
+80a9f507-bd30-47b3-a1f0-9a7200ffcd16,問題,もんだい,mondai,problem,473
+035e65ba-3c88-4cdc-9aa9-5ac5d2f0954c,美味しい,おいしい,oishii,"delicious, tasty",474
+fb04cc74-f112-4957-99f0-670158e57884,茶色,ちゃいろ,chairo,brown,475
+74ad1c51-7280-42df-8d9e-998908b52b20,大きい,おおきい,ookii,"big, large",476
+56f000e6-e9b0-4fa9-8ed5-114bb57d029a,大きな,おおきな,ookina,big,477
+2b7fb0e8-630e-4c1c-a98c-91180f4bc99c,大勢,おおぜい,oozei,great number of people,478
+93118bf5-01e2-4776-8f04-b5a9f585e408,短い,みじかい,mijikai,short,479
+72daf73b-ac38-4620-85b5-5d4804bb8b38,一番,いちばん,ichiban,"best, most, first, number one",480
+38d6508b-2eef-4ae7-8411-95ce3fa5de96,地下鉄,ちかてつ,chikatetsu,"underground train, subway",481
+b7509b49-17b5-43e2-99df-600544028c46,茶碗,ちゃわん,chawan,rice bowl,482
+37bd4eef-c61b-4b69-80b1-637af8ee631e,一日,いちにち,ichinichi,one day,483
+ee4b65ca-849d-4f71-837f-e530c409c4da,石鹸,せっけん,sekken,soap,484
+822273da-9e88-4a43-bca2-60783f89d448,～中,～ちゅう,chuu,"during, while",485
+6865fe31-4bb7-43fa-936a-4bb85c785408,生まれる,うまれる,umareru,to be born,486
+01b89abb-673c-44dd-a928-f2f1a6e28768,丁度,ちょうど,choudo,"just, right, exactly",487
+b4c0d500-5661-47b2-a804-0ffce944532d,奥さん,おくさん,okusan,wife,488
+686f165b-7f63-476e-b6f0-fb37938bfc23,毎朝,まいあさ,maiasa,every morning,489
+20599c7d-a126-4931-a2e8-c0580e8d92d1,先生,せんせい,sensei,teacher,490
+551f08e8-fc65-47bb-b2fd-a348cd638f25,毎日,まいにち,mainichi,every day,491
+c4837ddd-5187-4ad0-a1c1-87610aa23819,毎晩,まいばん,maiban,every night,492
+7387e3f9-4c7a-4e92-8d2c-8b16d2e716ab,弟,おとうと,otouto,"younger brother, little brother",493
+c0539e59-186a-4402-a7e7-0cb9670acf91,先月,せんげつ,sengetsu,last month,494
+11e7bca2-b8d2-43de-ae33-afcf3730e261,本棚,ほんだな,hondana,bookshelf,495
+13d3ed46-d111-4a99-bf6d-5c28976b50db,易しい,やさしい,yasashii,"easy, plain, simple",496
+4b6113f5-6563-4268-9824-5fad57c72a02,一緒,いっしょ,issho,together,497
+6928849e-9ef4-49b9-9df7-355ac387d24b,疲れる,つかれる,tsukareru,"to get tired, to become fatigued",498
+54858d9c-b144-4e19-ac12-ed7a9d4094f4,教える,おしえる,oshieru,"to teach, to inform, to instruct",499
+d37bf13e-ccf1-40ea-8b6b-4aff92120db7,伯父; 叔父さん,おじさん,ojisan,"uncle, middle-aged man",500
+e395eb59-316d-40de-851d-1c3cee17e43f,一日,ついたち,tsuitachi,"one day, first day of the month",501
+ce90ed5a-d227-49d6-9b71-625d3a6bd2a1,涼しい,すずしい,suzushii,"cool, refreshing",502
+055eccb4-84d4-4dee-b9de-313f3912b042,外国,がいこく,gaikoku,"foreign country, abroad",503
+9c7f4b10-9c83-4e7a-a5f6-00f1d99e6a7f,楽しい,たのしい,tanoshii,"enjoyable, fun",504
+ea3adaa5-d2e2-41d6-a765-4788ebd88a7c,友達,ともだち,tomodachi,friend,505
+2ee62d4b-7b31-4cfb-afd6-10d5de95f087,平仮名,ひらがな,hiragana,hiragana,506
+ba4a5525-d9e4-4a5f-989f-2b6f7c2ad511,結構,けっこう,kekkou,"splendid, enough, tolerably",507
+d1bbf915-191d-49a1-965c-ed51bc3116d7,警官,けいかん,keikan,"police officer, police",508
+2afe8228-10dd-4be6-abb6-0987f0dcc35d,～くらい; ぐらい,～くらい; ぐらい,"kurai, gurai","approximately, about",509
+d65ccb28-fb3d-497b-af90-8810831d6543,時々,ときどき,tokidoki,sometimes,510
+b466739d-288e-441d-a3c4-878d986921a3,靴下,くつした,kutsushita,socks,511
+95bf2636-2fcd-4cc6-aa45-c2270a305e53,果物,くだもの,kudamono,fruit,512
+d8152999-99f6-4efa-948e-d94f97805fee,結婚,けっこん,kekkon,marriage,513
+36d8238a-f30a-44cb-8756-f73cc10e511f,飲み物,のみもの,nomimono,"drink, beverage",514
+55576974-a3cf-4e75-b00b-77c9b7025901,～時間,～じかん,jikan,hours,515
+03ce3ced-ad69-49f1-97d1-6238afd9f286,旅行,りょこう,ryokou,"travel, trip",516
+71384478-92f7-49d7-af5c-f27270e0e418,灰皿,はいざら,haizara,ashtray,517
+6e5e98e3-81ad-4079-a6fd-a2009a9b910f,銀行,ぎんこう,ginkou,bank,518
+b0469389-63a0-41e8-aa3c-f0b3d30ac5a8,去年,きょねん,kyonen,last year,519
+32b2cea1-6732-49c8-be45-673928d9932a,料理,りょうり,ryouri,"cooking, cuisine",520
+9104719b-38e1-4ae0-8c85-1df7686b8c15,下さい,ください,kudasai,please,521
+9ef2cfdc-5639-4140-80b6-84fb1cf2ee0b,建物,たてもの,tatemono,building,522
+bad94fcd-30ad-49e8-a28d-dd50c09842dd,玄関,げんかん,genkan,entrance,523
+eac0f1a9-b48f-4c32-b886-6ffd9fb5d87b,公園,こうえん,kouen,park,524
+eeaa1b29-4926-4acf-ab04-628c216e3446,土曜日,どようび,doyoubi,Saturday,525
+83bc21f1-7fbd-4c4a-94c6-c1c1d92b275b,大変,たいへん,taihen,"very, difficult, hard",526
+c4811881-b932-4ba3-87f5-e5742eb95706,鶏肉,とりにく,toriniku,chicken,527
+d0d9d0fc-320c-4dfd-bd39-ef0aed2f7618,今月,こんげつ,kongetsu,this month,528
+ef664d89-d4ca-4556-b676-a4e09cb0988d,作文,さくぶん,sakubun,"essay, composition",529
+c60b7a46-eb6d-40e2-905a-8d047c6b8d42,答える,こたえる,kotaeru,"to answer, to reply",530
+4c4dfabb-ed7e-4455-a906-6ea77a2a658a,並べる,ならべる,naraberu,"to put side by side, to line up",531
+d6f6a1b5-08d7-40cc-a4c2-07a07a1aa96c,忘れる,わすれる,wasureru,to forget,532
+a83b9a31-75d7-45c4-8723-502667cb49ab,大好き,だいすき,daisuki,love,533
+1a109585-1137-43a8-b636-6851c694a243,九日,ここのか,kokonoka,"nine days, ninth day of the month",534
+48d6d266-840e-4516-b817-09eadca43f4f,交番,こうばん,kouban,police box,535
+030fb480-289f-4713-a986-352b4e48ab94,明るい,あかるい,akarui,"bright, cheerful",536
+09be1b49-2b67-4426-a0b6-1582e92d6d49,紅茶,こうちゃ,koucha,black tea,537
+ce3fa36f-ec29-493d-9f4c-921038e8dad3,沢山,たくさん,takusan,"many, much",538
+2aea5840-4d5a-4aef-bb86-1030c7a1777f,九つ,ここのつ,kokonotsu,nine things,539
+d314ab89-4575-48c7-a3ef-121f351bf561,始まる,はじまる,hajimaru,"begin, start",540
+887289ea-8225-4ed1-b65e-b2e0cdbe9159,妹,いもうと,imouto,"younger sister, little sister",541
+9e0e079d-b2a6-43c2-af52-773a58a6f9d9,初めて,はじめて,hajimete,"for the first time, first time",542
+24108f24-8b26-45e5-8c9d-7c3286dc27da,飛行機,ひこうき,hikouki,airplane,543
+d408bea0-dcad-43fa-b604-aa43a2f7a071,～か月,～かげつ,kagetsu,number of months,544
+c206d63d-3a15-458e-a59a-f4b278934a94,～中,～じゅう,juu,"during, while",545
+f16e204f-ea2b-4b8b-8576-57937c5d0480,学校,がっこう,gakkou,a school,546
+9246928d-d0f9-4b17-90f0-ce7c9a77e146,写真,しゃしん,shashin,"a picture, a photograph",547
+45a2c45c-e49c-40c7-8674-b78bcbe11260,半分,はんぶん,hanbun,half,548
+8cfbaed5-9a6d-4229-9cfc-ed3615774eb3,大学,だいがく,daigaku,"college, university",549
+349c1a1e-e041-406d-87f4-550a76054451,番号,ばんごう,bangou,"number, series of digits",550
+7bd24807-1384-4c55-872d-d40960170019,一月,ひとつき,hitotsuki,one month,551
+446442e1-839b-4976-8d8e-94a8a6d986b2,火曜日,かようび,kayoubi,Tuesday,552
+fe8567f8-cd33-4c39-9191-eac2840cfaeb,電車,でんしゃ,densha,train,553
+6d5b9a1a-4d56-4160-a7f7-d574ea6ff745,大切,たいせつ,taisetsu,important,554
+4025e1fa-42a3-4f75-bbfe-fb8c3e0acdcd,学生,がくせい,gakusei,student,555
+13b82ee1-b944-42bd-8544-c0648435de76,買い物,かいもの,kaimono,shopping,556
+e99bc368-72dc-4adc-a477-f6ea396a2e22,可愛い,かわいい,kawaii,"cute, adorable",557
+a070cc7c-32c6-41d3-bb68-68222f4ea9bf,黄色い,きいろい,kiiroi,yellow,558
+9bcae0a5-229a-4eec-990c-d456843b3e2e,汚い,きたない,kitanai,"dirty, unclean, filthy",559
+1335302b-1ba0-40b1-a862-b3d1e6692667,会社,かいしゃ,kaisha,"company, corporation",560
+dd1aceba-5191-43c7-88bc-39ae1dc5600b,来月,らいげつ,raigetsu,next month,561
+17793130-a1ae-4d16-88b4-eed52514095f,質問,しつもん,shitsumon,"question, inquiry",562
+68cddd78-9f70-4d98-aad0-daea6d538582,動物,どうぶつ,doubutsu,animal,563
+a7e7ccaf-8dc0-4aad-80d3-57e5c4107222,働く,はたらく,hataraku,to work,564
+7769492a-2d66-4000-bcac-e90ac14e9a62,来年,らいねん,rainen,next year,565
+0662b543-ae1c-4314-bac6-54db5a5d1427,明後日,あさって,asatte,day after tomorrow,566
+9180cf22-de3d-4937-9958-ffbbd3c407e2,病気,びょうき,byouki,"illness, sickness",567
+55112e56-52d0-41a7-83f2-9811b6bfa70b,階段,かいだん,kaidan,stairs,568
+c34fdc07-bced-4878-8e9e-789b77ca2e72,段々,だんだん,dandan,"gradually, by degrees",569
+0678d141-1adf-4f25-b4b9-30a330edb64d,新しい,あたらしい,atarashii,new,570
+864f718f-225a-4b27-a3ba-3a8f69761694,練習,れんしゅう,renshuu,practice,571
+2681cede-abf8-4b94-aa3e-bb1d4a8c8bee,忙しい,いそがしい,isogashii,busy,572
+115a24f5-8d35-4f3f-825d-897780c47f09,冷蔵庫,れいぞうこ,reizouko,refrigerator,573
+0964e39f-c671-4d30-80f1-7e3f9e54111a,朝御飯,あさごはん,asagohan,breakfast,574
+9e59c5d6-b43d-4154-86ac-72859a5fd916,大使館,たいしかん,taishikan,embassy,575
+6a8dc462-c4b1-4b7c-8474-da348333763a,来週,らいしゅう,raishuu,next week,576
+63e1c845-f22d-4e2b-8f54-9044f33ac795,先週,せんしゅう,senshuu,last week,577
+a8933bf0-d1cd-4b95-9a6e-2e73e58c53fb,暖かい,あたたかい,atatakai,warm,578
+e929a260-be16-4e45-a36c-3bf7bcea60e4,両親,りょうしん,ryoushin,parents,579
+27643ab7-9ab5-4274-8f62-3594c9bd6100,お弁当,おべんとう,obentou,a boxed lunch,580
+7a1c935a-878d-4ca3-9d4b-38216eb6694b,難しい,むずかしい,muzukashii,difficult,581
+89743055-c269-4964-b461-099ce8be05bc,木曜日,もくようび,mokuyoubi,Thursday,582
+2bbb9c7e-d049-45a3-b385-d7eee1ad8463,病院,びょういん,byouin,hospital,583
+4c5f4525-60b4-4e7f-be83-86719be9264f,授業,じゅぎょう,jugyou,"class, lecture",584
+e5958883-7700-42da-a042-19254ebb18bd,晩御飯,ばんごはん,bangohan,"dinner, evening meal",585
+52ee3d45-1aeb-451b-b368-1af94fed76dc,喫茶店,きっさてん,kissaten,café,586
+e31c183f-07c6-4ec8-8757-8536be6fa494,自動車,じどうしゃ,jidousha,automobile,587
+f682b6f9-2e34-42a5-b805-d6d724cb2b90,自転車,じてんしゃ,jitensha,bicycle,588
+e372acfc-3279-4f22-8e65-c6ce8c00cdaa,牛肉,ぎゅうにく,gyuuniku,beef,589
+e9900cd7-f286-4a24-af17-35db84e61846,昼御飯,ひるごはん,hirugohan,"lunch, midday meal",590
+abd9f1aa-1978-4ce2-b878-2dee72fa433a,教室,きょうしつ,kyoushitsu,classroom,591
+97d13cb9-a91f-47a2-bfc4-dbf4dc64e8c7,金曜日,きんようび,kinyoubi,Friday,592
+c66cb4f3-0e0c-4083-be97-8ab09f1a6e42,さ来年,さらいねん,sarainen,year after next,593
+71262a5c-9288-44b4-8be1-211e6767db35,日曜日,にちようび,nichiyoubi,Sunday,594
+2db05aae-edee-4898-acf4-d21372382fb6,月曜日,げつようび,getsuyoubi,Monday,595
+dce981f6-00ff-4baa-b7af-ab05c82cf862,交差点,こうさてん,kousaten,intersection,596
+e922a36b-c8b1-40de-9748-82b531620bc3,夏休み,なつやすみ,natsuyasumi,summer vacation,597
+97ed2a55-21ec-4a2a-9967-f5166d754107,図書館,としょかん,toshokan,library,598
+76890f46-3ae0-403e-af25-0499dd4b8e4c,今週,こんしゅう,konshuu,this week,599
+3b2c2f67-6260-4e1e-9102-1eb5bb14c5ba,兄弟,きょうだい,kyoudai,"siblings, brothers and sisters",600
+68dd3938-5dd7-47a4-84e2-ff927813a71b,宿題,しゅくだい,shukudai,homework,601
+eeda28ee-e7ae-485c-a0f7-da0909a3dd65,台所,だいどころ,daidokoro,kitchen,602
+a56a26db-44fb-4f9b-aecb-2098e5799767,面白い,おもしろい,omoshiroi,"interesting, amusing",603
+a42b104e-b26e-4c7b-88a0-1db153773079,毎週,まいしゅう,maishuu,every week,604
+9bf4f082-d9a1-465a-ac99-b1e919e133de,女の子,おんなのこ,onnanoko,girl,605
+e4a2acbf-b878-471f-a362-ba91fd204a84,お母さん,おかあさん,okaasan,"mother, mom",606
+96801349-93f8-4e72-aeeb-681132342ac9,男の子,おとこのこ,otokonoko,boy,607
+601b51e3-8750-4dc9-a70d-519ccef00e0a,お父さん,おとうさん,otousan,"father, dad",608
+d31884db-b331-4e66-9b69-0f3fb1b97404,お兄さん,おにいさん,oniisan,"older brother, big brother",609
+775ff962-162d-48f0-9df6-9cb7616b50f5,水曜日,すいようび,suiyoubi,Wednesday,610
+d822fd19-b2e6-4bea-86c0-4355723e09b7,お姉さん,おねえさん,oneesan,"older sister, big sister",611
+787175cd-ef28-4778-85eb-f4bcb8c25543,勉強,べんきょう,benkyou,study,612
+5cb47f45-86ba-4b96-990b-71bac240aa87,食堂,しょくどう,shokudou,"cafeteria, dining hall",613
+2a867601-b5e6-4f0c-b313-c278f7f72c84,文章,ぶんしょう,bunshou,"sentence, text",614
+60d43ecb-945b-469a-b9a3-fdfe5203f9e1,映画館,えいがかん,eigakan,"movie theater, cinema",615
+e656771e-1c5b-4f7b-8c6b-44bed46b414b,お手洗い,おてあらい,otearai,"toilet, restroom, bathroom",616
+7d0591ac-5cae-4ce1-9129-e4e9ea18d10c,誕生日,たんじょうび,tanjoubi,birthday,617
+23ca9e5b-6a8a-4ddd-9003-e9fa1ac62f9a,何,なん; なに,nan; nani,what,618
+4ace4edc-99a0-4bda-bf81-365e53fab1bd,大丈夫,だいじょうぶ,daijoubu,"it's okay, it's fine, okay, fine",619
+d4ba665b-da02-4053-a65c-aaf730ca51d0,万年筆,まんねんひつ,mannenhitsu,fountain pen,620
+521ed6e4-bca2-40b6-b75e-ba503190c730,外国人,がいこくじん,gaikokujin,foreigner,621
+ba25cec5-943e-4487-abc0-0d1e2c3ff486,行く,いく; ゆく,iku; yuku,to go,622
+a0e63791-a319-42f0-8a36-d0bbd08fa7bf,牛乳,ぎゅうにゅう,gyuunyuu,milk,623
+8d5237f5-3de5-46e6-a542-57bb3d4fe3f4,～週間,～しゅうかん,shuukan,weeks,624
+e1d3e5c6-6afb-432a-88df-d70a81353516,留学生,りゅうがくせい,ryuugakusei,international student,625
+934a02cb-e80a-414c-bff2-566125cd0378,郵便局,ゆうびんきょく,yuubinkyoku,post office,626
+46547086-4653-47e3-9130-c43cc5d0e74c,毎年,まいねん; まいとし,mainen; maitoshi,"every year, yearly, annually",627
+d2720ef0-27c6-4cf9-9219-a545b874cffd,毎月,まいげつ; まいつき,maigetsu; maitsuki,"every month, monthly",628

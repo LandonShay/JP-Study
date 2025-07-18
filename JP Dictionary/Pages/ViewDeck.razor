@@ -22,11 +22,11 @@
     <table>
         <thead>
             <tr>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.Japanese))">
-                    Japanese @SortIndicator(nameof(StudyWord.Japanese))
+                <th @onclick="() => ToggleSort(nameof(StudyWord.Word))">
+                    Japanese @SortIndicator(nameof(StudyWord.Word))
                 </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.Pronounciation))">
-                    Romaji @SortIndicator(nameof(StudyWord.Pronounciation))
+                <th @onclick="() => ToggleSort(nameof(StudyWord.Romaji))">
+                    Romaji @SortIndicator(nameof(StudyWord.Romaji))
                 </th>
                 <th @onclick="() => ToggleSort(nameof(StudyWord.Definitions))">
                     Definition @SortIndicator(nameof(StudyWord.Definitions))
@@ -50,13 +50,13 @@
             {
                 <tr>
                     <td>
-                        @entry.Japanese
+                        @entry.Word
                         @if (entry.HasAudio())
                         {
                             <span @onclick="() => TextToSpeech(entry.Audio)">🔊</span>
                         }
                     </td>
-                    <td>@entry.Pronounciation</td>
+                    <td>@entry.Romaji</td>
                     <td>
                         @if (EditingEntry == entry)
                         {
@@ -73,7 +73,7 @@
                     <td>@entry.MasteryTier</td>
                     <td>@GetNextReview(entry)</td>
                     <td>
-                        <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Japanese)">
+                        <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
                             <img class="jisho-logo" src="images/jisho-logo.png" />
                         </button>
                     </td>

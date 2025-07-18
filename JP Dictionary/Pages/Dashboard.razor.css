@@ -180,3 +180,11 @@
         background-color: #d44;
     }
 
+.drag-bars{
+    cursor: grab;
+}
+
+.dragging {
+    opacity: 0.5;
+    border: 2px dashed #aaa;
+}

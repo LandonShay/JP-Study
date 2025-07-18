@@ -4,13 +4,12 @@ namespace JP_Dictionary.Models
 {
     public class StudyWord
     {
-        public string Id { get; set; }
-        public int Week { get; set; }
-        public int Day { get; set; }
-        public string Japanese { get; set; } = string.Empty;
-        public string Pronounciation { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
+        public string Word { get; set; } = string.Empty;
+        public string Romaji { get; set; } = string.Empty;
         public string Definitions { get; set; } = string.Empty;
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
+        public bool Unlocked { get; set; }
         public int CorrectStreak { get; set; }
         public MasteryTier MasteryTier
         {
@@ -21,6 +20,7 @@ namespace JP_Dictionary.Models
             }
         }
         public string Audio { get; set; } = string.Empty;
+        public int StudyOrder { get; set; }
 
         private static MasteryTier GetMasteryTier(int streak)
         {

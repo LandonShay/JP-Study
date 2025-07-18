@@ -2,6 +2,7 @@
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
 {
@@ -9,6 +10,7 @@ namespace JP_Dictionary.Pages
     {
         #region Injections
 #nullable disable
+        [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
@@ -18,6 +20,7 @@ namespace JP_Dictionary.Pages
         private string DeckName { get; set; } = string.Empty;
         private DeckType DeckType { get; set; } = DeckType.Vocab;
         private Deck? DeckToDelete { get; set; }
+        private Deck? DraggedDeck { get; set; }
 
         private int WordsUnlocked { get; set; }
         private int RemainingWords { get; set; }
@@ -32,6 +35,14 @@ namespace JP_Dictionary.Pages
             LoadDashboard();
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await JS.InvokeVoidAsync("enableDragDrop");
+            }
+        }
+
         private void LoadDashboard()
         {
             StartingCount = 0;
@@ -39,18 +50,17 @@ namespace JP_Dictionary.Pages
             GoodCount = 0;
             ExpertCount = 0;
 
-            var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
+            //var coreDeck = DeckMethods.LoadDeck(User.Profile!, "Core");
 
-            WordsUnlocked = coreDeck.Count(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
-                                                (x.Week < User.Profile!.CurrentWeek));
-            RemainingWords = coreDeck.Count - WordsUnlocked;
+            //WordsUnlocked = coreDeck.Count(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
+            //                                    (x.Week < User.Profile!.CurrentWeek));
+            //RemainingWords = coreDeck.Count - WordsUnlocked;
 
-            foreach (var deck in User.Profile!.Decks)
+            foreach (var deck in User.Profile!.Decks.OrderBy(x => x.SortOrder))
             {
                 var words = DeckMethods.LoadDeck(User.Profile!, deck.Name);
 
-                var unlockedWords = words.FindAll(x => (x.Week == User.Profile!.CurrentWeek && x.Day <= User.Profile!.CurrentDay) ||
-                                                       (x.Week < User.Profile!.CurrentWeek));
+                var unlockedWords = words.FindAll(x => x.Unlocked);
 
                 StartingCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Starting);
                 FamiliarCount += unlockedWords.Count(x => x.MasteryTier == MasteryTier.Familiar);
@@ -64,7 +74,7 @@ namespace JP_Dictionary.Pages
         private int GetRemainingWordsPerDeck(string deckName)
         {
             var deck = DeckMethods.LoadDeck(User.Profile!, deckName);
-            return DeckMethods.LoadWordsToStudy(User.Profile!, deck).Count;
+            return DeckMethods.LoadWordsToStudy(deck).Count;
         }
 
         private void ToStudy(Deck deck)
@@ -84,25 +94,19 @@ namespace JP_Dictionary.Pages
         {
             if (!User.Profile!.Decks.Select(x => x.Name).Contains(DeckName))
             {
-                var deck = new Deck
-                {
-                    Name = DeckName,
-                    Type = DeckType
-                };
-
-                HelperMethods.CreateFile($"{User.Profile!.Name}Deck-{DeckName}.csv");
-                User.Profile.Decks.Add(deck);
-
-                DeckName = string.Empty;
-                DeckType = DeckType.Vocab;
-
-                HelperMethods.SaveProfile(User.Profile);
+                DeckMethods.CreateDeck(DeckName, DeckType, User.Profile!);
                 LoadDashboard();
             }
             else
             {
                 Toast.ShowWarning($"You already have a deck named {DeckName}. Please choose another name");
             }
+        }
+
+        private void PauseDeck(Deck deck)
+        {
+            deck.Paused = !deck.Paused;
+            HelperMethods.SaveProfile(User.Profile!);
         }
         #endregion
 
@@ -134,6 +138,45 @@ namespace JP_Dictionary.Pages
         private void CancelDeleteDeck()
         {
             DeckToDelete = null;
+        }
+        #endregion
+
+        #region Table Drag
+        private void OnDragStart(Deck deck)
+        {
+            DraggedDeck = deck;
+        }
+
+        private void OnDrop(Deck targetDeck)
+        {
+            if (DraggedDeck == null || DraggedDeck == targetDeck)
+            {
+                return;
+            }
+
+            var draggedIndex = User.Profile!.Decks.IndexOf(DraggedDeck);
+            var targetIndex = User.Profile.Decks.IndexOf(targetDeck);
+
+            if (draggedIndex < 0 || targetIndex < 0)
+            {
+                return;
+            }
+
+            User.Profile.Decks.Remove(DraggedDeck);
+            User.Profile.Decks.Insert(targetIndex, DraggedDeck);
+
+            for (int i = 0; i < User.Profile.Decks.Count; i++)
+            {
+                User.Profile.Decks[i].SortOrder = i;
+            }
+
+            HelperMethods.SaveProfile(User.Profile);
+            DraggedDeck = null;
+        }
+
+        private void OnDragEnd()
+        {
+            DraggedDeck = null;
         }
         #endregion
     }

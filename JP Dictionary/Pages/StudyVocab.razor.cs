@@ -63,18 +63,18 @@ namespace JP_Dictionary.Pages
             try
             {
                 StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
-                var availableWords = DeckMethods.LoadWordsToStudy(User.Profile!, StudyWords);
+                var availableWords = DeckMethods.LoadWordsToStudy(StudyWords);
 
                 foreach (var word in availableWords.Shuffle())
                 {
                     var studyCard = new VocabCard
                     {
                         StudyWord = word,
-                        Word = word.Japanese,
+                        Word = word.Word,
                         OriginalFormatDefinition = word.Definitions,
-                        OriginalFormatReading = word.Pronounciation,
+                        OriginalFormatReading = word.Romaji,
                         DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
-                        ReadingAnswers = word.Pronounciation.Split(',').Select(str => str.Trim().ToLower()).ToList()
+                        ReadingAnswers = word.Romaji.Split(',').Select(str => str.Trim().ToLower()).ToList()
                     };
 
                     StudyCards.Enqueue(studyCard);

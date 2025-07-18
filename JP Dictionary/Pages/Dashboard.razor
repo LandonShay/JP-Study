@@ -13,16 +13,39 @@
                 <tbody>
                     @foreach (var deck in User.Profile.Decks)
                     {
-                        <tr>
+                        <tr class="@(deck == DraggedDeck ? "dragging" : "")">
+                            <td draggable="true" @ondragstart="() => OnDragStart(deck)" @ondrop="() => OnDrop(deck)" @ondragend="OnDragEnd">
+                                <i class="fa-solid fa-bars drag-bars"></i>
+                            </td>
                             <td class="deck-info" @onclick="() => ToStudy(deck)">
                                 <span class="deck-name">@deck.Name</span>
+                                @if (deck.Paused)
+                                {
+                                    <span class="deck-text">(Paused)</span>
+                                }
                                 <span class="deck-text">Today's Study: @GetRemainingWordsPerDeck(deck.Name)</span>
                             </td>
                             <td>
-                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>View/Edit</button>
+                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
                             </td>
                             <td>
-                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>Delete</button>
+                                <button class="main-button" @onclick='() => PauseDeck(deck)'>
+                                    @if (!deck.Paused)
+                                    {
+                                        <i class="fa-solid fa-pause"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-play"></i>
+                                    }
+                                </button>
+                            </td>
+                            <td>
+                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     }

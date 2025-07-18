@@ -55,21 +55,9 @@ namespace JP_Dictionary.Pages
 
         private string GetNextReview(StudyWord word)
         {
-            if (User.SelectedDeck!.Name == "Core")
+            if (!word.Unlocked)
             {
-                if (word.LastStudied == DateTime.MinValue && 
-                   (word.Week > User.Profile!.CurrentWeek ||
-                   (word.Week == User.Profile!.CurrentWeek && word.Day > User.Profile!.CurrentDay)))
-                {
-                    return "🔒";
-                }
-            }
-            else
-            {
-                if (word.LastStudied == DateTime.MinValue && word.Day > 7)
-                {
-                    return "🔒";
-                }
+                return "🔒";
             }
 
             return HelperMethods.GetNextStudyDate(word).ToShortDateString();
@@ -140,8 +128,8 @@ namespace JP_Dictionary.Pages
                 var term = SearchTerm.ToLower();
 
                 query = query.Where(w =>
-                    w.Japanese.ToLower().Contains(term) ||
-                    w.Pronounciation.ToLower().Contains(term) ||
+                    w.Word.ToLower().Contains(term) ||
+                    w.Romaji.ToLower().Contains(term) ||
                     w.Definitions.ToLower().Contains(term));
             }
 
@@ -149,8 +137,8 @@ namespace JP_Dictionary.Pages
             {
                 query = SortColumn switch
                 {
-                    nameof(StudyWord.Japanese) => SortDescending ? query.OrderByDescending(w => w.Japanese) : query.OrderBy(w => w.Japanese),
-                    nameof(StudyWord.Pronounciation) => SortDescending ? query.OrderByDescending(w => w.Pronounciation) : query.OrderBy(w => w.Pronounciation),
+                    nameof(StudyWord.Word) => SortDescending ? query.OrderByDescending(w => w.Word) : query.OrderBy(w => w.Word),
+                    nameof(StudyWord.Romaji) => SortDescending ? query.OrderByDescending(w => w.Romaji) : query.OrderBy(w => w.Romaji),
                     nameof(StudyWord.Definitions) => SortDescending ? query.OrderByDescending(w => w.Definitions) : query.OrderBy(w => w.Definitions),
                     nameof(StudyWord.CorrectStreak) => SortDescending ? query.OrderByDescending(w => w.CorrectStreak) : query.OrderBy(w => w.CorrectStreak),
                     nameof(StudyWord.MasteryTier) => SortDescending ? query.OrderByDescending(w => w.MasteryTier) : query.OrderBy(w => w.MasteryTier),
@@ -244,14 +232,14 @@ namespace JP_Dictionary.Pages
 
                         var response = await client.SynthesizeSpeechAsync(new SynthesizeSpeechRequest
                         {
-                            Input = new SynthesisInput { Text = wordWithoutAudio.Japanese },
+                            Input = new SynthesisInput { Text = wordWithoutAudio.Word },
                             Voice = new VoiceSelectionParams { LanguageCode = "ja-JP", SsmlGender = SsmlVoiceGender.Female },
                             AudioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Mp3 }
                         });
 
                         var audioAsBytes = response.AudioContent.ToByteArray();
 
-                        var fileName = $"{word.Japanese}.mp3";
+                        var fileName = $"{word.Word}.mp3";
                         var filePath = Path.Combine(directoryPath, fileName);
 
                         if (!File.Exists(filePath))
