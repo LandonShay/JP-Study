@@ -71,7 +71,18 @@
                     </td>
                     <td>@entry.CorrectStreak</td>
                     <td>@entry.MasteryTier</td>
-                    <td>@GetNextReview(entry)</td>
+                    @if (entry.Unlocked)
+                    {
+                        <td>
+                            @HelperMethods.GetNextStudyDate(entry).ToShortDateString()
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <span style="cursor: pointer" @onclick="() => UnlockWord(entry)">🔒</span>                      
+                        </td>
+                    }
                     <td>
                         <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
                             <img class="jisho-logo" src="images/jisho-logo.png" />

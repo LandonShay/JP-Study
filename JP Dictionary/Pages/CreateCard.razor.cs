@@ -22,6 +22,7 @@ namespace JP_Dictionary.Pages
         private string Japanese { get; set; } = string.Empty;
         private string Romaji { get; set; } = string.Empty;
         private string Definitions { get; set; } = string.Empty;
+        private bool UnlockImmediately { get; set; }
 
         private void Create()
         {
@@ -36,7 +37,8 @@ namespace JP_Dictionary.Pages
                     Definitions = Definitions,
                     Id = Guid.NewGuid().ToString(),
                     LastStudied = DateTime.MinValue,
-                    CorrectStreak = 0
+                    CorrectStreak = 0,
+                    Unlocked = UnlockImmediately
                 };
 
                 foreach (var deck in User.Profile!.Decks)

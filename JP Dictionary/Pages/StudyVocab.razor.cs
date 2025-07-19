@@ -38,7 +38,7 @@ namespace JP_Dictionary.Pages
 
         // study options
         private bool ShowTestOptionModal { get; set; } = true;
-        private bool TestReading { get; set; }
+        private bool TestReading { get; set; } // whether or not you are tested on the reading of the word
 
         // inline editing
         private bool EditingDefinition { get; set; }
@@ -79,6 +79,8 @@ namespace JP_Dictionary.Pages
 
                     StudyCards.Enqueue(studyCard);
                 }
+
+                TestReading = User.SelectedDeck.Type != DeckType.Grammar;
             }
             catch (Exception ex)
             {
@@ -97,8 +99,9 @@ namespace JP_Dictionary.Pages
                     ElementToFocus = string.Empty;
                 }
 
-                if ((ShowResults && User.Profile!.AutoSpeak && FirstResults) || 
-                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying))
+                if (!firstRender &&
+                   ((ShowResults && User.Profile!.AutoSpeak && FirstResults) || 
+                   (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying)))
                 {
                     FirstResults = false;
                     await TextToSpeech(CurrentCard.StudyWord.Audio);
@@ -268,8 +271,9 @@ namespace JP_Dictionary.Pages
         private void FinishEditing()
         {
             EditingDefinition = false;
-            CurrentCard.OriginalFormatDefinition = NewDefinition;
             CurrentCard.StudyWord.Definitions = NewDefinition;
+            CurrentCard.OriginalFormatDefinition = NewDefinition;
+            CurrentCard.DefinitionAnswers = NewDefinition.Split(',').Select(str => str.Trim().ToLower()).ToList();
 
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
             word.Definitions = NewDefinition;
@@ -299,7 +303,14 @@ namespace JP_Dictionary.Pages
 
         private void FetchExampleSentence()
         {
-            var sentencesWithWord = User.Sentences.FindAll(x => x.Keywords.Contains(CurrentCard.Word));
+            var word = CurrentCard.Word;
+
+            if (word.StartsWith('~'))
+            {
+                word = word.Remove(0);
+            }
+            
+            var sentencesWithWord = User.Sentences.FindAll(x => x.Keywords.Contains(word));
 
             if (sentencesWithWord.Count > 0)
             {

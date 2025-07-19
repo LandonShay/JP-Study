@@ -8,17 +8,17 @@
             <h2>@User.SelectedDeck!.Name</h2>
             <div class="test-options">
                 <div>
-                    <input type="radio" name="testMode" @onchange="() => TestReading = false" checked="@(!TestReading)" />
-                    <span>Definition Only</span>
-                    <div class="test-options-label">
-                        <span class="italics">Suggested: Vocab, Grammar</span>
-                    </div>
-                </div>
-                <div>
                     <input type="radio" name="testMode" @onchange="() => TestReading = true" checked="@TestReading" />
                     <span>Reading + Definition</span>
                     <div class="test-options-label">
-                        <span class="italics">Suggested: Kanji</span>
+                        <span class="italics">Suggested: Vocab, Kanji</span>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="testMode" @onchange="() => TestReading = false" checked="@(!TestReading)" />
+                    <span>Definition Only</span>
+                    <div class="test-options-label">
+                        <span class="italics">Suggested: Grammar</span>
                     </div>
                 </div>
             </div>
@@ -178,8 +178,8 @@
         </form>
     }
 
-    <div class="speech-toggle-container">
-        <label class="speech-toggle">
+    <div class="custom-toggle-container">
+        <label class="custom-toggle">
             <input type="checkbox" id="auto-speech" @bind="AutoSpeak" />
             <span class="custom-checkbox"></span>
             Auto-Speak Results
