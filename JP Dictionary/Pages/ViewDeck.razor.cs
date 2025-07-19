@@ -52,16 +52,6 @@ namespace JP_Dictionary.Pages
         {
             AllWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
         }
-
-        private string GetNextReview(StudyWord word)
-        {
-            if (!word.Unlocked)
-            {
-                return "🔒";
-            }
-
-            return HelperMethods.GetNextStudyDate(word).ToShortDateString();
-        }
         #endregion
 
         #region Table Buttons
@@ -78,6 +68,15 @@ namespace JP_Dictionary.Pages
 
             studyWord.CorrectStreak = 0;
             studyWord.LastStudied = DateTime.MinValue;
+
+            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck!.Name);
+            LoadPage();
+        }
+
+        private void UnlockWord(StudyWord word)
+        {
+            var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
+            allWords.First(x => x.Id == word.Id).Unlocked = true;
 
             DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck!.Name);
             LoadPage();

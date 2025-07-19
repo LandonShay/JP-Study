@@ -27,7 +27,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
+    gap: 7px;
+    margin-top: 17px;
     max-width: 600px;
 }
 
@@ -79,7 +80,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 7px;
     margin-top: 17px;
 }
 
@@ -122,6 +123,14 @@
 
 .value {
     color: #ffffff;
+}
+
+/*Create Deck*/
+.create-deck{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
 }
 
 /* Delete Modal */

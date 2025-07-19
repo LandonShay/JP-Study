@@ -53,58 +53,10 @@ h3 {
         background-color: #404040;
     }
 
-.speech-toggle-container {
+.custom-toggle-container {
     display: flex;
     justify-content: center;
     margin: 2rem 0;
-}
-
-.speech-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1rem;
-    color: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    cursor: pointer;
-}
-
-    .speech-toggle input[type="checkbox"] {
-        display: none;
-    }
-
-.custom-checkbox {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid #777;
-    background-color: #1e1e1e;
-    display: inline-block;
-    position: relative;
-    transition: background-color 0.2s ease;
-}
-
-.speech-toggle input[type="checkbox"]:checked + .custom-checkbox {
-    background-color: purple;
-    border-color: purple;
-}
-
-.custom-checkbox::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 1px;
-    width: 5px;
-    height: 10px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.speech-toggle input[type="checkbox"]:checked + .custom-checkbox::after {
-    opacity: 1;
 }
 
 .input-correct {

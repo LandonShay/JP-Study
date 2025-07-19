@@ -50,11 +50,15 @@
             {
                 <tr>
                     <td>
-                        @entry.Word
-                        @if (entry.HasAudio())
-                        {
-                            <span @onclick="() => TextToSpeech(entry.Audio)">🔊</span>
-                        }
+                        <div style="display: flex; gap: 5px; justify-content: center;">
+                            @entry.Word
+                            @if (entry.HasAudio())
+                            {
+                                <span>
+                                    <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry.Audio)"></i>
+                                </span>
+                            }
+                        </div>
                     </td>
                     <td>@entry.Romaji</td>
                     <td>
@@ -71,7 +75,18 @@
                     </td>
                     <td>@entry.CorrectStreak</td>
                     <td>@entry.MasteryTier</td>
-                    <td>@GetNextReview(entry)</td>
+                    <td>
+                        @if (entry.Unlocked)
+                        {
+                            @HelperMethods.GetNextStudyDate(entry).ToShortDateString()
+                        }
+                        else
+                        {
+                            <span style="cursor: pointer" @onclick="() => UnlockWord(entry)">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                        }
+                    </td>
                     <td>
                         <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
                             <img class="jisho-logo" src="images/jisho-logo.png" />

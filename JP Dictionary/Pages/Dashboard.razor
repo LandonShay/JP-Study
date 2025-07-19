@@ -55,17 +55,6 @@
                 </tbody>
             </table>
         </div>
-        <h4>Create Deck</h4>
-        <div class="deck-create">
-            <input type="text" autocomplete="off" @bind="DeckName" />
-            <select @bind="DeckType" class="deck-type-select">
-                @foreach (var type in Enum.GetValues(typeof(DeckType)))
-                {
-                    <option value="@type">@type</option>
-                }
-            </select>
-            <button class="main-button" @onclick='CreateDeck'>Create</button>
-        </div>
     </div>
     <div class="dashboard">
         <h4>Deck Stats</h4>
@@ -110,6 +99,19 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="create-deck">
+            <h4>Create Deck</h4>
+            <div class="deck-create">
+                <input type="text" autocomplete="off" @bind="DeckName" />
+                <select @bind="DeckType" class="deck-type-select">
+                    @foreach (var type in Enum.GetValues(typeof(DeckType)))
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+                <button class="main-button" @onclick='CreateDeck'>Create</button>
+            </div>
         </div>
     </div>
 </div>
