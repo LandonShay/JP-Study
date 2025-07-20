@@ -85,7 +85,7 @@ namespace JP_Dictionary.Shared
                                 word.Unlocked = true;
                             }
 
-                            UpdateDeck(deck, profile.Name, "N5 Vocab");
+                            UpdateDeck(deck, profile.Name, $"N{i} Vocab");
                         }
                     }
                 }

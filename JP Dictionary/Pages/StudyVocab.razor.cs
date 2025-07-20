@@ -71,6 +71,7 @@ namespace JP_Dictionary.Pages
                     {
                         StudyWord = word,
                         Word = word.Word,
+                        CurrentCorrectStreak = word.CorrectStreak,
                         OriginalFormatDefinition = word.Definitions,
                         OriginalFormatReading = word.Romaji,
                         DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
@@ -155,6 +156,7 @@ namespace JP_Dictionary.Pages
                 CurrentCard.Correct = true;
                 ShowResults = true;
 
+                UpdateWord(1);
                 FetchExampleSentence();
 
                 ElementToFocus = "correct-next";
@@ -178,6 +180,7 @@ namespace JP_Dictionary.Pages
             }
 
             AttemptsRemaining--;
+            UpdateWord(-1);
 
             if (AttemptsRemaining == 0)
             {
@@ -201,8 +204,6 @@ namespace JP_Dictionary.Pages
         #region Cards
         private void ShowNextCard()
         {
-            UpdateWord();
-
             if (!CurrentCard.Correct)
             {
                 ReaddFailedCard();
@@ -283,31 +284,43 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Result Actions
-        private void UpdateWord()
+        private void UpdateWord(int change)
         {
             var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
+            word.CorrectStreak += change;
 
-            if (CurrentCard.Correct)
+            if (change > 0)
             {
-                word.CorrectStreak++;
                 word.LastStudied = DateTime.Today.Date;
             }
-            else
+
+            if (word.CorrectStreak < 0)
             {
                 word.CorrectStreak = 0;
                 word.LastStudied = DateTime.MinValue;
             }
+            else if (word.CorrectStreak > 11)
+            {
+                word.CorrectStreak = 11;
+            }
 
             DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
+        }
+
+        private void MarkAsCorrect()
+        {
+            CurrentCard.Correct = true;
+            CurrentCard.StudyWord.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+            UpdateWord(1);
         }
 
         private void FetchExampleSentence()
         {
             var word = CurrentCard.Word;
 
-            if (word.StartsWith('~'))
+            if (word.StartsWith('~') || word.StartsWith('～'))
             {
-                word = word.Remove(0);
+                word = word.Remove(0, 1);
             }
             
             var sentencesWithWord = User.Sentences.FindAll(x => x.Keywords.Contains(word));
