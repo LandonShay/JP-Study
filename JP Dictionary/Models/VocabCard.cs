@@ -9,5 +9,6 @@
         public string OriginalFormatDefinition { get; set; } = string.Empty;
         public StudyWord StudyWord { get; set; } = new();
         public bool Correct { get; set; }
+        public int CurrentCorrectStreak { get; set; }
     }
 }
