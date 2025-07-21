@@ -71,7 +71,6 @@ namespace JP_Dictionary.Pages
                     {
                         StudyWord = word,
                         Word = word.Word,
-                        CurrentCorrectStreak = word.CorrectStreak,
                         OriginalFormatDefinition = word.Definitions,
                         OriginalFormatReading = word.Romaji,
                         DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
@@ -180,12 +179,12 @@ namespace JP_Dictionary.Pages
             }
 
             AttemptsRemaining--;
-            UpdateWord(-1);
 
             if (AttemptsRemaining == 0)
             {
                 ShowResults = true;
                 ElementToFocus = "incorrect-next";
+                UpdateWord(-1);
             }
 
             if (ShowResults)
@@ -310,7 +309,6 @@ namespace JP_Dictionary.Pages
         private void MarkAsCorrect()
         {
             CurrentCard.Correct = true;
-            CurrentCard.StudyWord.CorrectStreak = CurrentCard.CurrentCorrectStreak;
             UpdateWord(1);
         }
 
