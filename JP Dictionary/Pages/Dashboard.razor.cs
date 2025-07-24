@@ -67,7 +67,9 @@ namespace JP_Dictionary.Pages
                 VocabMasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
             }
 
-            var validKanji = User.Kanji.FindAll(x => x.Type == KanjiType.Kanji && x.Unlocked && x.Learned);
+            User.Kanji = KanjiMethods.LoadUserKanji(User.Profile!);
+
+            var validKanji = User.Kanji.FindAll(x => x.Unlocked && x.Learned);
 
             KanjiNoviceCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Novice);
             KanjiBeginnerCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Beginner);
@@ -103,6 +105,27 @@ namespace JP_Dictionary.Pages
             return float.Round(kanji.Count(x => x.Learned) / (float)kanji.Count * 100, 2);
         }
         #endregion
+
+        private void GoToLearnKanji()
+        {
+            var kanjiToLearn = KanjiMethods.GetItemsToLearn(User.Kanji);
+
+            if (kanjiToLearn.Count > 0)
+            {
+                User.TriggerLearnMode = true;
+                User.SelectedKanjiGroup = kanjiToLearn;
+
+                Nav.NavigateTo("/kanjireview");
+            }
+        }
+
+        private void GoToReviewKanji()
+        {
+            var kanjiToReview = KanjiMethods.GetItemsToReview(User.Kanji);
+
+            User.SelectedKanjiGroup = kanjiToReview;
+            Nav.NavigateTo("/studyvocab");
+        }
 
         #region Decks
         private void ToViewDeck(Deck deck)

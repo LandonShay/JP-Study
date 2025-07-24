@@ -2,10 +2,6 @@
 
 <div class="page-container">
     <div class="content">
-        @* <div class="back-arrow-container" @onclick='() => Nav.NavigateTo("/kanjileveldetail")'>
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Back</span>
-        </div> *@
         <div class="main-item-container">
             <span class="main-item">@ActiveItem.Item</span>
             <span class="main-item-name">@ActiveItem.Name</span>
@@ -75,6 +71,13 @@
         <div class="nav-arrow nav-arrow-right" @onclick="SetRightItem">
             <i class="fa-solid fa-arrow-right"></i>
             <span class="item-icon">@NextItem</span>
+        </div>
+    }
+    else if (NextItem == string.Empty && LearnMode)
+    {
+        <div class="nav-arrow nav-arrow-right" @onclick="GoToReview">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span class="item-icon">Review</span>
         </div>
     }
 </div>

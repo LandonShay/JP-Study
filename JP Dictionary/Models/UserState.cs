@@ -9,5 +9,7 @@ namespace JP_Dictionary.Models
         public StudyKanji? SelectedKanji { get; set; } = null;
         public List<Sentence> Sentences { get; set; } = new();
         public List<StudyKanji> Kanji { get; set; } = new();
+
+        public bool TriggerLearnMode { get; set; }
     }
 }

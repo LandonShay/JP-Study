@@ -1,6 +1,5 @@
 ﻿using JP_Dictionary.Models;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JP_Dictionary.Shared
 {

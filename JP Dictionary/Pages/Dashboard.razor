@@ -51,11 +51,11 @@
             </table>
         </div>
         <div class="kanji-buttons">
-            <button class="main-button kanji-button">
+            <button class="main-button kanji-button" @onclick="GoToLearnKanji">
                 Learn
                 <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(User.Kanji).Count</span>
             </button>
-            <button class="main-button kanji-button">
+            <button class="main-button kanji-button" @onclick="GoToReviewKanji">
                 Review
                 <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(User.Kanji).Count</span>
             </button>

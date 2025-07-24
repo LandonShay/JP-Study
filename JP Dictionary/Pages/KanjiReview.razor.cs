@@ -24,6 +24,8 @@ namespace JP_Dictionary.Pages
         private string NextItem { get; set; } = string.Empty;
         private string PreviousItem { get; set; } = string.Empty;
 
+        private bool LearnMode { get; set; }
+
         protected override void OnInitialized()
         {
             AllRadicals = KanjiMethods.LoadDefaultKanjiList().Where(x => x.Type == KanjiType.Radical).ToList();
@@ -39,6 +41,12 @@ namespace JP_Dictionary.Pages
             {
                 ActiveItem = User.SelectedKanjiGroup.First();
                 Items = User.SelectedKanjiGroup;
+            }
+
+            if (User.TriggerLearnMode)
+            {
+                LearnMode = true;
+                User.TriggerLearnMode = false;
             }
 
             GetLeftItem();
@@ -139,6 +147,20 @@ namespace JP_Dictionary.Pages
 
             GetLeftItem();
             GetRightItem();
+        }
+
+        private void GoToReview()
+        {
+            var allItems = KanjiMethods.LoadUserKanji(User.Profile!);
+
+            foreach (var item in Items)
+            {
+                var userItem = allItems.First(x => x.Item == item.Item);
+                userItem.Learned = true;
+            }
+
+            KanjiMethods.SaveUserKanji(User.Profile!, allItems);
+            Nav.NavigateTo("/studyvocab");
         }
     }
 }
