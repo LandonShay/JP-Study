@@ -21,6 +21,9 @@ namespace JP_Dictionary.Pages
         private List<StudyKanji> Items { get; set; } = new();
         private List<StudyKanji> AllRadicals { get; set; } = new();
 
+        private string NextItem { get; set; } = string.Empty;
+        private string PreviousItem { get; set; } = string.Empty;
+
         protected override void OnInitialized()
         {
             AllRadicals = KanjiMethods.LoadDefaultKanjiList().Where(x => x.Type == KanjiType.Radical).ToList();
@@ -37,6 +40,9 @@ namespace JP_Dictionary.Pages
                 ActiveItem = User.SelectedKanjiGroup.First();
                 Items = User.SelectedKanjiGroup;
             }
+
+            GetLeftItem();
+            GetRightItem();
         }
 
         private string GetReadings(List<string> readings)
@@ -73,6 +79,66 @@ namespace JP_Dictionary.Pages
             }
 
             return radicalsAsString != string.Empty ? radicalsAsString : "None";
+        }
+
+        private string GetLeftItem()
+        {
+            var activeItemIndex = Items.IndexOf(ActiveItem);
+            var targetIndex = activeItemIndex - 1;
+
+            if (targetIndex > -1)
+            {
+                PreviousItem = Items[targetIndex].Item;
+            }
+            else
+            {
+                PreviousItem = string.Empty;
+            }
+
+            return PreviousItem;
+        }
+
+        private string GetRightItem()
+        {
+            var activeItemIndex = Items.IndexOf(ActiveItem);
+            var targetIndex = activeItemIndex + 1;
+
+            if (targetIndex <= Items.Count - 1)
+            {
+                NextItem = Items[targetIndex].Item;
+            }
+            else
+            {
+                NextItem = string.Empty;
+            }
+
+            return NextItem;
+        }
+
+        private void SetLeftItem()
+        {
+            var leftItem = GetLeftItem();
+
+            if (leftItem != string.Empty)
+            {
+                ActiveItem = Items.First(x => x.Item == leftItem);
+            }
+
+            GetLeftItem();
+            GetRightItem();
+        }
+
+        private void SetRightItem()
+        {
+            var rightItem = GetRightItem();
+
+            if (rightItem != string.Empty)
+            {
+                ActiveItem = Items.First(x => x.Item == rightItem);
+            }
+
+            GetLeftItem();
+            GetRightItem();
         }
     }
 }
