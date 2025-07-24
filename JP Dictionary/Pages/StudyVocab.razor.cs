@@ -340,6 +340,8 @@ namespace JP_Dictionary.Pages
             {
                 FinishedStudying = true;
                 ElementToFocus = "return";
+
+                CheckLevelUp();
             }
         }
 
@@ -459,6 +461,23 @@ namespace JP_Dictionary.Pages
             }
 
             ExampleSentence = null;
+        }
+
+        private void CheckLevelUp()
+        {
+            if (User.SelectedDeck == null)
+            {
+                var kanji = KanjiMethods.LoadUserKanji(User.Profile!);
+                var currentLevelKanji = kanji.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == KanjiType.Kanji);
+
+                var percentAtProficient = currentLevelKanji.Count(x => x.MasteryTier == MasteryTier.Proficient) / (float)currentLevelKanji.Count() * 100;
+
+                if (percentAtProficient > 90)
+                {
+                    User.Profile!.KanjiLevel++;
+                    HelperMethods.SaveProfile(User.Profile!);
+                }
+            }
         }
         #endregion
 

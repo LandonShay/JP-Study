@@ -3,7 +3,6 @@ using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Runtime.ConstrainedExecution;
 
 namespace JP_Dictionary.Pages
 {
@@ -106,6 +105,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
+        #region Kanji Nav
         private void GoToLearnKanji()
         {
             var kanjiToLearn = KanjiMethods.GetItemsToLearn(User.Kanji);
@@ -126,6 +126,7 @@ namespace JP_Dictionary.Pages
             User.SelectedKanjiGroup = kanjiToReview;
             Nav.NavigateTo("/studyvocab");
         }
+        #endregion
 
         #region Decks
         private void ToViewDeck(Deck deck)
