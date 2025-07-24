@@ -56,6 +56,11 @@ namespace JP_Dictionary.Pages
                 profile.LoginStreak = 1;
             }
 
+            DeckMethods.CreateDefaultDecks(profile);
+            KanjiMethods.CreateUserKanji(profile);
+
+            var userKanjis = KanjiMethods.LoadUserKanji(profile);
+
             if (lastLoginDate != today)
             {
                 profile.LastLogin = DateTime.Now;
@@ -72,13 +77,18 @@ namespace JP_Dictionary.Pages
 
                     DeckMethods.OverwriteDeck(words, profile.Name, deck.Name);
                 }
+
+                if (userKanjis.All(x => !x.Unlocked) || userKanjis.Where(x => x.Unlocked).All(x => x.Learned))
+                {
+                    KanjiMethods.UnlockNextSet(profile);
+                }
             }
 
-            DeckMethods.CreateDefaultDecks(profile);
             HelperMethods.SaveProfile(profile);
 
             UserState.Profile = profile;
             UserState.Sentences = HelperMethods.LoadExampleSentences();
+            UserState.Kanji = KanjiMethods.LoadUserKanji(profile);
 
             Nav.NavigateTo("/dashboard");
         }
@@ -120,6 +130,7 @@ namespace JP_Dictionary.Pages
             }
 
             DeckMethods.CreateDefaultDecks(profile);
+            KanjiMethods.CreateUserKanji(profile);
 
             CreateName = string.Empty;
             LoadProfiles();

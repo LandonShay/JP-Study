@@ -2,7 +2,7 @@
 @page "/dashboard"
 
 <div class="welcome">
-    <h2>Welcome @User.Profile!.Name!</h2>
+    <h2>Welcome, @User.Profile!.Name!</h2>
     <h4>Login Streak: @User.Profile!.LoginStreak</h4>
 </div>
 <div class="dashboard-content">
@@ -26,7 +26,7 @@
                                     <span class="deck-text">(Paused)</span>
                                 }
                                 <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
-                                <span class="deck-text">Unlocked: @words.Count(x => x.Unlocked)/@words.Count</span>
+                                <span class="deck-text">Unlocked: @GetUnlockedPercentage(words)% (@words.Count(x => x.Unlocked)/@words.Count)</span>
                             </td>
                             <td>
                                 <button class="main-button" @onclick='() => ToViewDeck(deck)'>

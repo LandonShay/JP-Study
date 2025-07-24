@@ -1,0 +1,61 @@
+﻿@page "/kanjireview"
+
+<div class="page-container">
+    <div class="content">
+        <div class="main-item-container">
+            <span class="main-item">@ActiveItem.Item</span>
+            <span class="main-item-name">@ActiveItem.Name</span>
+        </div>
+        <div class="item-info">
+            <div class="readings">
+                <div class="reading-container">
+                    <span class="reading-title">Onyomi</span>
+                    <span class="reading">@GetReadings(ActiveItem.Onyomi)</span>
+                </div>
+                <div class="reading-container">
+                    <span class="reading-title">Kunyomi</span>
+                    <span class="reading">@GetReadings(ActiveItem.Kunyomi)</span>
+                </div>
+            </div>
+            <div class="primary-info">
+                <div class="foundation-info">
+                    <div>
+                        <label class="headline">Meanings</label>
+                        <div>
+                            <span class="meanings">@GetReadings(ActiveItem.Meaning)</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="headline">Radicals</label>
+                        <div>
+                            <span class="meanings">@GetRadicals(ActiveItem.Radicals)</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="headline">Mnemonic</label>
+                    <div>
+                        <span class="mnemonic">@ActiveItem.Mnemonic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-items">
+        @foreach (var item in Items)
+        {
+            @if (item != ActiveItem)
+            {
+                <div class="select-item" @onclick="() => ActiveItem = item">
+                    <span>@item.Item</span>
+                </div>
+            }
+            else
+            {
+                <div class="select-item select-item-highlighted" @onclick="() => ActiveItem = item">
+                    <span>@item.Item</span>
+                </div>
+            }
+        }
+    </div>
+</div>

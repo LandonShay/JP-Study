@@ -1,0 +1,21 @@
+﻿@page "/kanjilevels"
+
+<table>
+    <tbody>
+        @foreach (var kanji in GroupedKanji.OrderBy(x => x.Key))
+        {
+            <tr class="kanji-item">
+                <td>
+                    <span class="level-text">Level @kanji.Key</span>
+                    <span class="subtext">Unlocked: @GetUnlockedKanjiPerGroup(kanji.Key)/@kanji.Value.Count</span>
+                </td>
+                <td>
+                    <button class="main-button" @onclick="() => GoToLearnKanji(kanji)">Study</button>
+                </td>
+                <td>
+                    <button class="main-button" @onclick="() => GoToLevelDetail(kanji)">View</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

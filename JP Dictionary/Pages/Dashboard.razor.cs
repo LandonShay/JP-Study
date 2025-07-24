@@ -72,6 +72,11 @@ namespace JP_Dictionary.Pages
             Nav.NavigateTo("/studyvocab");
         }
 
+        private float GetUnlockedPercentage(List<StudyWord> words)
+        {
+            return float.Round(words.Count(x => x.Unlocked) / (float)words.Count * 100, 2);
+        }
+
         #region Decks
         private void ToViewDeck(Deck deck)
         {
