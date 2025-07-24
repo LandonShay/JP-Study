@@ -3,6 +3,7 @@ using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Runtime.ConstrainedExecution;
 
 namespace JP_Dictionary.Pages
 {
@@ -66,6 +67,14 @@ namespace JP_Dictionary.Pages
                 VocabMasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
             }
 
+            var validKanji = User.Kanji.FindAll(x => x.Type == KanjiType.Kanji && x.Unlocked && x.Learned);
+
+            KanjiNoviceCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Novice);
+            KanjiBeginnerCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Beginner);
+            KanjiProficientCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Proficient);
+            KanjiExpertCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Expert);
+            KanjiMasteredCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Mastered);
+
             User.SelectedDeck = null;
             User.SelectedKanji = null;
         }
@@ -76,10 +85,24 @@ namespace JP_Dictionary.Pages
             Nav.NavigateTo("/studyvocab");
         }
 
+        #region Statistics
         private float GetUnlockedPercentage(List<StudyWord> words)
         {
             return float.Round(words.Count(x => x.Unlocked) / (float)words.Count * 100, 2);
         }
+
+        private float GetLearnedKanjiPercentage()
+        {
+            var kanji = User.Kanji.FindAll(x => x.Type == KanjiType.Kanji);
+            return float.Round(kanji.Count(x => x.Learned) / (float)kanji.Count * 100, 2);
+        }
+
+        private float GetLearnedRadicalPercentage()
+        {
+            var kanji = User.Kanji.FindAll(x => x.Type == KanjiType.Radical);
+            return float.Round(kanji.Count(x => x.Learned) / (float)kanji.Count * 100, 2);
+        }
+        #endregion
 
         #region Decks
         private void ToViewDeck(Deck deck)

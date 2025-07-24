@@ -3,11 +3,11 @@
 
 <div class="welcome">
     <h2>Welcome, @User.Profile!.Name!</h2>
-    <h4>Login Streak: @User.Profile!.LoginStreak</h4>
+    <label style="font-size: 24px;">Level: @User.Profile.KanjiLevel | Login Streak: @User.Profile!.LoginStreak </label>
 </div>
 <div class="dashboard-content">
     <div class="column">
-        <h4>Kanji</h4>
+        <h4>Kanji / Radicals</h4>
         <div class="word-mastery">
             <table>
                 <thead>
@@ -50,9 +50,27 @@
                 </tbody>
             </table>
         </div>
-        <div>
-            <span class="deck-text">Today's Study: </span>
-            <span class="deck-text">Unlocked:</span>
+        <div class="kanji-buttons">
+            <button class="main-button kanji-button">
+                Learn
+                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(User.Kanji).Count</span>
+            </button>
+            <button class="main-button kanji-button">
+                Review
+                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(User.Kanji).Count</span>
+            </button>
+        </div>
+        <div class="kanji-stats">
+            <div class="kanji-block">
+                <h4>Kanji</h4>
+                <span class="deck-text">@GetLearnedKanjiPercentage()%</span>
+                <span class="deck-text">(@User.Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@User.Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
+            </div>
+            <div class="kanji-block">
+                <h4>Radicals</h4>
+                <span class="deck-text">@GetLearnedRadicalPercentage()%</span>
+                <span class="deck-text">(@User.Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@User.Kanji.Count(x => x.Type == KanjiType.Radical))</span>
+            </div>
         </div>
     </div>
     <div class="column">
@@ -111,13 +129,15 @@
                                 <i class="fa-solid fa-bars drag-bars"></i>
                             </td>
                             <td class="deck-info" @onclick="() => ToStudy(deck)">
-                                <span class="deck-name">@deck.Name</span>
-                                @if (deck.Paused)
-                                {
-                                    <span class="deck-text">(Paused)</span>
-                                }
+                                <span class="deck-name">
+                                    @deck.Name
+                                    @if (deck.Paused)
+                                    {
+                                        <i class="fa-solid fa-pause"></i>
+                                    }
+                                </span>
                                 <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
-                                <span class="deck-text">Unlocked: @GetUnlockedPercentage(words)% (@words.Count(x => x.Unlocked)/@words.Count)</span>
+                                <span class="deck-text">@GetUnlockedPercentage(words)% (@words.Count(x => x.Unlocked)/@words.Count)</span>
                             </td>
                             <td>
                                 <button class="main-button" @onclick='() => ToViewDeck(deck)'>

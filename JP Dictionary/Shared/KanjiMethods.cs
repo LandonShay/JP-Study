@@ -1,5 +1,6 @@
 ﻿using JP_Dictionary.Models;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JP_Dictionary.Shared
 {
@@ -51,32 +52,36 @@ namespace JP_Dictionary.Shared
 
         public static void UnlockNextSet(Profile profile)
         {
-            var userKanjis = LoadUserKanji(profile);
-            var lockedKanji = userKanjis.Where(x => !x.Unlocked).OrderBy(x => x.Level);
+            var kanji = LoadUserKanji(profile);
 
-            var level = 0;
-            var counter = 1;
-
-            foreach (var kanji in lockedKanji)
+            foreach (var k in kanji.Where(x => x.Level == profile.KanjiLevel && !x.Unlocked).Take(10))
             {
-                if (level == 0)
-                {
-                    level = kanji.Level;
-                }
+                k.Unlocked = true;
+            }
 
-                if (counter > 10 || kanji.Level > level)
-                {
-                    break;
-                }
+            SaveUserKanji(profile, kanji);
+        }
 
-                if (kanji.Level == level)
+        public static List<StudyKanji> GetItemsToLearn(List<StudyKanji> kanji)
+        {
+            return kanji.FindAll(x => x.Unlocked && !x.Learned);
+        }
+
+        public static List<StudyKanji> GetItemsToReview(List<StudyKanji> kanji)
+        {
+            var kanjiToStudy = new List<StudyKanji>();
+
+            foreach (var k in kanji.Where(x => x.Learned && x.Unlocked))
+            {
+                var nextDueDate = HelperMethods.GetNextStudyDate(k);
+
+                if (DateTime.Today.Date >= nextDueDate)
                 {
-                    userKanjis.First(x => x.Item == kanji.Item && x.Type == kanji.Type).Unlocked = true;
-                    counter++;
+                    kanjiToStudy.Add(k);
                 }
             }
 
-            SaveUserKanji(profile, userKanjis);
+            return kanjiToStudy;
         }
     }
 }

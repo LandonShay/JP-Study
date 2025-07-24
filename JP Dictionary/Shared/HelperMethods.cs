@@ -28,6 +28,18 @@ namespace JP_Dictionary.Shared
             return date;
         }
 
+        public static DateTime GetNextStudyDate(StudyKanji kanji)
+        {
+            var date = kanji.LastStudied.AddDays(GetDelayFromStreak(kanji.CorrectStreak));
+
+            if (date < DateTime.Today)
+            {
+                date = DateTime.Today;
+            }
+
+            return date;
+        }
+
         public static void SaveProfile(Profile profile)
         {
             List<Profile> profiles;

@@ -10,11 +10,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"大",
+		"Level": 1,
+		"Item": "大",
 		"Type": 0,
 		"Name": "Big",
 		"Meaning": [],
@@ -23,11 +23,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"工",
+		"Level": 1,
+		"Item": "工",
 		"Type": 0,
 		"Name": "Construction",
 		"Meaning": [],
@@ -36,11 +36,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"十",
+		"Level": 1,
+		"Item": "十",
 		"Type": 0,
 		"Name": "Cross",
 		"Meaning": [],
@@ -49,11 +49,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"丶",
+		"Level": 1,
+		"Item": "丶",
 		"Type": 0,
 		"Name": "Drop",
 		"Meaning": [],
@@ -62,11 +62,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"入",
+		"Level": 1,
+		"Item": "入",
 		"Type": 0,
 		"Name": "Enter",
 		"Meaning": [],
@@ -75,11 +75,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"ハ",
+		"Level": 1,
+		"Item": "ハ",
 		"Type": 0,
 		"Name": "Fins",
 		"Meaning": [],
@@ -88,11 +88,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"一",
+		"Level": 1,
+		"Item": "一",
 		"Type": 0,
 		"Name": "Ground",
 		"Meaning": [],
@@ -101,11 +101,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"𠂉",
+		"Level": 1,
+		"Item": "𠂉",
 		"Type": 0,
 		"Name": "Gun",
 		"Meaning": [],
@@ -114,11 +114,11 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
-		"Level":1,
-		"Item":"亠",
+		"Level": 1,
+		"Item": "亠",
 		"Type": 0,
 		"Name": "Lid",
 		"Meaning": [],
@@ -127,7 +127,7 @@
 		"Kunyomi": [],
 		"Radicals": [],
 		"Learned": false,
-		"Unlocked": false
+		"Unlocked": true
 	},
 	{
 		"Level":1,
