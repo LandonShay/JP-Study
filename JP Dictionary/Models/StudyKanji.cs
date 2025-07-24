@@ -14,6 +14,9 @@ namespace JP_Dictionary.Models
         public List<string> Radicals { get; set; } = new();
         public bool Learned { get; set; }
         public bool Unlocked { get; set; }
+        public DateTime LastStudied { get; set; } = DateTime.MinValue;
+        public int CorrectStreak { get; set; }
+        public MasteryTier MasteryTier { get; set; }
     }
 
     public enum KanjiType

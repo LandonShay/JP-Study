@@ -78,6 +78,7 @@ html, body {
 
 .reading{
     font-size: 20px;
+    max-width: 100px;
 }
 
 .headline{

@@ -23,12 +23,10 @@
 }
 
 /* Deck Table */
-.decks {
+.column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
-    margin-top: 17px;
     max-width: 600px;
 }
 
@@ -76,14 +74,6 @@
 }
 
 /* Dashboard Stats */
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    margin-top: 17px;
-}
-
 .word-mastery table {
     width: 100%;
     border-collapse: collapse;
