@@ -6,6 +6,11 @@
     padding: 0;
 }
 
+h4{
+    font-style: italic;
+    color: darkgray;
+}
+
 /* Dashboard Layout */
 .welcome {
     display: flex;
@@ -22,13 +27,11 @@
     gap: 2rem;
 }
 
-/* Deck Table */
-.decks {
+/* Deck */
+.column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
-    margin-top: 17px;
     max-width: 600px;
 }
 
@@ -55,6 +58,13 @@
     cursor: pointer;
 }
 
+.deck-name{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
 .deck-text {
     font-style: italic;
     font-size: 14px;
@@ -76,14 +86,6 @@
 }
 
 /* Dashboard Stats */
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    margin-top: 17px;
-}
-
 .word-mastery table {
     width: 100%;
     border-collapse: collapse;
@@ -123,6 +125,30 @@
 
 .value {
     color: #ffffff;
+}
+
+/* Kanji */
+.kanji-buttons{
+    display: flex;
+    gap: 25px;
+}
+
+.kanji-button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kanji-stats{
+    display: flex;
+    gap: 50px;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.kanji-block{
+    display: flex;
+    flex-direction: column;
 }
 
 /*Create Deck*/

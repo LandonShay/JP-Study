@@ -1,0 +1,46 @@
+﻿
+.list-items {
+    display: grid;
+    grid-template-columns: 125px 125px 125px 125px 125px 125px 125px 125px 125px
+}
+
+.headline {
+    height: 45px;
+    font-size: 24px;
+    border-bottom: solid 1px gray;
+    margin-bottom: 10px;
+}
+
+.item-card{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 125px;
+    height: 125px;
+    text-align: center;
+    border: solid 1px white;
+}
+
+.item-character{
+    font-size: 56px;
+}
+
+.item-name{
+    font-size: 16px;
+}
+
+.kanji{
+    background-color: mediumpurple;
+}
+
+    .kanji:hover {
+        background-color: violet;
+    }
+
+.radical {
+    background-color: steelblue;
+}
+
+    .radical:hover {
+        background-color: skyblue;
+    }

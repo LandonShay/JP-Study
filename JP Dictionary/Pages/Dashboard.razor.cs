@@ -22,14 +22,17 @@ namespace JP_Dictionary.Pages
         private Deck? DeckToDelete { get; set; }
         private Deck? DraggedDeck { get; set; }
 
-        private int WordsUnlocked { get; set; }
-        private int RemainingWords { get; set; }
+        private int VocabNoviceCount { get; set; }
+        private int VocabBeginnerCount { get; set; }
+        private int VocabProficientCount { get; set; }
+        private int VocabExpertCount { get; set; }
+        private int VocabMasteredCount { get; set; }
 
-        private int NoviceCount { get; set; }
-        private int BeginnerCount { get; set; }
-        private int ProficientCount { get; set; }
-        private int ExpertCount { get; set; }
-        private int MasteredCount { get; set; }
+        private int KanjiNoviceCount { get; set; }
+        private int KanjiBeginnerCount { get; set; }
+        private int KanjiProficientCount { get; set; }
+        private int KanjiExpertCount { get; set; }
+        private int KanjiMasteredCount { get; set; }
 
         protected override void OnInitialized()
         {
@@ -46,24 +49,35 @@ namespace JP_Dictionary.Pages
 
         private void LoadDashboard()
         {
-            NoviceCount = 0;
-            BeginnerCount = 0;
-            ProficientCount = 0;
-            ExpertCount = 0;
-            MasteredCount = 0;
+            VocabNoviceCount = 0;
+            VocabBeginnerCount = 0;
+            VocabProficientCount = 0;
+            VocabExpertCount = 0;
+            VocabMasteredCount = 0;
 
             foreach (var deck in User.Profile!.Decks.OrderBy(x => x.SortOrder))
             {
                 var words = DeckMethods.LoadDeck(User.Profile!, deck.Name).FindAll(x => x.Unlocked);
 
-                NoviceCount += words.Count(x => x.MasteryTier == MasteryTier.Novice);
-                BeginnerCount += words.Count(x => x.MasteryTier == MasteryTier.Beginner);
-                ProficientCount += words.Count(x => x.MasteryTier == MasteryTier.Proficient);
-                ExpertCount += words.Count(x => x.MasteryTier == MasteryTier.Expert);
-                MasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
+                VocabNoviceCount += words.Count(x => x.MasteryTier == MasteryTier.Novice);
+                VocabBeginnerCount += words.Count(x => x.MasteryTier == MasteryTier.Beginner);
+                VocabProficientCount += words.Count(x => x.MasteryTier == MasteryTier.Proficient);
+                VocabExpertCount += words.Count(x => x.MasteryTier == MasteryTier.Expert);
+                VocabMasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
             }
 
-            User.ResetSelectedDeck();
+            User.Kanji = KanjiMethods.LoadUserKanji(User.Profile!);
+
+            var validKanji = User.Kanji.FindAll(x => x.Unlocked && x.Learned);
+
+            KanjiNoviceCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Novice);
+            KanjiBeginnerCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Beginner);
+            KanjiProficientCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Proficient);
+            KanjiExpertCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Expert);
+            KanjiMasteredCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Mastered);
+
+            User.SelectedDeck = null;
+            User.SelectedKanji = null;
         }
 
         private void ToStudy(Deck deck)
@@ -71,6 +85,48 @@ namespace JP_Dictionary.Pages
             User.SelectedDeck = deck;
             Nav.NavigateTo("/studyvocab");
         }
+
+        #region Statistics
+        private float GetUnlockedPercentage(List<StudyWord> words)
+        {
+            return float.Round(words.Count(x => x.Unlocked) / (float)words.Count * 100, 2);
+        }
+
+        private float GetLearnedKanjiPercentage()
+        {
+            var kanji = User.Kanji.FindAll(x => x.Type == KanjiType.Kanji);
+            return float.Round(kanji.Count(x => x.Learned) / (float)kanji.Count * 100, 2);
+        }
+
+        private float GetLearnedRadicalPercentage()
+        {
+            var kanji = User.Kanji.FindAll(x => x.Type == KanjiType.Radical);
+            return float.Round(kanji.Count(x => x.Learned) / (float)kanji.Count * 100, 2);
+        }
+        #endregion
+
+        #region Kanji Nav
+        private void GoToLearnKanji()
+        {
+            var kanjiToLearn = KanjiMethods.GetItemsToLearn(User.Kanji);
+
+            if (kanjiToLearn.Count > 0)
+            {
+                User.TriggerLearnMode = true;
+                User.SelectedKanjiGroup = kanjiToLearn;
+
+                Nav.NavigateTo("/kanjireview");
+            }
+        }
+
+        private void GoToReviewKanji()
+        {
+            var kanjiToReview = KanjiMethods.GetItemsToReview(User.Kanji);
+
+            User.SelectedKanjiGroup = kanjiToReview;
+            Nav.NavigateTo("/studyvocab");
+        }
+        #endregion
 
         #region Decks
         private void ToViewDeck(Deck deck)

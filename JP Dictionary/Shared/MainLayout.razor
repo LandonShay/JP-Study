@@ -1,21 +1,24 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager Nav
 
-@code {
-    private bool IsLoginPage => Nav.Uri.EndsWith("/");
-}
-
-<div class="layout">
+<div class="layout" @onclick="HideKanjiMenu">
     @if (!IsLoginPage)
     {
-        <div class="sidebar">
+        <div class="sidebar" @onclick:stopPropagation>
             <div class="sidebar-top">
-                <div class="nav-button" @onclick='() => Nav.NavigateTo("/dashboard")'>Dashboard</div>
+                <div class="nav-button" @onclick='() => Navigate("/dashboard")'>Dashboard</div>
+                <div class="nav-button" @onclick="ToggleKanjiMenu">Levels</div>
             </div>
-
             <div class="sidebar-bottom">
-                <div class="nav-button" @onclick='() => Nav.NavigateTo("/")'>Log Out</div>
+                <div class="nav-button" @onclick='() => Navigate("/")'>Log Out</div>
             </div>
+        </div>
+        <div class="submenu-panel @(ShowKanjiMenu ? "open" : "")" @onclick:stopPropagation>
+            @foreach (var kanji in GroupedKanji.OrderBy(x => x.Key))
+            {
+                <div class="level" @onclick="() => GoToLevelDetail(kanji)">
+                    <span class="level-text">@kanji.Key</span>
+                </div>
+            }
         </div>
     }
 
@@ -25,4 +28,5 @@
 
     <GlobalToast />
 </div>
+
 

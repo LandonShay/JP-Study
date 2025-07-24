@@ -1,0 +1,164 @@
+﻿
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}
+
+.content {
+    flex-grow: 1;
+}
+
+.back-arrow-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 40px;
+    left: 260px;
+    font-size: 30px;
+    padding: 15px 30px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+    .back-arrow-container:hover {
+        background-color: #444;
+    }
+
+
+.main-item-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 35px;
+}
+
+.main-item{
+    font-size: 96px;
+}
+
+.main-item-name{
+    font-size: 36px;
+}
+
+.item-info {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    max-width: 1000px;
+    margin-left: 18%;
+    border-top: solid 1px gray;
+    padding-top: 20px;
+}
+
+.readings{
+    display: flex;
+    flex-direction: column;
+    border-right: solid 1px gray;
+    padding-right: 25px;
+    margin-left: 15px;
+    gap: 10px;
+}
+
+.reading-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reading-title{
+    font-size: 24px;
+}
+
+.reading{
+    font-size: 20px;
+    max-width: 100px;
+}
+
+.headline{
+    height: 35px;
+    font-size: 18px;
+    font-style: italic;
+    border-bottom: solid 1px gray;
+}
+
+.primary-info{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.foundation-info{
+    display: flex;
+    gap: 25px;
+}
+
+.meanings{
+    font-size: 22px;
+}
+
+.mnemonic {
+    font-size: 20px;
+}
+
+.nav-items{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.select-item {
+    padding: 10px;
+    background-color: #2a2a2a;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: center;
+    width: 50px;
+}
+
+    .select-item:hover {
+        background-color: #3a3a3a;
+    }
+
+.select-item-highlighted {
+    border: solid 1px white;
+}
+
+.nav-arrow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 15px 30px;
+    position: absolute;
+}
+
+    .nav-arrow:hover {
+        background-color: #444;
+    }
+
+.nav-arrow-left{
+    top: 37%;
+    left: 280px;
+    font-size: 24px;
+}
+
+.nav-arrow-right {
+    top: 37%;
+    right: 160px;
+    font-size: 24px;
+}
+
+.item-icon {
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+}
