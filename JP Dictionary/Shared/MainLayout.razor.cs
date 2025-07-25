@@ -22,16 +22,16 @@ namespace JP_Dictionary.Shared
             GroupedKanji = KanjiMethods.LoadDefaultKanjiList().GroupBy(x => x.Level).ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        private void Navigate(string page)
+        private void Navigate(string page, bool forceLoad)
         {
             HideKanjiMenu();
-            Nav.NavigateTo(page);
+            Nav.NavigateTo(page, forceLoad);
         }
 
         private void GoToLevelDetail(KeyValuePair<int, List<StudyKanji>> kanji)
         {
             User.SelectedKanjiGroup = kanji.Value;
-            Navigate("/kanjileveldetail");
+            Navigate("/kanjileveldetail", true);
         }
 
         private void ToggleKanjiMenu()

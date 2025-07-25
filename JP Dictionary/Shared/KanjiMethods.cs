@@ -22,6 +22,8 @@ namespace JP_Dictionary.Shared
             {
                 var content = JsonSerializer.Serialize(LoadDefaultKanjiList());
                 File.WriteAllText(path, content);
+
+                UnlockNextSet(profile);
             }
         }
 
@@ -53,7 +55,7 @@ namespace JP_Dictionary.Shared
         {
             var kanji = LoadUserKanji(profile);
 
-            foreach (var k in kanji.Where(x => x.Level == profile.KanjiLevel && !x.Unlocked).Take(10))
+            foreach (var k in kanji.Where(x => x.Level == profile.KanjiLevel && !x.Unlocked).Take(15))
             {
                 k.Unlocked = true;
             }
