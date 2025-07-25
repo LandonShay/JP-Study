@@ -9,6 +9,7 @@ namespace JP_Dictionary.Models
         public string Name { get; set; } = string.Empty;
         public List<string> Meaning { get; set; } = new();
         public string Mnemonic { get; set; } = string.Empty;
+        public string ReadingMnemonic { get; set; } = string.Empty;
         public List<string> Onyomi { get; set; } = new();
         public List<string> Kunyomi { get; set; } = new();
         public List<string> Radicals { get; set; } = new();

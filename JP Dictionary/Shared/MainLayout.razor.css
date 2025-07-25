@@ -64,16 +64,18 @@
 
 .submenu-panel {
     position: fixed;
-    top: 12%;
+    top: 6%;
     left: -250px;
     border-radius: 15px;
     width: 250px;
-    height: 50%;
+    height: 90%;
     background-color: #2a2a2a;
     box-shadow: 2px 0 5px rgba(0,0,0,0.2);
     transition: left 0.3s ease;
     z-index: 999;
     padding: 10px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
 }
 
     .submenu-panel.open {

@@ -38,10 +38,19 @@
                         <span class="mnemonic">@ActiveItem.Mnemonic</span>
                     </div>
                 </div>
+                @if (ActiveItem.ReadingMnemonic != string.Empty)
+                {
+                    <div>
+                        <label class="headline">Reading Mnemonic</label>
+                        <div>
+                            <span class="mnemonic">@ActiveItem.ReadingMnemonic</span>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
-    <div class="nav-items">
+    @* <div class="nav-items">
         @foreach (var item in Items)
         {
             @if (item != ActiveItem)
@@ -57,7 +66,7 @@
                 </div>
             }
         }
-    </div>
+    </div> *@
     @if (PreviousItem != string.Empty)
     {
         <div class="nav-arrow nav-arrow-left" @onclick="SetLeftItem">
