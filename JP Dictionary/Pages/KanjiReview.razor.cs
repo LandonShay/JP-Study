@@ -155,7 +155,7 @@ namespace JP_Dictionary.Pages
 
             foreach (var item in Items)
             {
-                var userItem = allItems.First(x => x.Item == item.Item);
+                var userItem = allItems.First(x => x.Item == item.Item && x.Type == item.Type);
                 userItem.Learned = true;
             }
 

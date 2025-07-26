@@ -140,3 +140,15 @@ input[type="text"] {
     font-style: italic;
     font-size: 16px;
 }
+
+.radical {
+    background-color: steelblue;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.kanji {
+    background-color: mediumpurple;
+    border-radius: 10px;
+    padding: 8px;
+}

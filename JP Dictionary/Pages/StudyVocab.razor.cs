@@ -28,9 +28,10 @@ namespace JP_Dictionary.Pages
         private string DefinitionAnswer { get; set; } = string.Empty;
         private string ReadingAnswer { get; set; } = string.Empty;
 
-        // css class for indicating correct or incorrect
+        // css classes
         private string DefinitionStatus { get; set; } = string.Empty;
         private string ReadingStatus { get; set; } = string.Empty;
+        private string ItemTypeCss { get; set; } = string.Empty;
 
         private Sentence? ExampleSentence { get; set; }
         private bool ShowExampleSentenceTranslation { get; set; }
@@ -39,6 +40,7 @@ namespace JP_Dictionary.Pages
         public byte AttemptsRemaining { get; set; } = 3;
 
         // study options
+        private string DeckName { get; set; } = string.Empty; // using this to prevent null error when studying kanji
         private bool ShowTestOptionModal { get; set; } = true;
         private bool TestReading { get; set; } // whether or not you are tested on the reading of the word
 
@@ -66,6 +68,7 @@ namespace JP_Dictionary.Pages
             {
                 if (User.SelectedDeck != null)
                 { // Vocab / Grammar
+                    DeckName = User.SelectedDeck!.Name;
                     StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
 
                     var availableWords = DeckMethods.LoadWordsToStudy(StudyWords);
@@ -134,8 +137,7 @@ namespace JP_Dictionary.Pages
 
                         if (item.Onyomi.Count > 0)
                         {
-                            var readings = string.Join(", ", item.Onyomi);
-                            studyCard.OriginalFormatReading = readings.ToRomaji();
+                            studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi);
                         }
 
                         if (item.Kunyomi.Count > 0)
@@ -144,11 +146,11 @@ namespace JP_Dictionary.Pages
 
                             if (studyCard.OriginalFormatReading.Length > 0)
                             {
-                                studyCard.OriginalFormatReading += ", " + readings.ToRomaji();
+                                studyCard.OriginalFormatReading += ", " + string.Join(", ", item.Kunyomi);
                             }
                             else
                             {
-                                studyCard.OriginalFormatReading = readings.ToRomaji();
+                                studyCard.OriginalFormatReading = string.Join(", ", item.Kunyomi);
                             }
                         }
 
@@ -313,11 +315,17 @@ namespace JP_Dictionary.Pages
                 if (CurrentCard.Type == StudyCardType.Radical)
                 {
                     TestReading = false;
+                    ItemTypeCss = "radical";
                 }
                 else
                 {
                     TestReading = true;
+                    ItemTypeCss = "kanji";
                 }
+            }
+            else
+            {
+                ItemTypeCss = string.Empty;
             }
 
             if (TestReading)
