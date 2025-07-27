@@ -24,24 +24,24 @@ namespace JP_Dictionary.Models
 
         private static MasteryTier GetMasteryTier(int streak)
         {
-            if (streak < 3)
+            if (streak < 3) // 0 - 2
             {
                 return MasteryTier.Novice;
             }
-            else if (streak < 6)
+            else if (streak < 5) // 3 - 5
             {
                 return MasteryTier.Beginner;
             }
-            else if (streak < 8)
+            else if (streak < 8) // 6 - 8
             {
                 return MasteryTier.Proficient;
             }
-            else if (streak < 10) // days 14-30
+            else if (streak < 10) // 9 - 10
             {
                 return MasteryTier.Expert;
             }
 
-            return MasteryTier.Mastered; // days 30+
+            return MasteryTier.Mastered; // 11
         }
 
         public bool HasAudio()

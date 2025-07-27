@@ -81,6 +81,18 @@ namespace JP_Dictionary.Shared
             };
         }
 
+        public static int GetTierFloor(MasteryTier tier)
+        {
+            return tier switch
+            {
+                MasteryTier.Novice => 0,
+                MasteryTier.Beginner => 3,
+                MasteryTier.Proficient => 6,
+                MasteryTier.Expert => 9,
+                _ => 11
+            };
+        }
+
         [JSInvokable]
         public static Task SetTalkingFalse()
         {
