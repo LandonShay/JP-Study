@@ -81,6 +81,40 @@ namespace JP_Dictionary.Shared
             };
         }
 
+        public static int GetTierFloor(MasteryTier tier)
+        {
+            return tier switch
+            {
+                MasteryTier.Novice => 0,
+                MasteryTier.Beginner => 3,
+                MasteryTier.Proficient => 6,
+                MasteryTier.Expert => 9,
+                _ => 11
+            };
+        }
+
+        public static MasteryTier GetMasteryTier(int streak)
+        {
+            if (streak <= 2) // 0 - 2
+            {
+                return MasteryTier.Novice;
+            }
+            else if (streak <= 5) // 3 - 5
+            {
+                return MasteryTier.Beginner;
+            }
+            else if (streak <= 8) // 6 - 8
+            {
+                return MasteryTier.Proficient;
+            }
+            else if (streak <= 10) // 9 - 10
+            {
+                return MasteryTier.Expert;
+            }
+
+            return MasteryTier.Mastered; // 11
+        }
+
         [JSInvokable]
         public static Task SetTalkingFalse()
         {

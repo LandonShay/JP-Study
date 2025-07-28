@@ -5,7 +5,7 @@
 {
     <div class="modal-overlay">
         <div class="custom-modal">
-            <h2>@User.SelectedDeck!.Name</h2>
+            <h2>@DeckName</h2>
             <div class="test-options">
                 <div>
                     <input type="radio" name="testMode" @onchange="() => TestReading = true" checked="@TestReading" />
@@ -37,11 +37,10 @@
         <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
             @if (!TestReading)
             {
-                @if (CurrentCard.StudyWord.Audio != string.Empty)
+                @if (CurrentCard.StudyWord.HasAudio())
                 {
                     <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                         <h3>@CurrentCard.Word</h3>
-                        <span>@CurrentCard.Type.ToString()</span>
                         <span>
                             <i class="fa-solid fa-volume-high"></i>
                         </span>
@@ -49,15 +48,16 @@
                 }
                 else
                 {
-                    <div>
+                    <div class="@ItemTypeCss">
                         <h3>@CurrentCard.Word</h3>
-                        <span>@CurrentCard.Type.ToString()</span>
                     </div>
                 }
             }
             else
             {
-                <h2>@CurrentCard.Word</h2>
+                <div class="@ItemTypeCss">
+                    <h2>@CurrentCard.Word</h2>
+                </div>
                 <div class="answer-area">
                     <label class="label">Reading</label>
                     <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
@@ -86,9 +86,12 @@
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
-                    <span>
-                        <i class="fa-solid fa-volume-high"></i>
-                    </span>
+                    @if (CurrentCard.StudyWord.HasAudio())
+                    {
+                        <span>
+                            <i class="fa-solid fa-volume-high"></i>
+                        </span>
+                    }
                 </div>
                 <div class="reading-definition">
                     <div>
@@ -135,9 +138,12 @@
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
-                    <span>
-                        <i class="fa-solid fa-volume-high"></i>
-                    </span>
+                    @if (CurrentCard.StudyWord.HasAudio())
+                    {
+                        <span>
+                            <i class="fa-solid fa-volume-high"></i>
+                        </span>
+                    }
                 </div>
                 <div class="reading-definition">
                     <div>

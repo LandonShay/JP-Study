@@ -28,9 +28,10 @@ namespace JP_Dictionary.Pages
         private string DefinitionAnswer { get; set; } = string.Empty;
         private string ReadingAnswer { get; set; } = string.Empty;
 
-        // css class for indicating correct or incorrect
+        // css classes
         private string DefinitionStatus { get; set; } = string.Empty;
         private string ReadingStatus { get; set; } = string.Empty;
+        private string ItemTypeCss { get; set; } = string.Empty;
 
         private Sentence? ExampleSentence { get; set; }
         private bool ShowExampleSentenceTranslation { get; set; }
@@ -39,6 +40,7 @@ namespace JP_Dictionary.Pages
         public byte AttemptsRemaining { get; set; } = 3;
 
         // study options
+        private string DeckName { get; set; } = string.Empty; // using this to prevent null error when studying kanji
         private bool ShowTestOptionModal { get; set; } = true;
         private bool TestReading { get; set; } // whether or not you are tested on the reading of the word
 
@@ -66,6 +68,7 @@ namespace JP_Dictionary.Pages
             {
                 if (User.SelectedDeck != null)
                 { // Vocab / Grammar
+                    DeckName = User.SelectedDeck!.Name;
                     StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
 
                     var availableWords = DeckMethods.LoadWordsToStudy(StudyWords);
@@ -119,13 +122,13 @@ namespace JP_Dictionary.Pages
                         {
                             foreach (var reading in item.Onyomi)
                             {
-                                var romaji = reading.ToRomaji();
+                                var romaji = reading.Trim().ToRomaji();
                                 studyCard.ReadingAnswers.Add(romaji);
                             }
 
                             foreach (var reading in item.Kunyomi)
                             {
-                                var romaji = reading.ToRomaji();
+                                var romaji = reading.Trim().ToRomaji();
                                 studyCard.ReadingAnswers.Add(romaji);
                             }
 
@@ -134,8 +137,7 @@ namespace JP_Dictionary.Pages
 
                         if (item.Onyomi.Count > 0)
                         {
-                            var readings = string.Join(", ", item.Onyomi);
-                            studyCard.OriginalFormatReading = readings.ToRomaji();
+                            studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi);
                         }
 
                         if (item.Kunyomi.Count > 0)
@@ -144,11 +146,11 @@ namespace JP_Dictionary.Pages
 
                             if (studyCard.OriginalFormatReading.Length > 0)
                             {
-                                studyCard.OriginalFormatReading += ", " + readings.ToRomaji();
+                                studyCard.OriginalFormatReading += ", " + string.Join(", ", item.Kunyomi);
                             }
                             else
                             {
-                                studyCard.OriginalFormatReading = readings.ToRomaji();
+                                studyCard.OriginalFormatReading = string.Join(", ", item.Kunyomi);
                             }
                         }
 
@@ -313,11 +315,17 @@ namespace JP_Dictionary.Pages
                 if (CurrentCard.Type == StudyCardType.Radical)
                 {
                     TestReading = false;
+                    ItemTypeCss = "radical";
                 }
                 else
                 {
                     TestReading = true;
+                    ItemTypeCss = "kanji";
                 }
+            }
+            else
+            {
+                ItemTypeCss = string.Empty;
             }
 
             if (TestReading)
@@ -389,21 +397,29 @@ namespace JP_Dictionary.Pages
             if (User.SelectedDeck != null)
             {
                 var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
-                word.CorrectStreak += change;
 
                 if (change > 0)
                 {
+                    word.CorrectStreak += change;
                     word.LastStudied = DateTime.Today.Date;
-                }
 
-                if (word.CorrectStreak < 0)
-                {
-                    word.CorrectStreak = 0;
-                    word.LastStudied = DateTime.MinValue;
+                    if (word.CorrectStreak > 11)
+                    {
+                        word.CorrectStreak = 11;
+                    }
                 }
-                else if (word.CorrectStreak > 11)
-                {
-                    word.CorrectStreak = 11;
+                else
+                { // if you get a word wrong in beginner or below, start from 0. get it wrong in proficient or above, start from beginner
+                    if (word.MasteryTier == MasteryTier.Novice || word.MasteryTier == MasteryTier.Beginner)
+                    {
+                        word.CorrectStreak = 0;
+                        word.LastStudied = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        word.CorrectStreak = HelperMethods.GetTierFloor(MasteryTier.Beginner);
+                        word.LastStudied = DateTime.Today.Date;
+                    }
                 }
 
                 DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
@@ -411,21 +427,29 @@ namespace JP_Dictionary.Pages
             else
             {
                 var kanji = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
-                kanji.CorrectStreak += change;
 
                 if (change > 0)
                 {
+                    kanji.CorrectStreak += change;
                     kanji.LastStudied = DateTime.Today.Date;
-                }
 
-                if (kanji.CorrectStreak < 0)
-                {
-                    kanji.CorrectStreak = 0;
-                    kanji.LastStudied = DateTime.MinValue;
+                    if (kanji.CorrectStreak > 11)
+                    {
+                        kanji.CorrectStreak = 11;
+                    }
                 }
-                else if (kanji.CorrectStreak > 11)
+                else
                 {
-                    kanji.CorrectStreak = 11;
+                    if (kanji.MasteryTier == MasteryTier.Novice || kanji.MasteryTier == MasteryTier.Beginner)
+                    {
+                        kanji.CorrectStreak = 0;
+                        kanji.LastStudied = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        kanji.CorrectStreak = HelperMethods.GetTierFloor(MasteryTier.Beginner);
+                        kanji.LastStudied = DateTime.Today.Date;
+                    }
                 }
 
                 KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);

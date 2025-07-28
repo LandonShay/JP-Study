@@ -213,7 +213,7 @@ namespace JP_Dictionary.Pages
 
             try
             {
-                var wordsWithoutAudio = AllWords.FindAll(x => x.Audio == string.Empty);
+                var wordsWithoutAudio = AllWords.FindAll(x => !x.HasAudio());
 
                 if (wordsWithoutAudio.Count > 0)
                 {

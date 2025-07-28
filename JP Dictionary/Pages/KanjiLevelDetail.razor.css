@@ -1,4 +1,15 @@
 ﻿
+.page{
+    display: flex;
+    gap: 15px;
+}
+
+.page-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .list-items {
     display: grid;
     grid-template-columns: 125px 125px 125px 125px 125px 125px 125px 125px 125px
@@ -44,3 +55,11 @@
     .radical:hover {
         background-color: skyblue;
     }
+
+.table-container{
+    max-height: 750px;
+    overflow-y: scroll;
+    border-radius: 15px;
+    margin-top: 40px;
+    padding: 10px;
+}

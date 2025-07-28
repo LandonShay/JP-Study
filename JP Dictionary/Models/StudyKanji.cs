@@ -1,4 +1,6 @@
 ﻿
+using JP_Dictionary.Shared;
+
 namespace JP_Dictionary.Models
 {
     public class StudyKanji
@@ -17,7 +19,13 @@ namespace JP_Dictionary.Models
         public bool Unlocked { get; set; }
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
         public int CorrectStreak { get; set; }
-        public MasteryTier MasteryTier { get; set; }
+        public MasteryTier MasteryTier
+        {
+            get
+            {
+                return HelperMethods.GetMasteryTier(CorrectStreak);
+            }
+        }
     }
 
     public enum KanjiType
