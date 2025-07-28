@@ -37,7 +37,7 @@
         <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
             @if (!TestReading)
             {
-                @if (CurrentCard.StudyWord.Audio != string.Empty)
+                @if (CurrentCard.StudyWord.HasAudio())
                 {
                     <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                         <h3>@CurrentCard.Word</h3>
@@ -86,7 +86,7 @@
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.Audio != string.Empty)
+                    @if (CurrentCard.StudyWord.HasAudio())
                     {
                         <span>
                             <i class="fa-solid fa-volume-high"></i>
@@ -138,7 +138,7 @@
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.Audio != string.Empty)
+                    @if (CurrentCard.StudyWord.HasAudio())
                     {
                         <span>
                             <i class="fa-solid fa-volume-high"></i>

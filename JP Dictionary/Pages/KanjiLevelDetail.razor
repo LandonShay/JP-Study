@@ -1,33 +1,69 @@
 ﻿@page "/kanjileveldetail"
 
-<div>
-    <h2>Level @User.SelectedKanjiGroup.First().Level</h2>
-    <div>
-        <div class="headline">
-            <label>Radicals</label>
+<div class="page">
+    <div class="page-container">
+        <h2>Level @UserKanji.First().Level</h2>
+        <div>
+            <div class="headline">
+                <label>Radicals</label>
+            </div>
+            <div class="list-items">
+                @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Radical))
+                {
+                    <div class="item-card radical" @onclick="() => ViewItem(item)">
+                        <span class="item-character">@item.Item</span>
+                        <span class="item-name">@item.Name</span>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="list-items">
-            @foreach (var item in User.SelectedKanjiGroup.Where(x => x.Type == KanjiType.Radical))
-            {
-                <div class="item-card radical" @onclick="() => ViewItem(item)">
-                    <span class="item-character">@item.Item</span>
-                    <span class="item-name">@item.Name</span>
-                </div>
-            }
+        <div>
+            <div class="headline">
+                <label>Kanji</label>
+            </div>
+            <div class="list-items">
+                @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Kanji))
+                {
+                    <div class="item-card kanji" @onclick="() => ViewItem(item)">
+                        <span class="item-character">@item.Item</span>
+                        <span class="item-name">@item.Name</span>
+                    </div>
+                }
+            </div>
         </div>
     </div>
     <div>
-        <div class="headline">
-            <label>Kanji</label>
-        </div>
-        <div class="list-items">
-            @foreach (var item in User.SelectedKanjiGroup.Where(x => x.Type == KanjiType.Kanji))
-            {
-                <div class="item-card kanji" @onclick="() => ViewItem(item)">
-                    <span class="item-character">@item.Item</span>
-                    <span class="item-name">@item.Name</span>
-                </div>
-            }
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Item</th>
+                        <th>Streak</th>
+                        <th>Mastery</th>
+                        <th>Study</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in UserKanji)
+                    {
+                        <tr>
+                            <td>@item.Type.ToString()</td>
+                            <td>@item.Item</td>
+                            <td>@item.CorrectStreak</td>
+                            <td>@item.MasteryTier</td>
+                            @if (item.Unlocked)
+                            {
+                                <td>@HelperMethods.GetNextStudyDate(item).ToShortDateString()</td>
+                            }
+                            else
+                            {
+                                <td><i class="fa-solid fa-lock"></i></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
