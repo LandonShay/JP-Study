@@ -78,7 +78,7 @@
                     <td>
                         @if (entry.Unlocked)
                         {
-                            @HelperMethods.GetNextStudyDate(entry).ToShortDateString()
+                            @HelperMethods.GetNextStudyDate(entry.LastStudied, entry.CorrectStreak).ToShortDateString()
                         }
                         else
                         {

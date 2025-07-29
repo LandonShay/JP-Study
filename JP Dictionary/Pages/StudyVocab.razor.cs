@@ -491,9 +491,7 @@ namespace JP_Dictionary.Pages
         {
             if (User.SelectedDeck == null)
             {
-                var kanji = KanjiMethods.LoadUserKanji(User.Profile!);
-                var currentLevelKanji = kanji.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == KanjiType.Kanji);
-
+                var currentLevelKanji = StudyKanji.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == KanjiType.Kanji);
                 var percentAtBeginner = currentLevelKanji.Count(x => x.MasteryTier == MasteryTier.Beginner) / (float)currentLevelKanji.Count() * 100;
 
                 if (percentAtBeginner > 90)

@@ -24,7 +24,7 @@ namespace JP_Dictionary.Shared
 
             foreach (var word in deck.Where(x => x.Unlocked))
             {
-                var nextDueDate = HelperMethods.GetNextStudyDate(word);
+                var nextDueDate = HelperMethods.GetNextStudyDate(word.LastStudied, word.CorrectStreak);
 
                 if (DateTime.Today.Date >= nextDueDate)
                 {

@@ -1,10 +1,10 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
+﻿using System.Text.Json;
+using System.Globalization;
 using JP_Dictionary.Models;
 using JP_Dictionary.Pages;
 using Microsoft.JSInterop;
-using System.Globalization;
-using System.Text.Json;
+using CsvHelper.Configuration;
+using CsvHelper;
 
 namespace JP_Dictionary.Shared
 {
@@ -16,21 +16,9 @@ namespace JP_Dictionary.Shared
             return Path.Combine(filePath, "JP Study", fileName);
         }
 
-        public static DateTime GetNextStudyDate(StudyWord word)
+        public static DateTime GetNextStudyDate(DateTime lastStudied, int streak)
         {
-            var date = word.LastStudied.AddDays(GetDelayFromStreak(word.CorrectStreak));
-
-            if (date < DateTime.Today)
-            {
-                date = DateTime.Today;  
-            }
-
-            return date;
-        }
-
-        public static DateTime GetNextStudyDate(StudyKanji kanji)
-        {
-            var date = kanji.LastStudied.AddDays(GetDelayFromStreak(kanji.CorrectStreak));
+            var date = lastStudied.AddDays(GetDelayFromStreak(streak));
 
             if (date < DateTime.Today)
             {
@@ -62,7 +50,7 @@ namespace JP_Dictionary.Shared
             File.WriteAllText(filePath, json);
         }
 
-        public static int GetDelayFromStreak(int streak)
+        private static int GetDelayFromStreak(int streak)
         {
             return streak switch
             {
@@ -151,28 +139,33 @@ namespace JP_Dictionary.Shared
             return csv.GetRecords<StudyWord>().ToList();
         }
 
-        public static List<Sentence> LoadExampleSentences()
+        public static async Task<List<Sentence>> LoadExampleSentences()
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            var sentences = new List<Sentence>();
+
+            await Task.Run(() =>
             {
-                HasHeaderRecord = true,
-                Delimiter = ",",
-                HeaderValidated = null,
-                MissingFieldFound = null
-            };
-
-            using var reader = new StreamReader(@"Data\ExampleSentences.csv");
-            using var csv = new CsvReader(reader, config);
-
-            var sentences = csv.GetRecords<Sentence>().ToList();
-
-            foreach (var sentence in sentences)
-            {
-                if (!string.IsNullOrEmpty(sentence.KeywordsAsString))
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    sentence.Keywords = sentence.KeywordsAsString.Substring(0, sentence.KeywordsAsString.Length - 2).Split(";").ToList();
+                    HasHeaderRecord = true,
+                    Delimiter = ",",
+                    HeaderValidated = null,
+                    MissingFieldFound = null
+                };
+
+                using var reader = new StreamReader(@"Data\ExampleSentences.csv");
+                using var csv = new CsvReader(reader, config);
+
+                sentences = csv.GetRecords<Sentence>().ToList();
+
+                foreach (var sentence in sentences)
+                {
+                    if (!string.IsNullOrEmpty(sentence.KeywordsAsString))
+                    {
+                        sentence.Keywords = sentence.KeywordsAsString.Substring(0, sentence.KeywordsAsString.Length - 2).Split(";").ToList();
+                    }
                 }
-            }
+            });
 
             return sentences;
         }

@@ -74,7 +74,7 @@ namespace JP_Dictionary.Shared
 
             foreach (var k in kanji.Where(x => x.Learned && x.Unlocked))
             {
-                var nextDueDate = HelperMethods.GetNextStudyDate(k);
+                var nextDueDate = HelperMethods.GetNextStudyDate(k.LastStudied, k.CorrectStreak);
 
                 if (DateTime.Today.Date >= nextDueDate)
                 {
