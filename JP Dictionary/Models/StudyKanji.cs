@@ -1,5 +1,4 @@
-﻿
-using JP_Dictionary.Shared;
+﻿using JP_Dictionary.Shared.Methods;
 
 namespace JP_Dictionary.Models
 {

@@ -1,6 +1,6 @@
 ﻿using JP_Dictionary.Models;
 
-namespace JP_Dictionary.Shared
+namespace JP_Dictionary.Shared.Methods
 {
     public class DeckMethods
     {

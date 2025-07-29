@@ -6,7 +6,7 @@ using Microsoft.JSInterop;
 using CsvHelper.Configuration;
 using CsvHelper;
 
-namespace JP_Dictionary.Shared
+namespace JP_Dictionary.Shared.Methods
 {
     public static class HelperMethods
     {

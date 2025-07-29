@@ -1,8 +1,8 @@
 ﻿using JP_Dictionary.Models;
-using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
-using MyNihongo.KanaConverter;
+using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
 using MoreLinq;
 

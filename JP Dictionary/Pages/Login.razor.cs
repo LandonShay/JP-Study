@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using JP_Dictionary.Models;
-using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
+using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 
 namespace JP_Dictionary.Pages

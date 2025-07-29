@@ -1,7 +1,7 @@
 ﻿using JP_Dictionary.Models;
 using System.Text.Json;
 
-namespace JP_Dictionary.Shared
+namespace JP_Dictionary.Shared.Methods
 {
     public static class KanjiMethods
     {
