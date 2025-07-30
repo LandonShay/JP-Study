@@ -1,6 +1,6 @@
-﻿using JP_Dictionary.Shared;
-using JP_Dictionary.Models;
+﻿using JP_Dictionary.Models;
 using JP_Dictionary.Services;
+using JP_Dictionary.Shared.Methods;
 using Google.Cloud.TextToSpeech.V1;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

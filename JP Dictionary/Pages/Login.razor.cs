@@ -1,15 +1,16 @@
 ﻿using System.Text.Json;
-using Microsoft.AspNetCore.Components;
-using JP_Dictionary.Services;
 using JP_Dictionary.Models;
-using JP_Dictionary.Shared;
+using JP_Dictionary.Services;
+using JP_Dictionary.Shared.Methods;
+using Microsoft.AspNetCore.Components;
 
 namespace JP_Dictionary.Pages
 {
     public partial class Login
     {
-        public List<Profile> Profiles = new();
-        public string CreateName = string.Empty;
+        private List<Profile> Profiles { get; set; } = new();
+        private string CreateName { get; set; } = string.Empty;
+        private bool LoadingSentences { get; set; }
 
         #region Injections
 #nullable disable
@@ -21,9 +22,11 @@ namespace JP_Dictionary.Pages
 
         protected override void OnInitialized()
         {
+            LoadSentencesAsync();
             LoadProfiles();
         }
 
+        #region Loading
         private void LoadProfiles()
         {
             var filePath = HelperMethods.GetFilePath("Profiles.txt");
@@ -38,6 +41,26 @@ namespace JP_Dictionary.Pages
                 }
             }
         }
+
+        private async void LoadSentencesAsync()
+        {
+            if (UserState.Sentences.Count == 0 && !LoadingSentences)
+            {
+                LoadingSentences = true;
+
+                try
+                {
+                    UserState.Sentences = await HelperMethods.LoadExampleSentences();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to load sentences: {ex.Message}");
+                }
+
+                LoadingSentences = false;
+            }
+        }
+        #endregion
 
         private void LogIn(Profile profile)
         {
@@ -87,7 +110,6 @@ namespace JP_Dictionary.Pages
             HelperMethods.SaveProfile(profile);
 
             UserState.Profile = profile;
-            UserState.Sentences = HelperMethods.LoadExampleSentences();
             UserState.Kanji = KanjiMethods.LoadUserKanji(profile);
 
             Nav.NavigateTo("/dashboard");

@@ -54,7 +54,7 @@
                             <td>@item.MasteryTier</td>
                             @if (item.Unlocked)
                             {
-                                <td>@HelperMethods.GetNextStudyDate(item).ToShortDateString()</td>
+                                <td>@HelperMethods.GetNextStudyDate(item.LastStudied, item.CorrectStreak).ToShortDateString()</td>
                             }
                             else
                             {
