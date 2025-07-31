@@ -162,5 +162,22 @@ namespace JP_Dictionary.Pages
             KanjiMethods.SaveUserKanji(User.Profile!, allItems);
             Nav.NavigateTo("/studyvocab");
         }
+
+        private async void GoToWanikani()
+        {
+            string url;
+
+            if (ActiveItem.Type == KanjiType.Radical)
+            {
+                url = "https://www.wanikani.com/radicals/" + ActiveItem.Name.ToLower();
+
+            }
+            else
+            {
+                url = "https://www.wanikani.com/kanji/" + ActiveItem.Item;
+            }
+
+            await JS.InvokeVoidAsync("openInNewTab", url);
+        }
     }
 }
