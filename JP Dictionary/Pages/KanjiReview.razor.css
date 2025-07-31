@@ -162,3 +162,13 @@ html, body {
     -ms-user-select: none; 
     user-select: none; 
 }
+
+.bottom-buttons{
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.wanikani-logo{
+    width: 125px;
+}
