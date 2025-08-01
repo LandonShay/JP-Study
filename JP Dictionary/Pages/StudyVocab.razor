@@ -41,6 +41,10 @@
                 {
                     <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                         <h3>@CurrentCard.Word</h3>
+                        @if (CardIsNew())
+                        {
+                            <span>New!</span>
+                        }
                         <span>
                             <i class="fa-solid fa-volume-high"></i>
                         </span>
@@ -50,6 +54,10 @@
                 {
                     <div class="@ItemTypeCss">
                         <h3>@CurrentCard.Word</h3>
+                        @if (CardIsNew())
+                        {
+                            <span>New!</span>
+                        }
                     </div>
                 }
             }
@@ -57,6 +65,10 @@
             {
                 <div class="@ItemTypeCss">
                     <h2>@CurrentCard.Word</h2>
+                    @if (CardIsNew())
+                    {
+                        <span>New!</span>
+                    }
                 </div>
                 <div class="answer-area">
                     <label class="label">Reading</label>
