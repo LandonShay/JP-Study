@@ -106,8 +106,10 @@ namespace JP_Dictionary.Shared.Methods
         [JSInvokable]
         public static Task SetTalkingFalse()
         {
+            ListeningComp.Talking = false;
             StudyVocab.Talking = false;
             ViewDeck.Talking = false;
+
             return Task.CompletedTask;
         }
 

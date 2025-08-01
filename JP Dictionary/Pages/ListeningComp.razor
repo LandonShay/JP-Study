@@ -1,0 +1,74 @@
+﻿@layout MainLayout
+@page "/listeningcomp"
+
+@if (SelectingOptions)
+{
+    <div class="modal-overlay">
+        <div class="custom-modal">
+            <h2>Select Mode</h2>
+            <div class="test-options">
+                <div>
+                    <input type="radio" name="testMode" @onchange="() => OneChanceMode = false" checked="@@(!OneChanceMode)" />
+                    <span>Casual</span>
+                    <div class="test-options-label">
+                        <span class="italics">Audio can be repeated as many times as you wish</span>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="testMode" @onchange="() => OneChanceMode = true" checked="@OneChanceMode" />
+                    <span>One Chance</span>
+                    <div class="test-options-label">
+                        <span class="italics">You only hear the audio once per sentence</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="main-button" @onclick="ConfirmTestOptions">Start</button>
+                <button class="main-button" @onclick='() => Nav.NavigateTo("/dashboard")'>Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @if (!ShowResults)
+    {
+        <form class="sentence-container" @onsubmit="ShowAnswer">
+            <span class="speaker" @onclick="TextToSpeech">
+                <i class="fa-solid fa-volume-high"></i>
+            </span>
+            <textarea type="text" rows="4" autocomplete="off" id="answer-area" @bind="Answer" />
+            <div class="buttons">
+                <button class="main-button" type="submit">Submit</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <form class="sentence-container" @onsubmit="GetNextSentence">
+            <span class="sentence">@Sentence.JP</span>
+            <span class="sentence">@Sentence.RomajiReading</span>
+            <h3>Your Answer</h3>
+            <span class="sentence">@Answer</span>
+            <div class="buttons">
+                <button class="main-button" id="next" type="submit">Next</button>
+            </div>
+        </form>
+    }
+
+    <div class="speed-options">
+        <h4>Talk Speed</h4>
+        <div>
+            <input type="radio" name="talkSpeed" @onchange="() => TalkSpeed = .5f" checked="@(TalkSpeed == .5f)" />
+            <span>Slow</span>
+        </div>
+        <div>
+            <input type="radio" name="talkSpeed" @onchange="() => TalkSpeed = .75f" checked="@(TalkSpeed == .75f)" />
+            <span>Normal</span>
+        </div>
+        <div>
+            <input type="radio" name="talkSpeed" @onchange="() => TalkSpeed = 1f" checked="@(TalkSpeed == 1f)" />
+            <span>Fast</span>
+        </div>
+    </div>
+}

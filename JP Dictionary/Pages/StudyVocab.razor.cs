@@ -368,6 +368,12 @@ namespace JP_Dictionary.Pages
                 }
             }
         }
+
+        private bool CardIsNew()
+        {
+            return (CurrentCard.StudyWord.Id != string.Empty && CurrentCard.StudyWord?.LastStudied == DateTime.MinValue) ||
+                   (CurrentCard.StudyKanji.Item != string.Empty && CurrentCard.StudyKanji?.LastStudied == DateTime.MinValue);
+        }
         #endregion
 
         #region Editing
