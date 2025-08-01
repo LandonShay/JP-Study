@@ -7,5 +7,6 @@ namespace JP_Dictionary.Models
         public string EN { get; set; } = string.Empty;
         public List<string> Keywords { get; set; } = new();
         public string KeywordsAsString { get; set; } = string.Empty;
+        public string RomajiReading = string.Empty;
     }
 }

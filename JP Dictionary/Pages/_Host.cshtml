@@ -41,7 +41,7 @@
             }
         };
     </script>
-    @*For text to speech*@
+    @*For mp3 text to speech*@
     <script>
         window.speakText = async function (base64Audio) {
             const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
@@ -51,6 +51,33 @@
                 DotNet.invokeMethodAsync('JP Dictionary', 'SetTalkingFalse')
                     .catch(err => console.error("SetTalkingFalse failed", err));
             };
+        };
+    </script>
+    @*For basic browser text to speech*@
+    <script>
+        window.speakTextBasic = function (text, speed) {
+            if ('speechSynthesis' in window) {
+                var utterance = new SpeechSynthesisUtterance(text);
+                var voices = speechSynthesis.getVoices();
+
+                var japaneseVoice = voices.find(voice => voice.lang === 'ja-JP');
+                if (japaneseVoice) {
+                    utterance.voice = japaneseVoice;
+                }
+
+                utterance.lang = 'ja-JP';
+                utterance.pitch = 1;
+                utterance.rate = speed;
+
+                speechSynthesis.speak(utterance);
+
+                utterance.onend = function () {
+                    DotNet.invokeMethodAsync('JP Dictionary', 'SetTalkingFalse')
+                        .catch(err => console.error("SetTalkingFalse failed", err));
+                };
+            } else {
+                console.warn("Text-to-Speech is not supported in this browser.");
+            }
         };
     </script>
     @* For opening links in new tabs *@
