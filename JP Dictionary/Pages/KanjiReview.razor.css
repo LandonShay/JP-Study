@@ -167,8 +167,13 @@ html, body {
     display: flex;
     justify-content: center;
     margin-top: 25px;
+    gap: 10px;
 }
 
 .wanikani-logo{
     width: 125px;
+}
+
+.jisho-logo {
+    width: 55px;
 }
