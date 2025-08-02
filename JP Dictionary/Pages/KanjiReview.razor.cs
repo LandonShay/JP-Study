@@ -179,5 +179,11 @@ namespace JP_Dictionary.Pages
 
             await JS.InvokeVoidAsync("openInNewTab", url);
         }
+
+        private async Task SearchJisho()
+        {
+            var link = Path.Combine("https://jisho.org/search/", ActiveItem.Item);
+            await JS.InvokeVoidAsync("openInNewTab", link);
+        }
     }
 }
