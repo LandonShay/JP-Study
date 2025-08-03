@@ -31,6 +31,19 @@
                 }
             </div>
         </div>
+        <div>
+            <div class="headline">
+                <label>Vocab</label>
+            </div>
+            <div class="vocab-items">
+                @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Vocab))
+                {
+                    <div class="vocab-card" @onclick="() => ViewItem(item)">
+                        <span class="vocab-character">@item.Item</span>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
     <div>
         <div class="table-container">
@@ -49,6 +62,36 @@
                     {
                         <tr>
                             <td>@item.Type.ToString()</td>
+                            <td>@item.Item</td>
+                            <td>@item.CorrectStreak</td>
+                            <td>@item.MasteryTier</td>
+                            @if (item.Unlocked)
+                            {
+                                <td>@HelperMethods.GetNextStudyDate(item.LastStudied, item.CorrectStreak).ToShortDateString()</td>
+                            }
+                            else
+                            {
+                                <td><i class="fa-solid fa-lock"></i></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Streak</th>
+                        <th>Mastery</th>
+                        <th>Study</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Vocab))
+                    {
+                        <tr>
                             <td>@item.Item</td>
                             <td>@item.CorrectStreak</td>
                             <td>@item.MasteryTier</td>

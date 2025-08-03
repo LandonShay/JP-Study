@@ -108,9 +108,7 @@ namespace JP_Dictionary.Pages
             }
 
             HelperMethods.SaveProfile(profile);
-
             UserState.Profile = profile;
-            UserState.Kanji = KanjiMethods.LoadUserKanji(profile);
 
             Nav.NavigateTo("/dashboard");
         }

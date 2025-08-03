@@ -31,7 +31,11 @@ namespace JP_Dictionary.Shared
 
         private void GoToLevelDetail(KeyValuePair<int, List<StudyKanji>> kanji)
         {
+            var vocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!).Where(x => x.Level == kanji.Value.First().Level);
+
             User.SelectedKanjiGroup = kanji.Value;
+            User.SelectedKanjiGroup.AddRange(vocab);
+
             Navigate("/kanjileveldetail", true);
         }
 
