@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
 using MoreLinq;
+using WanaKanaSharp;
 
 namespace JP_Dictionary.Pages
 {
@@ -120,13 +121,13 @@ namespace JP_Dictionary.Pages
                         }
                         else
                         {
-                            foreach (var reading in item.Onyomi)
+                            foreach (var reading in item.Onyomi.Where(WanaKana.IsKana))
                             {
                                 var romaji = reading.Trim().ToRomaji();
                                 studyCard.ReadingAnswers.Add(romaji);
                             }
 
-                            foreach (var reading in item.Kunyomi)
+                            foreach (var reading in item.Kunyomi.Where(WanaKana.IsKana))
                             {
                                 var romaji = reading.Trim().ToRomaji();
                                 studyCard.ReadingAnswers.Add(romaji);
