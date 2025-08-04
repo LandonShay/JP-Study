@@ -7,7 +7,7 @@
 </div>
 <div class="dashboard-content">
     <div class="column">
-        <h4>Kanji / Radicals</h4>
+        <h4>Kanji / Radicals / Vocab</h4>
         <div class="word-mastery">
             <table>
                 <thead>
@@ -53,28 +53,37 @@
         <div class="kanji-buttons">
             <button class="main-button kanji-button" @onclick="GoToLearnKanji">
                 Learn
-                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(User.Kanji).Count</span>
+                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
             </button>
-            <button class="main-button kanji-button" @onclick="GoToReviewKanji">
+            <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Kanji)">
                 Review
-                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(User.Kanji).Count</span>
+                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
+            </button>
+            <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Vocab)">
+                Vocab
+                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
             </button>
         </div>
         <div class="kanji-stats">
             <div class="kanji-block">
                 <h4>Kanji</h4>
-                <span class="deck-text">@GetLearnedKanjiPercentage()%</span>
-                <span class="deck-text">(@User.Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@User.Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
+                <span class="deck-text">@GetLearnedPercentage(KanjiType.Kanji)%</span>
+                <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
             </div>
             <div class="kanji-block">
                 <h4>Radicals</h4>
-                <span class="deck-text">@GetLearnedRadicalPercentage()%</span>
-                <span class="deck-text">(@User.Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@User.Kanji.Count(x => x.Type == KanjiType.Radical))</span>
+                <span class="deck-text">@GetLearnedPercentage(KanjiType.Radical)%</span>
+                <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Radical))</span>
+            </div>
+            <div class="kanji-block">
+                <h4>Vocab</h4>
+                <span class="deck-text">@GetLearnedPercentage(KanjiType.Vocab)%</span>
+                <span class="deck-text">(@KanjiVocab.Count(x => x.Learned)/@KanjiVocab.Count)</span>
             </div>
         </div>
     </div>
     <div class="column">
-        <h4>Vocab</h4>
+        <h4>JLPT</h4>
         <div class="word-mastery">
             <table>
                 <thead>

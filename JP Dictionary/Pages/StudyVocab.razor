@@ -95,6 +95,10 @@
             @if (CurrentCard.Correct)
             {
                 <h2>Correct!</h2>
+                @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
+                {
+                    <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
+                }
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>
@@ -147,6 +151,10 @@
             else
             {
                 <h2>Incorrect</h2>
+                @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
+                {
+                    <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
+                }
 
                 <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
                     <h3>@CurrentCard.Word</h3>

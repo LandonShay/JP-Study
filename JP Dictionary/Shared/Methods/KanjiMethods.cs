@@ -13,23 +13,53 @@ namespace JP_Dictionary.Shared.Methods
             return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
         }
 
+        public static List<StudyKanji> LoadDefaultWanikaniVocab()
+        {
+            var filePath = @"Data\Wanikani Vocab.json";
+            var content = File.ReadAllText(filePath);
+
+            return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+        }
+
         public static void CreateUserKanji(Profile profile)
         {
-            var path = HelperMethods.CreateFile($"{profile.Name} Kanji List.json");
+            var userKanjiPath = HelperMethods.CreateFile($"{profile.Name} Kanji List.json");
+            var userKanjiVocabPath = HelperMethods.CreateFile($"{profile.Name} Kanji Vocab.json");
+
             var userKanjis = LoadUserKanji(profile);
+            var userKanjiVocab = LoadUserKanjiVocab(profile);
 
             if (userKanjis.Count == 0)
             {
                 var content = JsonSerializer.Serialize(LoadDefaultKanjiList());
-                File.WriteAllText(path, content);
+                File.WriteAllText(userKanjiPath, content);
 
                 UnlockNextSet(profile);
+            }
+
+            if (userKanjiVocab.Count == 0)
+            {
+                var content = JsonSerializer.Serialize(LoadDefaultWanikaniVocab());
+                File.WriteAllText(userKanjiVocabPath, content);
             }
         }
 
         public static List<StudyKanji> LoadUserKanji(Profile profile)
         {
             var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji List.json");
+            var content = File.ReadAllText(filePath);
+
+            if (content.Length > 0)
+            {
+                return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+            }
+
+            return new();
+        }
+
+        public static List<StudyKanji> LoadUserKanjiVocab(Profile profile)
+        {
+            var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji Vocab.json");
             var content = File.ReadAllText(filePath);
 
             if (content.Length > 0)
@@ -51,6 +81,17 @@ namespace JP_Dictionary.Shared.Methods
             File.WriteAllText(filePath, content);
         }
 
+        public static void SaveUserKanjiVocab(Profile profile, List<StudyKanji> kanji)
+        {
+            var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji Vocab.json");
+
+            File.Delete(filePath);
+            HelperMethods.CreateFile(filePath);
+
+            var content = JsonSerializer.Serialize(kanji);
+            File.WriteAllText(filePath, content);
+        }
+
         public static void UnlockNextSet(Profile profile)
         {
             var kanji = LoadUserKanji(profile);
@@ -61,6 +102,38 @@ namespace JP_Dictionary.Shared.Methods
             }
 
             SaveUserKanji(profile, kanji);
+        }
+
+        public static void UnlockRelatedVocab(Profile profile)
+        {
+            var somethingUnlocked = false;
+
+            var kanji = LoadUserKanji(profile);
+            var vocab = LoadUserKanjiVocab(profile);
+
+            foreach (var v in vocab.Where(x => x.Level <= profile.KanjiLevel && !x.Unlocked))
+            {
+                foreach (var k in v.Kanji)
+                {
+                    var uk = kanji.FirstOrDefault(x => x.Item == k);
+
+                    if (uk != null)
+                    {
+                        if (uk.Learned)
+                        {
+                            v.Learned = true;
+                            v.Unlocked = true;
+
+                            somethingUnlocked = true;
+                        }
+                    }
+                }
+            }
+
+            if (somethingUnlocked)
+            {
+                SaveUserKanjiVocab(profile, vocab);
+            }
         }
 
         public static List<StudyKanji> GetItemsToLearn(List<StudyKanji> kanji)

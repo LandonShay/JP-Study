@@ -63,3 +63,33 @@
     margin-top: 40px;
     padding: 10px;
 }
+
+.vocab-items {
+    display: grid;
+    grid-template-columns: 160px 160px 160px 160px 160px 160px 165px;
+}
+
+.vocab-card{
+    background-color: rebeccapurple;
+    padding: 10px;
+    border: solid 1px white;
+    border-bottom: none;
+    text-align: center;
+}
+
+    .vocab-card:hover{
+        cursor: pointer;
+        background-color: mediumpurple;
+    }
+
+.vocab-character{
+    font-size: 24px;
+}
+
+#vocab-table{
+    margin-top: 0;
+}
+
+#vocab-table-word{
+    min-width: 125px;
+}

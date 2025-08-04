@@ -22,11 +22,21 @@ namespace JP_Dictionary.Pages
         protected override void OnInitialized()
         {
             var userKanji = KanjiMethods.LoadUserKanji(User.Profile!);
+            var userVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
             foreach (var kanji in User.SelectedKanjiGroup)
             {
-                var uk = userKanji.First(x => x.Item == kanji.Item && x.Type == kanji.Type);
-                UserKanji.Add(uk);
+                var uk = userKanji.FirstOrDefault(x => x.Item == kanji.Item && x.Type == kanji.Type);
+
+                if (uk != null)
+                {
+                    UserKanji.Add(uk);
+                }
+                else
+                {
+                    var uv = userVocab.First(x => x.Item == kanji.Item);
+                    UserKanji.Add(uv);
+                }
             }
         }
 
@@ -34,6 +44,17 @@ namespace JP_Dictionary.Pages
         {
             User.SelectedKanji = item;
             Nav.NavigateTo("/kanjireview");
+        }
+
+        private void DeleteVocab(StudyKanji vocab)
+        {
+            var userVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
+
+            UserKanji.Remove(vocab);
+            userVocab.RemoveAll(x => x.Item == vocab.Item);
+            User.SelectedKanjiGroup.RemoveAll(x => x.Item == vocab.Item);
+
+            KanjiMethods.SaveUserKanjiVocab(User.Profile!, userVocab);
         }
     }
 }

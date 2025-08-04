@@ -4,8 +4,8 @@ using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
-using MoreLinq;
 using WanaKanaSharp;
+using MoreLinq;
 
 namespace JP_Dictionary.Pages
 {
@@ -63,6 +63,7 @@ namespace JP_Dictionary.Pages
             }
         }
 
+        #region Init + Rendering
         protected override void OnInitialized()
         {
             try
@@ -99,69 +100,97 @@ namespace JP_Dictionary.Pages
                     TestReading = User.SelectedDeck.Type != DeckType.Grammar;
                 }
                 else
-                { // Kanji / Radicals
-                    StudyKanji = KanjiMethods.LoadUserKanji(User.Profile!);
+                {
+                    if (User.SelectedKanjiGroup.All(x => x.Type != KanjiType.Vocab))
+                    { // Kanji / Radicals
+                        StudyKanji = KanjiMethods.LoadUserKanji(User.Profile!);
 
-                    foreach (var item in User.SelectedKanjiGroup)
-                    {
-                        var studyCard = new VocabCard
+                        foreach (var item in User.SelectedKanjiGroup)
                         {
-                            Word = item.Item,
-                            Type = StudyCardType.Kanji,
-                            OriginalFormatDefinition = string.Join(", ", item.Meaning),
-                            StudyKanji = item
-                        };
-
-                        if (item.Type == KanjiType.Radical)
-                        {
-                            studyCard.Type = StudyCardType.Radical;
-                            studyCard.OriginalFormatDefinition = item.Name;
-                            studyCard.OriginalFormatReading = "None";
-                            studyCard.DefinitionAnswers.Add(item.Name.ToLower());
-                        }
-                        else
-                        {
-                            foreach (var reading in item.Onyomi.Where(WanaKana.IsKana))
+                            var studyCard = new VocabCard
                             {
-                                var romaji = reading.Trim().ToRomaji();
-                                studyCard.ReadingAnswers.Add(romaji);
-                            }
+                                Word = item.Item,
+                                Type = StudyCardType.Kanji,
+                                OriginalFormatDefinition = string.Join(", ", item.Meaning),
+                                StudyKanji = item
+                            };
 
-                            foreach (var reading in item.Kunyomi.Where(WanaKana.IsKana))
+                            if (item.Type == KanjiType.Radical)
                             {
-                                var romaji = reading.Trim().ToRomaji();
-                                studyCard.ReadingAnswers.Add(romaji);
-                            }
-
-                            studyCard.DefinitionAnswers = item.Meaning;
-                        }
-
-                        if (item.Onyomi.Count > 0)
-                        {
-                            studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi);
-                        }
-
-                        if (item.Kunyomi.Count > 0)
-                        {
-                            var readings = string.Join(", ", item.Kunyomi);
-
-                            if (studyCard.OriginalFormatReading.Length > 0)
-                            {
-                                studyCard.OriginalFormatReading += ", " + string.Join(", ", item.Kunyomi);
+                                studyCard.Type = StudyCardType.Radical;
+                                studyCard.OriginalFormatDefinition = item.Name;
+                                studyCard.OriginalFormatReading = "None";
+                                studyCard.DefinitionAnswers.Add(item.Name.ToLower());
                             }
                             else
                             {
-                                studyCard.OriginalFormatReading = string.Join(", ", item.Kunyomi);
+                                foreach (var reading in item.Onyomi.Where(WanaKana.IsKana))
+                                {
+                                    var romaji = reading.Trim().ToRomaji();
+                                    studyCard.ReadingAnswers.Add(romaji);
+                                }
+
+                                foreach (var reading in item.Kunyomi.Where(WanaKana.IsKana))
+                                {
+                                    var romaji = reading.Trim().ToRomaji();
+                                    studyCard.ReadingAnswers.Add(romaji);
+                                }
+
+                                studyCard.DefinitionAnswers = item.Meaning;
                             }
+
+                            if (item.Onyomi.Count > 0)
+                            {
+                                studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi);
+                            }
+
+                            if (item.Kunyomi.Count > 0)
+                            {
+                                var readings = string.Join(", ", item.Kunyomi);
+
+                                if (studyCard.OriginalFormatReading.Length > 0)
+                                {
+                                    studyCard.OriginalFormatReading += ", " + string.Join(", ", item.Kunyomi);
+                                }
+                                else
+                                {
+                                    studyCard.OriginalFormatReading = string.Join(", ", item.Kunyomi);
+                                }
+                            }
+
+                            StudyCards.Enqueue(studyCard);
                         }
 
-                        StudyCards.Enqueue(studyCard);
+                        TestReading = true;
+                        ShowTestOptionModal = false;
+
+                        ShowNextCard();
                     }
+                    else
+                    { // Kanji Vocab
+                        StudyKanji = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
-                    TestReading = true;
-                    ShowTestOptionModal = false;
+                        foreach (var item in User.SelectedKanjiGroup)
+                        {
+                            var studyCard = new VocabCard
+                            {
+                                Word = item.Item,
+                                Type = StudyCardType.Vocab,
+                                OriginalFormatDefinition = string.Join(", ", item.Meaning),
+                                OriginalFormatReading = item.Reading.ToRomaji(),
+                                DefinitionAnswers = item.Meaning,
+                                ReadingAnswers = [item.Reading.ToRomaji()],
+                                StudyKanji = item
+                            };
 
-                    ShowNextCard();
+                            StudyCards.Enqueue(studyCard);
+                        }
+
+                        TestReading = true;
+                        ShowTestOptionModal = false;
+
+                        ShowNextCard();
+                    }
                 }
             }
             catch (Exception ex)
@@ -195,6 +224,7 @@ namespace JP_Dictionary.Pages
                 Toast.ShowError("An error occured during rendering, see console for details");
             }
         }
+        #endregion
 
         #region Study Options
         private async Task ConfirmTestOptions()
@@ -318,10 +348,15 @@ namespace JP_Dictionary.Pages
                     TestReading = false;
                     ItemTypeCss = "radical";
                 }
-                else
+                else if (CurrentCard.Type == StudyCardType.Kanji)
                 {
                     TestReading = true;
                     ItemTypeCss = "kanji";
+                }
+                else
+                {
+                    TestReading = true;
+                    ItemTypeCss = string.Empty;
                 }
             }
             else
@@ -391,10 +426,27 @@ namespace JP_Dictionary.Pages
             CurrentCard.OriginalFormatDefinition = NewDefinition;
             CurrentCard.DefinitionAnswers = NewDefinition.Split(',').Select(str => str.Trim().ToLower()).ToList();
 
-            var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
-            word.Definitions = NewDefinition;
+            if (User.SelectedDeck != null)
+            {
+                var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
+                word.Definitions = NewDefinition;
 
-            DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
+                DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
+            }
+            else
+            {
+                var word = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
+                word.Meaning = NewDefinition.Split(',').ToList();
+
+                if (CurrentCard.Type == StudyCardType.Vocab)
+                {
+                    KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyKanji);
+                }
+                else
+                {
+                    KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);
+                }
+            }
         }
         #endregion
 
@@ -459,7 +511,14 @@ namespace JP_Dictionary.Pages
                     }
                 }
 
-                KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);
+                if (kanji.Type != KanjiType.Vocab)
+                {
+                    KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);
+                }
+                else
+                {
+                    KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyKanji);
+                }
             }
         }
 

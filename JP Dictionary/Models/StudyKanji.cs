@@ -14,6 +14,8 @@ namespace JP_Dictionary.Models
         public List<string> Onyomi { get; set; } = new();
         public List<string> Kunyomi { get; set; } = new();
         public List<string> Radicals { get; set; } = new();
+        public List<string> Kanji { get; set; } = new(); // Vocab only, the kanji that comprise the word (and hiragana/katakana...)
+        public string Reading { get; set; } = string.Empty; // Vocab only, kanji readings are in onyomi, kunyomi
         public bool Learned { get; set; }
         public bool Unlocked { get; set; }
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
@@ -30,6 +32,7 @@ namespace JP_Dictionary.Models
     public enum KanjiType
     {
         Radical,
-        Kanji
+        Kanji,
+        Vocab
     }
 }

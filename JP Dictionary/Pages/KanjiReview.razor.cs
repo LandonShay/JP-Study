@@ -160,6 +160,8 @@ namespace JP_Dictionary.Pages
             }
 
             KanjiMethods.SaveUserKanji(User.Profile!, allItems);
+            KanjiMethods.UnlockRelatedVocab(User.Profile!);
+
             Nav.NavigateTo("/studyvocab");
         }
 
@@ -171,6 +173,10 @@ namespace JP_Dictionary.Pages
             {
                 url = "https://www.wanikani.com/radicals/" + ActiveItem.Name.ToLower();
 
+            }
+            else if (ActiveItem.Type == KanjiType.Vocab)
+            {
+                url = "https://www.wanikani.com/vocabulary/" + ActiveItem.Item;
             }
             else
             {
