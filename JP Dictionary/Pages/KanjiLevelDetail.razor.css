@@ -64,9 +64,9 @@
     padding: 10px;
 }
 
-.vocab-items{
+.vocab-items {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 160px 160px 160px 160px 160px 160px 165px;
 }
 
 .vocab-card{
@@ -84,4 +84,12 @@
 
 .vocab-character{
     font-size: 24px;
+}
+
+#vocab-table{
+    margin-top: 0;
+}
+
+#vocab-table-word{
+    min-width: 125px;
 }

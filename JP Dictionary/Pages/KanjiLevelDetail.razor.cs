@@ -45,5 +45,16 @@ namespace JP_Dictionary.Pages
             User.SelectedKanji = item;
             Nav.NavigateTo("/kanjireview");
         }
+
+        private void DeleteVocab(StudyKanji vocab)
+        {
+            var userVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
+
+            UserKanji.Remove(vocab);
+            userVocab.RemoveAll(x => x.Item == vocab.Item);
+            User.SelectedKanjiGroup.RemoveAll(x => x.Item == vocab.Item);
+
+            KanjiMethods.SaveUserKanjiVocab(User.Profile!, userVocab);
+        }
     }
 }
