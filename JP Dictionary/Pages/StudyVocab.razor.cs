@@ -426,15 +426,18 @@ namespace JP_Dictionary.Pages
             CurrentCard.OriginalFormatDefinition = NewDefinition;
             CurrentCard.DefinitionAnswers = NewDefinition.Split(',').Select(str => str.Trim().ToLower()).ToList();
 
-            var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
-            word.Definitions = NewDefinition;
-
             if (User.SelectedDeck != null)
             {
+                var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
+                word.Definitions = NewDefinition;
+
                 DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
             }
             else
             {
+                var word = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
+                word.Meaning = NewDefinition.Split(',').ToList();
+
                 if (CurrentCard.Type == StudyCardType.Vocab)
                 {
                     KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyKanji);
