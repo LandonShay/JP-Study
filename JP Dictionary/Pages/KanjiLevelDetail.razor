@@ -45,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in UserKanji)
+                    @foreach (var item in UserKanji.Where(x => x.Type != KanjiType.Vocab))
                     {
                         <tr>
                             <td>@item.Type.ToString()</td>

@@ -107,6 +107,23 @@ namespace JP_Dictionary.Pages
 
             return float.Round(KanjiVocab.Count(x => x.Learned) / (float)KanjiVocab.Count * 100, 2);
         }
+
+        private float LevelProgress()
+        {
+            var levelItems = Kanji.FindAll(x => x.Level == User.Profile!.KanjiLevel);
+
+            if (levelItems.Count == 0)
+            {
+                return 0;
+            }
+
+            var beginnerOrAbove = levelItems.Count(x => x.MasteryTier >= MasteryTier.Beginner);
+            var target = levelItems.Count * 0.9f;
+
+            var progress = beginnerOrAbove / target;
+
+            return float.Round(MathF.Min(progress, 1f) * 100, 2);
+        }
         #endregion
 
         #region Kanji Nav
