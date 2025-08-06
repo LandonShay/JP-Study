@@ -88,6 +88,7 @@ namespace JP_Dictionary.Pages
                             StudyWord = word,
                             Type = type,
                             Word = word.Word,
+                            CurrentCorrectStreak = word.CorrectStreak,
                             OriginalFormatDefinition = word.Definitions,
                             OriginalFormatReading = word.Romaji,
                             DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
@@ -111,6 +112,7 @@ namespace JP_Dictionary.Pages
                             {
                                 Word = item.Item,
                                 Type = StudyCardType.Kanji,
+                                CurrentCorrectStreak = item.CorrectStreak,
                                 OriginalFormatDefinition = string.Join(", ", item.Meaning),
                                 StudyKanji = item
                             };
@@ -176,6 +178,7 @@ namespace JP_Dictionary.Pages
                             {
                                 Word = item.Item,
                                 Type = StudyCardType.Vocab,
+                                CurrentCorrectStreak = item.CorrectStreak,
                                 OriginalFormatDefinition = string.Join(", ", item.Meaning),
                                 OriginalFormatReading = item.Reading.ToRomaji(),
                                 DefinitionAnswers = item.Meaning,
@@ -456,6 +459,7 @@ namespace JP_Dictionary.Pages
             if (User.SelectedDeck != null)
             {
                 var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
+                word.CorrectStreak = CurrentCard.CurrentCorrectStreak;
 
                 if (change > 0)
                 {
@@ -486,6 +490,7 @@ namespace JP_Dictionary.Pages
             else
             {
                 var kanji = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
+                kanji.CorrectStreak = CurrentCard.CurrentCorrectStreak;
 
                 if (change > 0)
                 {
@@ -525,6 +530,9 @@ namespace JP_Dictionary.Pages
         private void MarkAsCorrect()
         {
             CurrentCard.Correct = true;
+            CurrentCard.StudyKanji.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+            CurrentCard.StudyWord.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+
             UpdateWord(1);
         }
 

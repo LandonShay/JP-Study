@@ -11,6 +11,7 @@
         public StudyWord StudyWord { get; set; } = new();
         public StudyKanji StudyKanji { get; set; } = new();
         public bool Correct { get; set; }
+        public int CurrentCorrectStreak { get; set; }
     }
 
     public enum StudyCardType
