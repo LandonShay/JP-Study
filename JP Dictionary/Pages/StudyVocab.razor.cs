@@ -571,7 +571,9 @@ namespace JP_Dictionary.Pages
                 if (percentAtBeginner > 90)
                 {
                     User.Profile!.KanjiLevel++;
+
                     HelperMethods.SaveProfile(User.Profile!);
+                    KanjiMethods.UnlockNextSet(User.Profile!);
                 }
             }
         }
