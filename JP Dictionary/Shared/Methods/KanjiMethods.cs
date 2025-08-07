@@ -115,9 +115,9 @@ namespace JP_Dictionary.Shared.Methods
             {
                 foreach (var k in v.Kanji)
                 {
-                    var uk = kanji.FirstOrDefault(x => x.Item == k && x.Type == KanjiType.Kanji);
+                    var uk = kanji.FirstOrDefault(x => x.Item == k && x.Type == KanjiType.Kanji && x.Learned);
 
-                    if (uk != null && uk.Learned)
+                    if (uk != null)
                     {
                         v.Learned = true;
                         v.Unlocked = true;
