@@ -111,7 +111,7 @@ namespace JP_Dictionary.Shared.Methods
             var kanji = LoadUserKanji(profile);
             var vocab = LoadUserKanjiVocab(profile);
 
-            foreach (var v in vocab.Where(x => x.Level <= profile.KanjiLevel && !x.Unlocked))
+            foreach (var v in vocab.Where(x => x.Type == KanjiType.Kanji && x.Level <= profile.KanjiLevel && !x.Unlocked))
             {
                 foreach (var k in v.Kanji)
                 {
