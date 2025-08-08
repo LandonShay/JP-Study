@@ -40,6 +40,8 @@ html, body {
 
 .main-item{
     font-size: 96px;
+    border-radius: 15px;
+    padding: 0 15px;
 }
 
 .main-item-name{
@@ -176,4 +178,16 @@ html, body {
 
 .jisho-logo {
     width: 55px;
+}
+
+.kanji-item {
+    background-color: mediumpurple;
+}
+
+.radical-item {
+    background-color: steelblue;
+}
+
+.vocab-item {
+    background-color: rebeccapurple;
 }

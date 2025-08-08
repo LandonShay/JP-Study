@@ -3,7 +3,7 @@
 <div class="page-container">
     <div class="content">
         <div class="main-item-container">
-            <span class="main-item">@ActiveItem.Item</span>
+            <span class="main-item @ItemCSS">@ActiveItem.Item</span>
             <span class="main-item-name">@ActiveItem.Name</span>
         </div>
         <div class="item-info">
@@ -71,23 +71,6 @@
             </button>
         </div>
     </div>
-    @* <div class="nav-items">
-        @foreach (var item in Items)
-        {
-            @if (item != ActiveItem)
-            {
-                <div class="select-item" @onclick="() => ActiveItem = item">
-                    <span>@item.Item</span>
-                </div>
-            }
-            else
-            {
-                <div class="select-item select-item-highlighted" @onclick="() => ActiveItem = item">
-                    <span>@item.Item</span>
-                </div>
-            }
-        }
-    </div> *@
     @if (PreviousItem != string.Empty)
     {
         <div class="nav-arrow nav-arrow-left" @onclick="SetLeftItem">

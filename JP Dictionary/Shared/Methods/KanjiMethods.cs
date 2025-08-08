@@ -113,16 +113,13 @@ namespace JP_Dictionary.Shared.Methods
 
             foreach (var v in vocab.Where(x => x.Level <= profile.KanjiLevel && !x.Unlocked))
             {
-                foreach (var k in v.Kanji)
-                {
-                    var uk = kanji.FirstOrDefault(x => x.Item == k && x.Type == KanjiType.Kanji && x.Learned);
+                var allKanjiLearned = v.Kanji.All(k => kanji.Any(x => x.Item == k && x.Type == KanjiType.Kanji && x.Learned));
 
-                    if (uk != null)
-                    {
-                        v.Learned = true;
-                        v.Unlocked = true;
-                        somethingUnlocked = true;
-                    }
+                if (allKanjiLearned)
+                {
+                    v.Learned = true;
+                    v.Unlocked = true;
+                    somethingUnlocked = true;
                 }
             }
 
