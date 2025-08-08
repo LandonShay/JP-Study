@@ -75,8 +75,8 @@ namespace JP_Dictionary.Shared.Methods
             {
                 MasteryTier.Novice => 0,
                 MasteryTier.Beginner => 3,
-                MasteryTier.Proficient => 6,
-                MasteryTier.Expert => 9,
+                MasteryTier.Proficient => 5,
+                MasteryTier.Expert => 8,
                 _ => 11
             };
         }
@@ -87,15 +87,15 @@ namespace JP_Dictionary.Shared.Methods
             {
                 return MasteryTier.Novice;
             }
-            else if (streak <= 5) // 3 - 5
+            else if (streak <= 4) // 3 - 4
             {
                 return MasteryTier.Beginner;
             }
-            else if (streak <= 8) // 6 - 8
+            else if (streak <= 7) // 5 - 7
             {
                 return MasteryTier.Proficient;
             }
-            else if (streak <= 10) // 9 - 10
+            else if (streak <= 10) // 8 - 10
             {
                 return MasteryTier.Expert;
             }

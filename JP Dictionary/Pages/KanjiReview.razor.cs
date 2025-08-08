@@ -25,6 +25,7 @@ namespace JP_Dictionary.Pages
         private string PreviousItem { get; set; } = string.Empty;
 
         private bool LearnMode { get; set; }
+        private string ItemCSS { get; set; } = string.Empty;
 
         protected override void OnInitialized()
         {
@@ -49,6 +50,7 @@ namespace JP_Dictionary.Pages
                 User.TriggerLearnMode = false;
             }
 
+            SetItemCSS();
             GetLeftItem();
             GetRightItem();
         }
@@ -130,6 +132,7 @@ namespace JP_Dictionary.Pages
             if (leftItem != string.Empty)
             {
                 ActiveItem = Items.First(x => x.Item == leftItem);
+                SetItemCSS();
             }
 
             GetLeftItem();
@@ -143,10 +146,27 @@ namespace JP_Dictionary.Pages
             if (rightItem != string.Empty)
             {
                 ActiveItem = Items.First(x => x.Item == rightItem);
+                SetItemCSS();
             }
 
             GetLeftItem();
             GetRightItem();
+        }
+
+        private void SetItemCSS()
+        {
+            if (ActiveItem.Type == KanjiType.Kanji)
+            {
+                ItemCSS = "kanji-item";
+            }
+            else if (ActiveItem.Type == KanjiType.Radical)
+            {
+                ItemCSS = "radical-item";
+            }
+            else
+            {
+                ItemCSS = "vocab-item";
+            }
         }
 
         private void GoToReview()
