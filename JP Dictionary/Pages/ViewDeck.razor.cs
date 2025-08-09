@@ -1,7 +1,6 @@
 ﻿using JP_Dictionary.Models;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
-using Google.Cloud.TextToSpeech.V1;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -26,11 +25,6 @@ namespace JP_Dictionary.Pages
         private StudyWord? EditingEntry;
         private string EditingValue = string.Empty;
 
-        // audio generation
-        private int ProgressPercentage => AudioTotal == 0 ? 0 : (AudioProgress * 100 / AudioTotal);
-        private bool IsGeneratingAudio = false;
-        private int AudioProgress = 0;
-        private int AudioTotal = 0;
         public static bool Talking { get; set; }
 
         #region Injections
@@ -200,89 +194,20 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Audio
-        private async void GenerateAudio()
+        private async Task TextToSpeech(StudyWord word)
         {
-            var directoryPath = HelperMethods.GetFilePath("") + $@"\{User.Profile!.Name}Audio";
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            IsGeneratingAudio = true;
-
             try
             {
-                var wordsWithoutAudio = AllWords.FindAll(x => !x.HasAudio());
-
-                if (wordsWithoutAudio.Count > 0)
+                if (!Talking)
                 {
-                    Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", @"C:\Users\Landon\AppData\jp-study-tts-86eb099cbed5.json");
-
-                    var client = await TextToSpeechClient.CreateAsync();
-                    AudioTotal = wordsWithoutAudio.Count;
-
-                    for (int i = 0; i < wordsWithoutAudio.Count; i++)
-                    {
-                        AudioProgress = i + 1;
-
-                        var wordWithoutAudio = wordsWithoutAudio[i];
-                        var word = AllWords.First(x => x.Id == wordWithoutAudio.Id);
-
-                        var response = await client.SynthesizeSpeechAsync(new SynthesizeSpeechRequest
-                        {
-                            Input = new SynthesisInput { Text = wordWithoutAudio.Word },
-                            Voice = new VoiceSelectionParams { LanguageCode = "ja-JP", SsmlGender = SsmlVoiceGender.Female },
-                            AudioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Mp3 }
-                        });
-
-                        var audioAsBytes = response.AudioContent.ToByteArray();
-
-                        var fileName = $"{word.Word}.mp3";
-                        var filePath = Path.Combine(directoryPath, fileName);
-
-                        if (!File.Exists(filePath))
-                        {
-                            File.WriteAllBytes(filePath, audioAsBytes);
-                        }
-
-                        word.Audio = $@"{User.Profile!.Name}Audio\{fileName}";
-                        DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck!.Name);
-
-                        StateHasChanged();
-                    }
-
-                    Toast.ShowSuccess("Audio successfully generated!");
-                }
-                else
-                {
-                    Toast.ShowInfo("All cards in this deck already have audio");
+                    Talking = true;
+                    await JS.InvokeVoidAsync("speakTextBasic", word.Romaji, 1);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                Toast.ShowError("An error occured while generating audio");
-            }
-
-            IsGeneratingAudio = false;
-            AudioProgress = 0;
-            AudioTotal = 0;
-
-            StateHasChanged();
-        }
-
-        private async Task TextToSpeech(string audioPath)
-        {
-            if (!Talking)
-            {
-                Talking = true;
-
-                var filePath = HelperMethods.GetFilePath(audioPath);
-                var bytes = await File.ReadAllBytesAsync(filePath);
-                var base64 = Convert.ToBase64String(bytes);
-
-                await JS.InvokeVoidAsync("speakText", base64);
+                Toast.ShowError("An error occured during TTS, see console for details");
             }
         }
         #endregion

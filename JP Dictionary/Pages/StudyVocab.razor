@@ -37,29 +37,16 @@
         <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
             @if (!TestReading)
             {
-                @if (CurrentCard.StudyWord.HasAudio())
-                {
-                    <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
-                        <h3>@CurrentCard.Word</h3>
-                        @if (CardIsNew())
-                        {
-                            <span>New!</span>
-                        }
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    </div>
-                }
-                else
-                {
-                    <div class="@ItemTypeCss">
-                        <h3>@CurrentCard.Word</h3>
-                        @if (CardIsNew())
-                        {
-                            <span>New!</span>
-                        }
-                    </div>
-                }
+                <div class="speak-word" @onclick="TextToSpeech">
+                    <h3>@CurrentCard.Word</h3>
+                    @if (CardIsNew())
+                    {
+                        <span>New!</span>
+                    }
+                    <span>
+                        <i class="fa-solid fa-volume-high"></i>
+                    </span>
+                </div>
             }
             else
             {
@@ -100,14 +87,11 @@
                     <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
                 }
 
-                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                <div class="speak-word" @onclick="TextToSpeech">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.HasAudio())
-                    {
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    }
+                    <span>
+                        <i class="fa-solid fa-volume-high"></i>
+                    </span>
                 </div>
                 <div class="reading-definition">
                     <div>
@@ -156,14 +140,11 @@
                     <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
                 }
 
-                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                <div class="speak-word" @onclick="TextToSpeech">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.HasAudio())
-                    {
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    }
+                    <span>
+                        <i class="fa-solid fa-volume-high"></i>
+                    </span>
                 </div>
                 <div class="reading-definition">
                     <div>

@@ -218,7 +218,7 @@ namespace JP_Dictionary.Pages
                    (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying)))
                 {
                     FirstResults = false;
-                    await TextToSpeech(CurrentCard.StudyWord.Audio);
+                    await TextToSpeech();
                 }
             }
             catch (Exception ex)
@@ -591,28 +591,18 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("focusElementById", elementId);
         }
 
-        private async Task TextToSpeech(string audioPath)
+        private async Task TextToSpeech()
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(audioPath))
+                if (!Talking && CurrentCard.Type != StudyCardType.Radical)
                 {
-                    if (!Talking)
+                    var word = CurrentCard.ReadingAnswers.FirstOrDefault();
+
+                    if (word != null)
                     {
                         Talking = true;
-
-                        var filePath = HelperMethods.GetFilePath(audioPath);
-                        var bytes = await File.ReadAllBytesAsync(filePath);
-                        var base64 = Convert.ToBase64String(bytes);
-
-                        await JS.InvokeVoidAsync("speakText", base64);
-                    }
-                }
-                else
-                {
-                    if (CurrentCard.Word != string.Empty && CurrentCard.Type != StudyCardType.Radical && User.SelectedDeck != null)
-                    {
-                        Toast.ShowWarning($"{CurrentCard.Word} does not have audio");
+                        await JS.InvokeVoidAsync("speakTextBasic", word, 1);
                     }
                 }
             }

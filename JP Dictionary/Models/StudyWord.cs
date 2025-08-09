@@ -18,13 +18,7 @@ namespace JP_Dictionary.Models
                 return HelperMethods.GetMasteryTier(CorrectStreak);
             }
         }
-        public string Audio { get; set; } = string.Empty;
         public int StudyOrder { get; set; }
-
-        public bool HasAudio()
-        {
-            return Audio != string.Empty;
-        }
     }
 
     public enum MasteryTier
