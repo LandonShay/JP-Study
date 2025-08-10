@@ -15,6 +15,11 @@ namespace JP_Dictionary.Models
         public bool TriggerLearnMode { get; set; }
         public bool WipeSelectedKanjiGroup { get; set; }
 
+        public void ResetPreviousKanjiGroup()
+        {
+            PreviousKanjiGroup = new();
+        }
+
         public void UpdatePreviousKanjiGroup()
         {
             PreviousKanjiGroup = SelectedKanjiGroup.ToList();

@@ -105,6 +105,7 @@ namespace JP_Dictionary.Pages
                     if (User.SelectedKanjiGroup.Count == 0 && User.PreviousKanjiGroup.Count > 0)
                     {
                         User.SelectedKanjiGroup = User.PreviousKanjiGroup.ToList();
+                        User.ResetPreviousKanjiGroup();
                     }
 
                     if (User.SelectedKanjiGroup.All(x => x.Type != KanjiType.Vocab))
@@ -394,7 +395,7 @@ namespace JP_Dictionary.Pages
                 ElementToFocus = "return";
 
                 CheckLevelUp();
-                User.PreviousKanjiGroup = new();
+                User.ResetPreviousKanjiGroup();
             }
         }
 
