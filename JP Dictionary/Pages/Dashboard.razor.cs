@@ -2,6 +2,8 @@
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using ChartJs.Blazor.BarChart;
+using ChartJs.Blazor.Common;
 using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
@@ -16,6 +18,9 @@ namespace JP_Dictionary.Pages
         [Inject] public ToastService Toast { get; set; }
 #nullable enable
         #endregion
+
+        private BarConfig KRVBarConfig { get; set; } = new();
+        private BarConfig JLPTBarConfig { get; set; } = new();
 
         private List<StudyKanji> Kanji { get; set; } = new();
         private List<StudyKanji> KanjiVocab { get; set; } = new();
@@ -50,6 +55,7 @@ namespace JP_Dictionary.Pages
             }
         }
 
+        #region Loading
         private void LoadDashboard()
         {
             VocabNoviceCount = 0;
@@ -83,13 +89,61 @@ namespace JP_Dictionary.Pages
 
             User.SelectedDeck = null;
             User.SelectedKanji = null;
+
+            LoadGraphs();
         }
 
-        private void ToStudy(Deck deck)
+        private void LoadGraphs()
         {
-            User.SelectedDeck = deck;
-            Nav.NavigateTo("/studyvocab");
+            KRVBarConfig.Options = new BarOptions
+            {
+                Legend = new Legend { Display = false }
+            };
+
+            JLPTBarConfig.Options = new BarOptions
+            {
+                Legend = new Legend { Display = false }
+            };
+
+            foreach (var tier in new[] { "Novice", "Beginner", "Proficient", "Expert", "Mastered" })
+            {
+                KRVBarConfig.Data.Labels.Add(tier);
+                JLPTBarConfig.Data.Labels.Add(tier);
+            }
+
+            var krvTierCounts = new[] { KanjiNoviceCount, KanjiBeginnerCount, KanjiProficientCount, KanjiExpertCount, KanjiMasteredCount };
+            var jlptTierCounts = new[] { VocabNoviceCount, VocabBeginnerCount, VocabProficientCount, VocabExpertCount, VocabMasteredCount };
+
+            var krvDataset = new BarDataset<int>(krvTierCounts)
+            {
+                BorderWidth = 1,
+                BackgroundColor = new[]
+                {
+                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
+                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
+                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
+                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
+                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
+                },
+            };
+
+            var jlptDataset = new BarDataset<int>(jlptTierCounts)
+            {
+                BorderWidth = 1,
+                BackgroundColor = new[]
+                {
+                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
+                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
+                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
+                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
+                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
+                }
+            };
+
+            KRVBarConfig.Data.Datasets.Add(krvDataset);
+            JLPTBarConfig.Data.Datasets.Add(jlptDataset);
         }
+        #endregion
 
         #region Statistics
         private float GetUnlockedPercentage(List<StudyWord> words)
@@ -126,7 +180,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
-        #region Kanji Nav
+        #region Nav
         private void GoToLearnKanji()
         {
             var kanjiToLearn = KanjiMethods.GetItemsToLearn(Kanji);
@@ -151,6 +205,12 @@ namespace JP_Dictionary.Pages
                 User.SelectedKanjiGroup = KanjiMethods.GetItemsToReview(KanjiVocab);
             }
 
+            Nav.NavigateTo("/studyvocab");
+        }
+
+        private void ToStudy(Deck deck)
+        {
+            User.SelectedDeck = deck;
             Nav.NavigateTo("/studyvocab");
         }
         #endregion

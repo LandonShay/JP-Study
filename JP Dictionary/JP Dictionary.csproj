@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
     <PackageReference Include="CsvHelper" Version="33.1.0" />
     <PackageReference Include="Google.Cloud.TextToSpeech.V1" Version="3.12.0" />
     <PackageReference Include="MeCab.DotNet" Version="1.2.0" />

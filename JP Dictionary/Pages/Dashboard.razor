@@ -8,47 +8,8 @@
 <div class="dashboard-content">
     <div class="column">
         <h4>Kanji / Radicals / Vocab</h4>
-        <div class="word-mastery">
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Novice
-                        </th>
-                        <th>
-                            Beginner
-                        </th>
-                        <th>
-                            Proficient
-                        </th>
-                        <th>
-                            Expert
-                        </th>
-                        <th>
-                            Mastered
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @KanjiNoviceCount
-                        </td>
-                        <td>
-                            @KanjiBeginnerCount
-                        </td>
-                        <td>
-                            @KanjiProficientCount
-                        </td>
-                        <td>
-                            @KanjiExpertCount
-                        </td>
-                        <td>
-                            @KanjiMasteredCount
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="graph">
+            <Chart Config="@KRVBarConfig" />
         </div>
         <div class="kanji-buttons">
             <button class="main-button kanji-button" @onclick="GoToLearnKanji">
@@ -90,47 +51,8 @@
     </div>
     <div class="column">
         <h4>JLPT</h4>
-        <div class="word-mastery">
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Novice
-                        </th>
-                        <th>
-                            Beginner
-                        </th>
-                        <th>
-                            Proficient
-                        </th>
-                        <th>
-                            Expert
-                        </th>
-                        <th>
-                            Mastered
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @VocabNoviceCount
-                        </td>
-                        <td>
-                            @VocabBeginnerCount
-                        </td>
-                        <td>
-                            @VocabProficientCount
-                        </td>
-                        <td>
-                            @VocabExpertCount
-                        </td>
-                        <td>
-                            @VocabMasteredCount
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="graph">
+            <Chart Config="@JLPTBarConfig" />
         </div>
         <div class="table-container">
             <table class="deck-table">
