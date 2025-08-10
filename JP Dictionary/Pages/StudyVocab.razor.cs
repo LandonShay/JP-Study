@@ -102,6 +102,11 @@ namespace JP_Dictionary.Pages
                 }
                 else
                 {
+                    if (User.SelectedKanjiGroup.Count == 0 && User.PreviousKanjiGroup.Count > 0)
+                    {
+                        User.SelectedKanjiGroup = User.PreviousKanjiGroup.ToList();
+                    }
+
                     if (User.SelectedKanjiGroup.All(x => x.Type != KanjiType.Vocab))
                     { // Kanji / Radicals
                         StudyKanji = KanjiMethods.LoadUserKanji(User.Profile!);
@@ -264,7 +269,7 @@ namespace JP_Dictionary.Pages
             {
                 var cleanedAnswer = DefinitionAnswer.Trim().ToLower();
 
-                if (CurrentCard.DefinitionAnswers.Any(x => x.ToLower() == cleanedAnswer))
+                if (CurrentCard.DefinitionAnswers.Any(x => x.Trim().ToLower() == cleanedAnswer))
                 {
                     definitionCorrect = true;
                 }
@@ -389,6 +394,7 @@ namespace JP_Dictionary.Pages
                 ElementToFocus = "return";
 
                 CheckLevelUp();
+                User.PreviousKanjiGroup = new();
             }
         }
 
@@ -561,6 +567,17 @@ namespace JP_Dictionary.Pages
             ExampleSentence = null;
         }
 
+        private void ViewItemDetails()
+        {
+            User.UpdatePreviousKanjiGroup();
+
+            User.WipeSelectedKanjiGroup = true;
+            User.SelectedKanji = CurrentCard.StudyKanji;
+            User.SelectedKanjiGroup = new List<StudyKanji>() { CurrentCard.StudyKanji };
+
+            Nav.NavigateTo("/kanjireview");
+        }
+
         private void CheckLevelUp()
         {
             if (User.SelectedDeck == null)
@@ -595,7 +612,7 @@ namespace JP_Dictionary.Pages
         {
             try
             {
-                if (!Talking && CurrentCard.Type != StudyCardType.Radical)
+                if (!Talking && CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
                 {
                     var word = CurrentCard.ReadingAnswers.FirstOrDefault();
 

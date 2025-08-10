@@ -59,7 +59,7 @@ namespace JP_Dictionary.Pages
 
                             var romaji = WanaKana.ToRomaji(katakana);
 
-                            if (romaji == "." || romaji == "?" || romaji == "," || romaji == "!")
+                            if (romaji == "." || romaji == "?" || romaji == "!")
                             {
                                 Sentence.RomajiReading = Sentence.RomajiReading.Remove(Sentence.RomajiReading.Length - 1) + romaji;
                             }

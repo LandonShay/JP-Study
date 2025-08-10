@@ -75,8 +75,8 @@ namespace JP_Dictionary.Shared.Methods
                 MasteryTier.Novice => 0,
                 MasteryTier.Beginner => 3,
                 MasteryTier.Proficient => 5,
-                MasteryTier.Expert => 8,
-                _ => 11
+                MasteryTier.Expert => 7,
+                _ => 10
             };
         }
 

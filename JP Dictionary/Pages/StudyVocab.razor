@@ -38,14 +38,19 @@
             @if (!TestReading)
             {
                 <div class="speak-word" @onclick="TextToSpeech">
-                    <h3>@CurrentCard.Word</h3>
-                    @if (CardIsNew())
+                    <div class="@ItemTypeCss">
+                        <h3>@CurrentCard.Word</h3>
+                        @if (CardIsNew())
+                        {
+                            <span>New!</span>
+                        }
+                    </div>
+                    @if (CurrentCard.Type != StudyCardType.Radical)
                     {
-                        <span>New!</span>
+                        <span>
+                            <i class="fa-solid fa-volume-high"></i>
+                        </span>
                     }
-                    <span>
-                        <i class="fa-solid fa-volume-high"></i>
-                    </span>
                 </div>
             }
             else
@@ -195,9 +200,15 @@
                     <button class="main-button" id="incorrect-next" type="submit">Next</button>
                     <button class="main-button" @onclick="MarkAsCorrect">Mark As Correct</button>
                 </div>
-                <button class="main-button" type="button" @onclick="SearchJisho">
-                    <img class="jisho-logo" src="images/jisho-logo.png" />
-                </button>
+                <div style="display: flex; gap: 5px;">
+                    <button class="main-button" type="button" @onclick="SearchJisho">
+                        <img class="jisho-logo" src="images/jisho-logo.png" />
+                    </button>
+                    @if (CurrentCard.Type == StudyCardType.Vocab && StudyKanji.Select(x => x.Item).Contains(CurrentCard.StudyKanji.Item))
+                    {
+                        <button class="main-button" @onclick="ViewItemDetails">View Details</button>
+                    }
+                </div>
             }
         </form>
     }
