@@ -25,6 +25,7 @@ namespace JP_Dictionary.Pages
         private string PreviousItem { get; set; } = string.Empty;
 
         private bool LearnMode { get; set; }
+        private bool ShowReturnButton { get; set; }
         private string ItemCSS { get; set; } = string.Empty;
 
         protected override void OnInitialized()
@@ -53,6 +54,13 @@ namespace JP_Dictionary.Pages
             SetItemCSS();
             GetLeftItem();
             GetRightItem();
+
+            if (User.WipeSelectedKanjiGroup)
+            {
+                ShowReturnButton = true;
+                User.WipeSelectedKanjiGroup = false;
+                User.SelectedKanjiGroup = new List<StudyKanji>();
+            }
         }
 
         private string GetReadings(List<string> readings)
@@ -210,6 +218,11 @@ namespace JP_Dictionary.Pages
         {
             var link = Path.Combine("https://jisho.org/search/", ActiveItem.Item);
             await JS.InvokeVoidAsync("openInNewTab", link);
+        }
+
+        private void ReturnToStudy()
+        {
+            Nav.NavigateTo("/studyvocab");
         }
     }
 }

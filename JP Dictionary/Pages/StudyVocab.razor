@@ -37,21 +37,7 @@
         <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
             @if (!TestReading)
             {
-                @if (CurrentCard.StudyWord.HasAudio())
-                {
-                    <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
-                        <h3>@CurrentCard.Word</h3>
-                        @if (CardIsNew())
-                        {
-                            <span>New!</span>
-                        }
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    </div>
-                }
-                else
-                {
+                <div class="speak-word" @onclick="TextToSpeech">
                     <div class="@ItemTypeCss">
                         <h3>@CurrentCard.Word</h3>
                         @if (CardIsNew())
@@ -59,7 +45,13 @@
                             <span>New!</span>
                         }
                     </div>
-                }
+                    @if (CurrentCard.Type != StudyCardType.Radical)
+                    {
+                        <span>
+                            <i class="fa-solid fa-volume-high"></i>
+                        </span>
+                    }
+                </div>
             }
             else
             {
@@ -100,14 +92,11 @@
                     <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
                 }
 
-                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                <div class="speak-word" @onclick="TextToSpeech">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.HasAudio())
-                    {
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    }
+                    <span>
+                        <i class="fa-solid fa-volume-high"></i>
+                    </span>
                 </div>
                 <div class="reading-definition">
                     <div>
@@ -156,14 +145,11 @@
                     <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
                 }
 
-                <div class="speak-word" @onclick="() => TextToSpeech(CurrentCard.StudyWord.Audio)">
+                <div class="speak-word" @onclick="TextToSpeech">
                     <h3>@CurrentCard.Word</h3>
-                    @if (CurrentCard.StudyWord.HasAudio())
-                    {
-                        <span>
-                            <i class="fa-solid fa-volume-high"></i>
-                        </span>
-                    }
+                    <span>
+                        <i class="fa-solid fa-volume-high"></i>
+                    </span>
                 </div>
                 <div class="reading-definition">
                     <div>
@@ -214,9 +200,15 @@
                     <button class="main-button" id="incorrect-next" type="submit">Next</button>
                     <button class="main-button" @onclick="MarkAsCorrect">Mark As Correct</button>
                 </div>
-                <button class="main-button" type="button" @onclick="SearchJisho">
-                    <img class="jisho-logo" src="images/jisho-logo.png" />
-                </button>
+                <div style="display: flex; gap: 5px;">
+                    <button class="main-button" type="button" @onclick="SearchJisho">
+                        <img class="jisho-logo" src="images/jisho-logo.png" />
+                    </button>
+                    @if (CurrentCard.Type == StudyCardType.Vocab && StudyKanji.Select(x => x.Item).Contains(CurrentCard.StudyKanji.Item))
+                    {
+                        <button class="main-button" @onclick="ViewItemDetails">View Details</button>
+                    }
+                </div>
             }
         </form>
     }

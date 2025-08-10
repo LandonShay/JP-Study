@@ -93,4 +93,9 @@
             <span class="item-icon">Review</span>
         </div>
     }
+
+    @if (ShowReturnButton)
+    {
+        <button class="main-button return-button" @onclick="ReturnToStudy">Return</button>
+    }
 </div>

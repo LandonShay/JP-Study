@@ -102,6 +102,12 @@ namespace JP_Dictionary.Pages
                 }
                 else
                 {
+                    if (User.SelectedKanjiGroup.Count == 0 && User.PreviousKanjiGroup.Count > 0)
+                    {
+                        User.SelectedKanjiGroup = User.PreviousKanjiGroup.ToList();
+                        User.ResetPreviousKanjiGroup();
+                    }
+
                     if (User.SelectedKanjiGroup.All(x => x.Type != KanjiType.Vocab))
                     { // Kanji / Radicals
                         StudyKanji = KanjiMethods.LoadUserKanji(User.Profile!);
@@ -218,7 +224,7 @@ namespace JP_Dictionary.Pages
                    (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying)))
                 {
                     FirstResults = false;
-                    await TextToSpeech(CurrentCard.StudyWord.Audio);
+                    await TextToSpeech();
                 }
             }
             catch (Exception ex)
@@ -264,7 +270,7 @@ namespace JP_Dictionary.Pages
             {
                 var cleanedAnswer = DefinitionAnswer.Trim().ToLower();
 
-                if (CurrentCard.DefinitionAnswers.Any(x => x.ToLower() == cleanedAnswer))
+                if (CurrentCard.DefinitionAnswers.Any(x => x.Trim().ToLower() == cleanedAnswer))
                 {
                     definitionCorrect = true;
                 }
@@ -389,6 +395,7 @@ namespace JP_Dictionary.Pages
                 ElementToFocus = "return";
 
                 CheckLevelUp();
+                User.ResetPreviousKanjiGroup();
             }
         }
 
@@ -561,14 +568,25 @@ namespace JP_Dictionary.Pages
             ExampleSentence = null;
         }
 
+        private void ViewItemDetails()
+        {
+            User.UpdatePreviousKanjiGroup();
+
+            User.WipeSelectedKanjiGroup = true;
+            User.SelectedKanji = CurrentCard.StudyKanji;
+            User.SelectedKanjiGroup = new List<StudyKanji>() { CurrentCard.StudyKanji };
+
+            Nav.NavigateTo("/kanjireview");
+        }
+
         private void CheckLevelUp()
         {
             if (User.SelectedDeck == null)
             {
                 var currentLevelKanji = StudyKanji.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == KanjiType.Kanji);
-                var percentAtBeginner = currentLevelKanji.Count(x => x.MasteryTier == MasteryTier.Beginner) / (float)currentLevelKanji.Count() * 100;
+                var percentAboveNovice = currentLevelKanji.Count(x => x.MasteryTier != MasteryTier.Novice) / (float)currentLevelKanji.Count() * 100;
 
-                if (percentAtBeginner > 90)
+                if (percentAboveNovice > 90)
                 {
                     User.Profile!.KanjiLevel++;
 
@@ -591,28 +609,18 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("focusElementById", elementId);
         }
 
-        private async Task TextToSpeech(string audioPath)
+        private async Task TextToSpeech()
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(audioPath))
+                if (!Talking && CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
                 {
-                    if (!Talking)
+                    var word = CurrentCard.ReadingAnswers.FirstOrDefault();
+
+                    if (word != null)
                     {
                         Talking = true;
-
-                        var filePath = HelperMethods.GetFilePath(audioPath);
-                        var bytes = await File.ReadAllBytesAsync(filePath);
-                        var base64 = Convert.ToBase64String(bytes);
-
-                        await JS.InvokeVoidAsync("speakText", base64);
-                    }
-                }
-                else
-                {
-                    if (CurrentCard.Word != string.Empty && CurrentCard.Type != StudyCardType.Radical && User.SelectedDeck != null)
-                    {
-                        Toast.ShowWarning($"{CurrentCard.Word} does not have audio");
+                        await JS.InvokeVoidAsync("speakTextBasic", word, 1);
                     }
                 }
             }

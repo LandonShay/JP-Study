@@ -4,7 +4,6 @@
 <div class="table-controls">
     <div class="left-controls">
         <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
-        <button class="main-button" @onclick="GenerateAudio">Generate Audio</button>
     </div>
     <div class="right-controls">
         <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
@@ -52,12 +51,9 @@
                     <td>
                         <div style="display: flex; gap: 5px; justify-content: center;">
                             @entry.Word
-                            @if (entry.HasAudio())
-                            {
-                                <span>
-                                    <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry.Audio)"></i>
-                                </span>
-                            }
+                            <span>
+                                <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry)"></i>
+                            </span>
                         </div>
                     </td>
                     <td>@entry.Romaji</td>
@@ -113,11 +109,3 @@
     <button class="main-button" @onclick="@(() => ChangePage(CurrentPage + 1))" disabled="@(CurrentPage == TotalPages)">Next</button>
 </div>
 <span>*You can edit definitions by clicking them</span>
-
-@if (IsGeneratingAudio)
-{
-    <div class="progress-container">
-        <div class="progress-bar" style="width:@ProgressPercentage%"></div>
-        <span class="progress-text">@AudioProgress / @AudioTotal</span>
-    </div>
-}

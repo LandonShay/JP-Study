@@ -58,14 +58,13 @@ namespace JP_Dictionary.Shared.Methods
                 1 => 1,
                 2 => 2,
                 3 => 4,
-                4 => 7,
+                4 => 5,
                 5 => 7,
-                6 => 14,
+                6 => 10,
                 7 => 14,
-                8 => 30,
-                9 => 30,
-                10 => 45,
-                _ => 60
+                8 => 14,
+                9 => 21,
+                _ => 30
             };
         }
 
@@ -76,8 +75,8 @@ namespace JP_Dictionary.Shared.Methods
                 MasteryTier.Novice => 0,
                 MasteryTier.Beginner => 3,
                 MasteryTier.Proficient => 5,
-                MasteryTier.Expert => 8,
-                _ => 11
+                MasteryTier.Expert => 7,
+                _ => 10
             };
         }
 
@@ -95,12 +94,12 @@ namespace JP_Dictionary.Shared.Methods
             {
                 return MasteryTier.Proficient;
             }
-            else if (streak <= 10) // 8 - 10
+            else if (streak <= 10) // 8 - 9
             {
                 return MasteryTier.Expert;
             }
 
-            return MasteryTier.Mastered; // 11
+            return MasteryTier.Mastered; // 10
         }
 
         [JSInvokable]
