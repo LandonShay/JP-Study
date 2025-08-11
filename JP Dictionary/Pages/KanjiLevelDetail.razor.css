@@ -40,20 +40,20 @@
     font-size: 16px;
 }
 
-.kanji{
-    background-color: mediumpurple;
+.kanji {
+    background-color: #A888B5;
 }
 
     .kanji:hover {
-        background-color: violet;
+        background-color: #c5a1d0;
     }
 
 .radical {
-    background-color: steelblue;
+    background-color: #eba5bb;
 }
 
     .radical:hover {
-        background-color: skyblue;
+        background-color: #eebecd;
     }
 
 .table-container{
@@ -69,8 +69,8 @@
     grid-template-columns: 160px 160px 160px 160px 160px 160px 165px;
 }
 
-.vocab-card{
-    background-color: rebeccapurple;
+.vocab-card {
+    background-color: #8174A0;
     padding: 10px;
     border: solid 1px white;
     border-bottom: none;

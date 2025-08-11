@@ -43,13 +43,14 @@ namespace JP_Dictionary.Shared.Methods
         #endregion
 
         #region Create
-        public static void CreateDeck(string deckName, DeckType deckType, Profile profile)
+        public static void CreateDeck(string deckName, DeckType deckType, string color, Profile profile)
         {
             var deck = new Deck
             {
                 Name = deckName,
                 Type = deckType,
-                SortOrder = profile.Decks.Max(x => x.SortOrder) + 1
+                SortOrder = profile.Decks.Max(x => x.SortOrder) + 1,
+                GraphColor = color
             };
 
             HelperMethods.CreateFile($"{profile!.Name}Deck-{deckName}.csv");
@@ -78,7 +79,16 @@ namespace JP_Dictionary.Shared.Methods
 
                         if (deck.Count > 0)
                         {
-                            CreateDeck($"N{i} Vocab", DeckType.Vocab, profile);
+                            var color = i switch
+                            {
+                                1 => "rgba(100, 149, 237, 1)",
+                                2 => "rgba(72, 209, 204, 1)",
+                                3 => "rgba(144, 238, 144, 1)",
+                                4 => "rgba(255, 215, 0, 1)",
+                                _ => "rgba(255, 99, 71, 1)"
+                            };
+
+                            CreateDeck($"N{i} Vocab", DeckType.Vocab, color, profile);
 
                             foreach (var word in deck.OrderBy(x => x.StudyOrder).Where(x => !x.Unlocked).Take(10))
                             {

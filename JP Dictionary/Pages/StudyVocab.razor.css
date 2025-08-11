@@ -142,13 +142,13 @@ input[type="text"] {
 }
 
 .radical {
-    background-color: steelblue;
+    background-color: #eba5bb;
     border-radius: 10px;
     padding: 8px;
 }
 
 .kanji {
-    background-color: mediumpurple;
+    background-color: #A888B5;
     border-radius: 10px;
     padding: 8px;
 }
