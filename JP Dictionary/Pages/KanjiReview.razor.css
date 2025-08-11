@@ -181,15 +181,15 @@ html, body {
 }
 
 .kanji-item {
-    background-color: mediumpurple;
+    background-color: #A888B5;
 }
 
 .radical-item {
-    background-color: steelblue;
+    background-color: #eba5bb;
 }
 
 .vocab-item {
-    background-color: rebeccapurple;
+    background-color: #8174A0;
 }
 
 .return-button{

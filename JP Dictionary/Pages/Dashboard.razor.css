@@ -23,10 +23,14 @@ table{
     margin-left: 2rem;
 }
 
-.graph{
+.graph {
     margin-bottom: 15px;
     width: 450px;
     height: 225px;
+    padding: 5px;
+    border: solid 1px #555;
+    background-color: #333;
+    border-radius: 15px;
 }
 
 .dashboard-content {
@@ -87,6 +91,9 @@ table{
 
 .deck-create {
     display: flex;
+    flex-direction: column;
+    width: 350px;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -94,6 +101,7 @@ table{
     padding: 0.5rem;
     background-color: #1e1e1e;
     color: #e0e0e0;
+    width: 200px;
     border: 1px solid #444;
     border-radius: 4px;
     margin-left: 10px;

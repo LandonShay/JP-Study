@@ -107,7 +107,8 @@
     <div class="create-deck">
         <h4>Create Deck</h4>
         <div class="deck-create">
-            <input type="text" autocomplete="off" @bind="DeckName" />
+            <input type="text" autocomplete="off" placeholder="Deck Name" @bind="DeckName" />
+            <input type="text" autocomplete="off" placeholder="Graph Color (ex: #8174A0)" @bind="DeckColor" />
             <select @bind="DeckType" class="deck-type-select">
                 @foreach (var type in Enum.GetValues(typeof(DeckType)))
                 {

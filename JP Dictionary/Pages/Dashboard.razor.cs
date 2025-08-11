@@ -1,9 +1,11 @@
 ﻿using JP_Dictionary.Models;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
-using Microsoft.AspNetCore.Components;
-using ChartJs.Blazor.BarChart;
 using ChartJs.Blazor.Common;
+using ChartJs.Blazor.BarChart;
+using ChartJs.Blazor.BarChart.Axes;
+using ChartJs.Blazor.Common.Axes.Ticks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
@@ -27,20 +29,9 @@ namespace JP_Dictionary.Pages
 
         private string DeckName { get; set; } = string.Empty;
         private DeckType DeckType { get; set; } = DeckType.Vocab;
+        private string DeckColor { get; set; } = string.Empty;
         private Deck? DeckToDelete { get; set; }
         private Deck? DraggedDeck { get; set; }
-
-        private int VocabNoviceCount { get; set; }
-        private int VocabBeginnerCount { get; set; }
-        private int VocabProficientCount { get; set; }
-        private int VocabExpertCount { get; set; }
-        private int VocabMasteredCount { get; set; }
-
-        private int KanjiNoviceCount { get; set; }
-        private int KanjiBeginnerCount { get; set; }
-        private int KanjiProficientCount { get; set; }
-        private int KanjiExpertCount { get; set; }
-        private int KanjiMasteredCount { get; set; }
 
         protected override void OnInitialized()
         {
@@ -58,90 +49,110 @@ namespace JP_Dictionary.Pages
         #region Loading
         private void LoadDashboard()
         {
-            VocabNoviceCount = 0;
-            VocabBeginnerCount = 0;
-            VocabProficientCount = 0;
-            VocabExpertCount = 0;
-            VocabMasteredCount = 0;
-
-            foreach (var deck in User.Profile!.Decks.OrderBy(x => x.SortOrder))
-            {
-                var words = DeckMethods.LoadDeck(User.Profile!, deck.Name).FindAll(x => x.Unlocked);
-
-                VocabNoviceCount += words.Count(x => x.MasteryTier == MasteryTier.Novice);
-                VocabBeginnerCount += words.Count(x => x.MasteryTier == MasteryTier.Beginner);
-                VocabProficientCount += words.Count(x => x.MasteryTier == MasteryTier.Proficient);
-                VocabExpertCount += words.Count(x => x.MasteryTier == MasteryTier.Expert);
-                VocabMasteredCount += words.Count(x => x.MasteryTier == MasteryTier.Mastered);
-            }
-
             Kanji = KanjiMethods.LoadUserKanji(User.Profile!);
             KanjiVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
-            var validKanji = Kanji.FindAll(x => x.Learned);
-            validKanji.AddRange(KanjiVocab.FindAll(x => x.Learned));
-
-            KanjiNoviceCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Novice);
-            KanjiBeginnerCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Beginner);
-            KanjiProficientCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Proficient);
-            KanjiExpertCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Expert);
-            KanjiMasteredCount = validKanji.Count(x => x.MasteryTier == MasteryTier.Mastered);
-
             User.SelectedDeck = null;
             User.SelectedKanji = null;
+
+            DeckName = string.Empty;
+            DeckColor = string.Empty;
 
             LoadGraphs();
         }
 
         private void LoadGraphs()
         {
-            KRVBarConfig.Options = new BarOptions
-            {
-                Legend = new Legend { Display = false }
-            };
+            var vocabData = new List<int>();
+            var kanjiData = new List<int>();
+            var radicalData = new List<int>();
+            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig };
 
-            JLPTBarConfig.Options = new BarOptions
+            foreach (var config in configs)
             {
-                Legend = new Legend { Display = false }
-            };
+                config.Data.Datasets.Clear();
 
-            foreach (var tier in new[] { "Novice", "Beginner", "Proficient", "Expert", "Mastered" })
-            {
-                KRVBarConfig.Data.Labels.Add(tier);
-                JLPTBarConfig.Data.Labels.Add(tier);
+                config.Options = new BarOptions
+                {
+                    Legend = new Legend { Display = true, Labels = new LegendLabels { FontColor = "#aaa" } },
+                    Scales = new BarScales
+                    {
+                        XAxes =
+                            [
+                                new BarCategoryAxis
+                                {
+                                    Stacked = true,
+                                    Ticks = new CategoryTicks { FontColor = "#aaa" },
+                                    GridLines = new GridLines { Color = "rgba(255,255,255,0.1)" }
+                                }
+                            ],
+                        YAxes =
+                            [
+                                new BarLinearCartesianAxis
+                                {
+                                    Stacked = true,
+                                    Ticks = new LinearCartesianTicks { FontColor = "#aaa" },
+                                    GridLines = new GridLines { Color = "rgba(255,255,255,0.1)" }
+                                }
+                            ]
+                    }
+                };
+
+                foreach (var tier in new[] { "Novice", "Beginner", "Proficient", "Expert", "Mastered" })
+                {
+                    config.Data.Labels.Add(tier);
+                }
             }
 
-            var krvTierCounts = new[] { KanjiNoviceCount, KanjiBeginnerCount, KanjiProficientCount, KanjiExpertCount, KanjiMasteredCount };
-            var jlptTierCounts = new[] { VocabNoviceCount, VocabBeginnerCount, VocabProficientCount, VocabExpertCount, VocabMasteredCount };
-
-            var krvDataset = new BarDataset<int>(krvTierCounts)
+            foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
             {
-                BorderWidth = 1,
-                BackgroundColor = new[]
-                {
-                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
-                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
-                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
-                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
-                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
-                },
-            };
+                vocabData.Add(KanjiVocab.Count(x => x.Type == KanjiType.Vocab && x.Learned && x.MasteryTier == tier));
+                kanjiData.Add(Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned && x.MasteryTier == tier));
+                radicalData.Add(Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned && x.MasteryTier == tier));
+            }
 
-            var jlptDataset = new BarDataset<int>(jlptTierCounts)
+            KRVBarConfig.Data.Datasets.Add(new BarDataset<int>(vocabData)
             {
-                BorderWidth = 1,
-                BackgroundColor = new[]
+                Label = "Vocab",
+                BackgroundColor = "#8174A0",
+                HoverBackgroundColor = "#8174A0",
+                BorderWidth = 1
+            });
+
+            KRVBarConfig.Data.Datasets.Add(new BarDataset<int>(kanjiData)
+            {
+                Label = "Kanji",
+                BackgroundColor = "#A888B5",
+                HoverBackgroundColor = "#A888B5",
+                BorderWidth = 1
+            });
+
+            KRVBarConfig.Data.Datasets.Add(new BarDataset<int>(radicalData)
+            {
+                Label = "Radicals",
+                BackgroundColor = "#EFB6C8",
+                HoverBackgroundColor = "#EFB6C8",
+                BorderWidth = 1
+            });
+
+            foreach (var deckName in User.Profile!.Decks)
+            {
+                var deck = DeckMethods.LoadDeck(User.Profile, deckName.Name);
+                var deckData = new List<int>();
+
+                foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
                 {
-                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
-                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
-                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
-                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
-                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
+                    deckData.Add(deck.Count(x => x.Unlocked && x.MasteryTier == tier));
                 }
-            };
 
-            KRVBarConfig.Data.Datasets.Add(krvDataset);
-            JLPTBarConfig.Data.Datasets.Add(jlptDataset);
+                JLPTBarConfig.Data.Datasets.Add(new BarDataset<int>(deckData)
+                {
+                    Label = deckName.Name,
+                    BackgroundColor = deckName.GraphColor,
+                    HoverBackgroundColor = deckName.GraphColor,
+                    BorderWidth = 1
+                });
+            }
         }
         #endregion
 
@@ -226,7 +237,7 @@ namespace JP_Dictionary.Pages
         {
             if (!User.Profile!.Decks.Select(x => x.Name).Contains(DeckName))
             {
-                DeckMethods.CreateDeck(DeckName, DeckType, User.Profile!);
+                DeckMethods.CreateDeck(DeckName, DeckType, DeckColor, User.Profile!);
                 LoadDashboard();
             }
             else
