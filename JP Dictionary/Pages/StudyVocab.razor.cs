@@ -620,7 +620,7 @@ namespace JP_Dictionary.Pages
                     if (word != null)
                     {
                         Talking = true;
-                        await JS.InvokeVoidAsync("speakTextBasic", word, 1);
+                        await JS.InvokeVoidAsync("speakTextBasic", word.ToHiragana(), 1);
                     }
                 }
             }

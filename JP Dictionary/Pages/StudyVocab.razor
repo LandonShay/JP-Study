@@ -94,9 +94,12 @@
 
                 <div class="speak-word" @onclick="TextToSpeech">
                     <h3>@CurrentCard.Word</h3>
-                    <span>
-                        <i class="fa-solid fa-volume-high"></i>
-                    </span>
+                    @if (CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
+                    {
+                        <span>
+                            <i class="fa-solid fa-volume-high"></i>
+                        </span>
+                    }
                 </div>
                 <div class="reading-definition">
                     <div>

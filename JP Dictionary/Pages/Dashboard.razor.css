@@ -23,10 +23,14 @@ table{
     margin-left: 2rem;
 }
 
-.graph{
+.graph {
     margin-bottom: 15px;
     width: 450px;
     height: 225px;
+    padding: 5px;
+    border: solid 1px #555;
+    background-color: #333;
+    border-radius: 15px;
 }
 
 .dashboard-content {

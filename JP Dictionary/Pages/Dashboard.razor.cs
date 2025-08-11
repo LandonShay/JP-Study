@@ -1,9 +1,12 @@
-﻿using JP_Dictionary.Models;
+﻿using ChartJs.Blazor.BarChart;
+using ChartJs.Blazor.BarChart.Axes;
+using ChartJs.Blazor.Common;
+using ChartJs.Blazor.Common.Axes;
+using ChartJs.Blazor.Common.Axes.Ticks;
+using JP_Dictionary.Models;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
-using ChartJs.Blazor.BarChart;
-using ChartJs.Blazor.Common;
 using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
@@ -95,53 +98,59 @@ namespace JP_Dictionary.Pages
 
         private void LoadGraphs()
         {
-            KRVBarConfig.Options = new BarOptions
-            {
-                Legend = new Legend { Display = false }
-            };
+            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig };
 
-            JLPTBarConfig.Options = new BarOptions
+            for (int i = 0; i < configs.Count; i++)
             {
-                Legend = new Legend { Display = false }
-            };
+                var config = configs[i];
 
-            foreach (var tier in new[] { "Novice", "Beginner", "Proficient", "Expert", "Mastered" })
-            {
-                KRVBarConfig.Data.Labels.Add(tier);
-                JLPTBarConfig.Data.Labels.Add(tier);
-            }
-
-            var krvTierCounts = new[] { KanjiNoviceCount, KanjiBeginnerCount, KanjiProficientCount, KanjiExpertCount, KanjiMasteredCount };
-            var jlptTierCounts = new[] { VocabNoviceCount, VocabBeginnerCount, VocabProficientCount, VocabExpertCount, VocabMasteredCount };
-
-            var krvDataset = new BarDataset<int>(krvTierCounts)
-            {
-                BorderWidth = 1,
-                BackgroundColor = new[]
+                config.Options = new BarOptions
                 {
-                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
-                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
-                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
-                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
-                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
-                },
-            };
+                    Legend = new Legend { Display = false },
+                    Scales = new BarScales 
+                    {
+                        XAxes =
+                        [
+                            new BarCategoryAxis
+                            {
+                                Ticks = new CategoryTicks { FontColor = "#aaa" },
+                                GridLines = new GridLines { Color = "rgba(255,255,255,0.1)" }
+                            }
+                        ],
+                        YAxes =
+                        [
+                            new BarLinearCartesianAxis
+                            {
+                                Ticks = new LinearCartesianTicks { FontColor = "#aaa" },
+                                GridLines = new GridLines { Color = "rgba(255,255,255,0.1)" }
+                            }
+                        ]
+                    }
+                };
 
-            var jlptDataset = new BarDataset<int>(jlptTierCounts)
-            {
-                BorderWidth = 1,
-                BackgroundColor = new[]
+                foreach (var tier in new[] { "Novice", "Beginner", "Proficient", "Expert", "Mastered" })
                 {
-                    "rgba(100, 149, 237, 0.8)", // Novice - Cornflower Blue
-                    "rgba(72, 209, 204, 0.8)",  // Beginner - Turquoise
-                    "rgba(144, 238, 144, 0.8)", // Proficient - Light Green
-                    "rgba(255, 215, 0, 0.8)",   // Expert - Gold
-                    "rgba(255, 99, 71, 0.8)"    // Mastered - Tomato
+                    config.Data.Labels.Add(tier);
                 }
-            };
 
-            KRVBarConfig.Data.Datasets.Add(krvDataset);
-            JLPTBarConfig.Data.Datasets.Add(jlptDataset);
+                int[] tierCounts = i == 0 ? [KanjiNoviceCount, KanjiBeginnerCount, KanjiProficientCount, KanjiExpertCount, KanjiMasteredCount] :
+                                            [VocabNoviceCount, VocabBeginnerCount, VocabProficientCount, VocabExpertCount, VocabMasteredCount];
+
+                var dataset = new BarDataset<int>(tierCounts)
+                {
+                    BorderWidth = 1,
+                    BackgroundColor = new[]
+                    {
+                        "rgba(100, 149, 237, 1)", // Novice - Cornflower Blue
+                        "rgba(72, 209, 204, 1)",  // Beginner - Turquoise
+                        "rgba(144, 238, 144, 1)", // Proficient - Light Green
+                        "rgba(255, 215, 0, 1)",   // Expert - Gold
+                        "rgba(255, 99, 71, 1)"    // Mastered - Tomato
+                    },
+                };
+
+                config.Data.Datasets.Add(dataset);
+            }
         }
         #endregion
 
