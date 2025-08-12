@@ -155,10 +155,6 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 }
 
 /* Motions Service */
-.motion-container {
-    overflow: hidden;
-}
-
 .animate-fade-in {
     animation: fadeIn ease 0.5s forwards;
 }
