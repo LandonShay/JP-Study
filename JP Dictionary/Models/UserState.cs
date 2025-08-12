@@ -31,6 +31,10 @@ namespace JP_Dictionary.Models
         FadeOut,
         FadeIn,
         ZoomIn,
-        ZoomOut
+        ZoomOut,
+        SlideLeftIn,
+        SlideLeftOut,
+        SlideRightIn,
+        SlideRightOut,
     }
 }

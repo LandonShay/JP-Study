@@ -4,6 +4,7 @@ using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -146,32 +147,40 @@ namespace JP_Dictionary.Pages
             return NextItem;
         }
 
-        private void SetLeftItem()
+        private async Task SetLeftItem()
         {
             var leftItem = GetLeftItem();
 
             if (leftItem != string.Empty)
             {
-                ActiveItem = Items.First(x => x.Item == leftItem);
-                SetItemCSS();
-            }
+                await Animate.AnimateSlide(Motions.SlideRightOut);
 
-            GetLeftItem();
-            GetRightItem();
+                ActiveItem = Items.First(x => x.Item == leftItem);
+
+                SetItemCSS();
+                GetLeftItem();
+                GetRightItem();
+
+                await Animate.AnimateSlide(Motions.SlideLeftIn);
+            }
         }
 
-        private void SetRightItem()
+        private async Task SetRightItem()
         {
             var rightItem = GetRightItem();
 
             if (rightItem != string.Empty)
             {
-                ActiveItem = Items.First(x => x.Item == rightItem);
-                SetItemCSS();
-            }
+                await Animate.AnimateSlide(Motions.SlideLeftOut);
 
-            GetLeftItem();
-            GetRightItem();
+                ActiveItem = Items.First(x => x.Item == rightItem);
+
+                SetItemCSS();
+                GetLeftItem();
+                GetRightItem();
+
+                await Animate.AnimateSlide(Motions.SlideRightIn);
+            }
         }
 
         private void SetItemCSS()

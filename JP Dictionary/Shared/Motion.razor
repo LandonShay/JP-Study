@@ -1,5 +1,5 @@
 ﻿
-<div class="@CssClass" style="visibility:@Visibility">
+<div class="motion-container @CssClass" style="visibility: @Visibility">
     @ChildContent
 </div>
 
@@ -15,14 +15,7 @@
             Visibility = "visible";
         }
 
-        CssClass = motion switch
-        {
-            Motions.FadeIn => "animate-fade-in",
-            Motions.FadeOut => "animate-fade-out",
-            Motions.ZoomIn => "animate-zoom-in",
-            Motions.ZoomOut => "animate-zoom-out",
-            _ => string.Empty
-        };
+        CssClass = GetCSSClass(motion);
 
         StateHasChanged();
         await Task.Delay(TimeSpan.FromSeconds(duration));
@@ -33,5 +26,31 @@
         }
 
         StateHasChanged();
+    }
+
+    public async Task AnimateSlide(Motions motion)
+    {
+        var slideDuration = .2f; // if you change this, also change the css class's timing
+
+        CssClass = GetCSSClass(motion);
+
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromSeconds(slideDuration));
+    }
+
+    private string GetCSSClass(Motions motion)
+    {
+        return motion switch
+        {
+            Motions.FadeIn => "animate-fade-in",
+            Motions.FadeOut => "animate-fade-out",
+            Motions.ZoomIn => "animate-zoom-in",
+            Motions.ZoomOut => "animate-zoom-out",
+            Motions.SlideLeftIn => "animate-slide-left-in",
+            Motions.SlideLeftOut => "animate-slide-left-out",
+            Motions.SlideRightIn => "animate-slide-right-in",
+            Motions.SlideRightOut => "animate-slide-right-out",
+            _ => string.Empty
+        };
     }
 }
