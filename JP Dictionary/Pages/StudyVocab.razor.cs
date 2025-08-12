@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -19,6 +20,8 @@ namespace JP_Dictionary.Pages
         [Inject] public ToastService Toast { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate = default!;
 
         private Queue<VocabCard> StudyCards { get; set; } = new();
         private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
@@ -213,6 +216,11 @@ namespace JP_Dictionary.Pages
         {
             try
             {
+                if (firstRender)
+                {
+                    await Animate.Animate(Motions.ZoomIn);
+                }
+
                 if (ElementToFocus != string.Empty)
                 {
                     await FocusElement(ElementToFocus);
@@ -323,6 +331,12 @@ namespace JP_Dictionary.Pages
         {
             ShowResults = true;
             ElementToFocus = "incorrect-next";
+        }
+
+        private async void GoToDashboard()
+        {
+            await Animate.Animate(Motions.ZoomOut);
+            Nav.NavigateTo("/dashboard");
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,8 @@ namespace JP_Dictionary.Pages
 {
     public partial class ViewDeck
     {
+        private Motion Animate = default!;
+
         public List<StudyWord> AllWords = new();
 
         // sort/search
@@ -39,6 +42,14 @@ namespace JP_Dictionary.Pages
         protected override void OnInitialized()
         {
             LoadPage();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await Animate.Animate(Motions.ZoomIn);
+            }
         }
 
         #region Loading

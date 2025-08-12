@@ -1,0 +1,37 @@
+﻿
+<div class="@CssClass" style="height:100%;width:100%;visibility:@Visibility">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    private string CssClass { get; set; } = string.Empty;
+    private string Visibility { get; set; } = "hidden";
+
+    public async Task Animate(Motions motion, float duration = .15f)
+    {
+        if (motion == Motions.FadeIn || motion == Motions.ZoomIn)
+        {
+            Visibility = "visible";
+        }
+
+        CssClass = motion switch
+        {
+            Motions.FadeIn => "animate-fade-in",
+            Motions.FadeOut => "animate-fade-out",
+            Motions.ZoomIn => "animate-zoom-in",
+            Motions.ZoomOut => "animate-zoom-out",
+            _ => string.Empty
+        };
+
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromSeconds(duration));
+
+        if (motion == Motions.FadeOut || motion == Motions.ZoomOut)
+        {
+            Visibility = "hidden";
+        }
+
+        StateHasChanged();
+    }
+}

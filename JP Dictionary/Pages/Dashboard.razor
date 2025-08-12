@@ -1,135 +1,137 @@
 ﻿@layout MainLayout
 @page "/dashboard"
 
-<div class="welcome">
-    <h2>Welcome, @User.Profile!.Name!</h2>
-    <label style="font-size: 24px;">Level: @User.Profile.KanjiLevel | Streak: @User.Profile!.LoginStreak Days </label>
-</div>
-<div class="dashboard-content">
-    <div class="column">
-        <h4>Kanji / Radicals / Vocab</h4>
-        <div class="graph">
-            <Chart Config="@KRVBarConfig" />
-        </div>
-        <div class="kanji-buttons">
-            <button class="main-button kanji-button" @onclick="GoToLearnKanji">
-                Learn
-                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
-            </button>
-            <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Kanji)">
-                Review
-                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
-            </button>
-            <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Vocab)">
-                Vocab
-                <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
-            </button>
-        </div>
-        <div class="kanji-stats">
-            <div class="kanji-block">
-                <h4>Kanji</h4>
-                <span class="deck-text">@GetLearnedPercentage(KanjiType.Kanji)%</span>
-                <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
-            </div>
-            <div class="kanji-block">
-                <h4>Radicals</h4>
-                <span class="deck-text">@GetLearnedPercentage(KanjiType.Radical)%</span>
-                <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Radical))</span>
-            </div>
-            <div class="kanji-block">
-                <h4>Vocab</h4>
-                <span class="deck-text">@GetLearnedPercentage(KanjiType.Vocab)%</span>
-                <span class="deck-text">(@KanjiVocab.Count(x => x.Learned)/@KanjiVocab.Count)</span>
-            </div>
-        </div>
-        <div class="kanji-stats">
-            <div class="kanji-block">
-                <h4>Level Progress</h4>
-                <span class="deck-text">@LevelProgress()%</span>
-            </div>
-        </div>
+<Motion @ref="Animate">
+    <div class="welcome">
+        <h2>Welcome, @User.Profile!.Name!</h2>
+        <label style="font-size: 24px;">Level: @User.Profile.KanjiLevel | Streak: @User.Profile!.LoginStreak Days </label>
     </div>
-    <div class="column">
-        <h4>JLPT</h4>
-        <div class="graph">
-            <Chart Config="@JLPTBarConfig" />
+    <div class="dashboard-content">
+        <div class="column">
+            <h4>Kanji / Radicals / Vocab</h4>
+            <div class="graph">
+                <Chart Config="@KRVBarConfig" />
+            </div>
+            <div class="kanji-buttons">
+                <button class="main-button kanji-button" @onclick="GoToLearnKanji">
+                    Learn
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
+                </button>
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Kanji)">
+                    Review
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
+                </button>
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Vocab)">
+                    Vocab
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
+                </button>
+            </div>
+            <div class="kanji-stats">
+                <div class="kanji-block">
+                    <h4>Kanji</h4>
+                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Kanji)%</span>
+                    <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
+                </div>
+                <div class="kanji-block">
+                    <h4>Radicals</h4>
+                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Radical)%</span>
+                    <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Radical))</span>
+                </div>
+                <div class="kanji-block">
+                    <h4>Vocab</h4>
+                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Vocab)%</span>
+                    <span class="deck-text">(@KanjiVocab.Count(x => x.Learned)/@KanjiVocab.Count)</span>
+                </div>
+            </div>
+            <div class="kanji-stats">
+                <div class="kanji-block">
+                    <h4>Level Progress</h4>
+                    <span class="deck-text">@LevelProgress()%</span>
+                </div>
+            </div>
         </div>
-        <div class="table-container">
-            <table class="deck-table">
-                <tbody>
-                    @foreach (var deck in User.Profile.Decks)
+        <div class="column">
+            <h4>JLPT</h4>
+            <div class="graph">
+                <Chart Config="@JLPTBarConfig" />
+            </div>
+            <div class="table-container">
+                <table class="deck-table">
+                    <tbody>
+                        @foreach (var deck in User.Profile.Decks)
+                        {
+                            var words = DeckMethods.LoadDeck(User.Profile, deck.Name);
+
+                            <tr class="@(deck == DraggedDeck ? "dragging" : "")">
+                                <td draggable="true" @ondragstart="() => OnDragStart(deck)" @ondrop="() => OnDrop(deck)" @ondragend="OnDragEnd">
+                                    <i class="fa-solid fa-bars drag-bars"></i>
+                                </td>
+                                <td class="deck-info" @onclick="() => ToStudy(deck)">
+                                    <span class="deck-name">
+                                        @deck.Name
+                                        @if (deck.Paused)
+                                        {
+                                            <i class="fa-solid fa-pause"></i>
+                                        }
+                                    </span>
+                                    <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
+                                    <span class="deck-text">@GetUnlockedPercentage(words)% (@words.Count(x => x.Unlocked)/@words.Count)</span>
+                                </td>
+                                <td>
+                                    <button class="main-button" @onclick='() => ToViewDeck(deck)'>
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="main-button" @onclick='() => PauseDeck(deck)'>
+                                        @if (!deck.Paused)
+                                        {
+                                            <i class="fa-solid fa-pause"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa-solid fa-play"></i>
+                                        }
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="create-deck">
+            <h4>Create Deck</h4>
+            <div class="deck-create">
+                <input type="text" autocomplete="off" placeholder="Deck Name" @bind="DeckName" />
+                <input type="text" autocomplete="off" placeholder="Graph Color (ex: #8174A0)" @bind="DeckColor" />
+                <select @bind="DeckType" class="deck-type-select">
+                    @foreach (var type in Enum.GetValues(typeof(DeckType)))
                     {
-                        var words = DeckMethods.LoadDeck(User.Profile, deck.Name);
-
-                        <tr class="@(deck == DraggedDeck ? "dragging" : "")">
-                            <td draggable="true" @ondragstart="() => OnDragStart(deck)" @ondrop="() => OnDrop(deck)" @ondragend="OnDragEnd">
-                                <i class="fa-solid fa-bars drag-bars"></i>
-                            </td>
-                            <td class="deck-info" @onclick="() => ToStudy(deck)">
-                                <span class="deck-name">
-                                    @deck.Name
-                                    @if (deck.Paused)
-                                    {
-                                        <i class="fa-solid fa-pause"></i>
-                                    }
-                                </span>
-                                <span class="deck-text">Today's Study: @DeckMethods.LoadWordsToStudy(words).Count</span>
-                                <span class="deck-text">@GetUnlockedPercentage(words)% (@words.Count(x => x.Unlocked)/@words.Count)</span>
-                            </td>
-                            <td>
-                                <button class="main-button" @onclick='() => ToViewDeck(deck)'>
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <button class="main-button" @onclick='() => PauseDeck(deck)'>
-                                    @if (!deck.Paused)
-                                    {
-                                        <i class="fa-solid fa-pause"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="fa-solid fa-play"></i>
-                                    }
-                                </button>
-                            </td>
-                            <td>
-                                <button class="main-button danger" @onclick='() => PromptDeleteDeck(deck)'>
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <option value="@type">@type</option>
                     }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="create-deck">
-        <h4>Create Deck</h4>
-        <div class="deck-create">
-            <input type="text" autocomplete="off" placeholder="Deck Name" @bind="DeckName" />
-            <input type="text" autocomplete="off" placeholder="Graph Color (ex: #8174A0)" @bind="DeckColor" />
-            <select @bind="DeckType" class="deck-type-select">
-                @foreach (var type in Enum.GetValues(typeof(DeckType)))
-                {
-                    <option value="@type">@type</option>
-                }
-            </select>
-            <button class="main-button" @onclick='CreateDeck'>Create</button>
-        </div>
-    </div>
-</div>
-
-@if (DeckToDelete != null)
-{
-    <div class="modal-backdrop">
-        <div class="custom-modal">
-            <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete <strong>@DeckToDelete.Name</strong>? This cannot be undone.</p>
-            <div class="modal-buttons">
-                <button class="main-button danger" @onclick="ConfirmDeleteDeck">Delete</button>
-                <button class="main-button" @onclick="CancelDeleteDeck">Cancel</button>
+                </select>
+                <button class="main-button" @onclick='CreateDeck'>Create</button>
             </div>
         </div>
     </div>
-}
+
+    @if (DeckToDelete != null)
+    {
+        <div class="modal-backdrop">
+            <div class="custom-modal">
+                <h3>Confirm Deletion</h3>
+                <p>Are you sure you want to delete <strong>@DeckToDelete.Name</strong>? This cannot be undone.</p>
+                <div class="modal-buttons">
+                    <button class="main-button danger" @onclick="ConfirmDeleteDeck">Delete</button>
+                    <button class="main-button" @onclick="CancelDeleteDeck">Cancel</button>
+                </div>
+            </div>
+        </div>
+    }
+</Motion>

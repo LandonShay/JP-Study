@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,8 @@ namespace JP_Dictionary.Pages
 {
     public partial class Login
     {
+        private Motion Animate = default!;
+
         private List<Profile> Profiles { get; set; } = new();
         private string CreateName { get; set; } = string.Empty;
         private bool LoadingSentences { get; set; }
@@ -24,6 +27,14 @@ namespace JP_Dictionary.Pages
         {
             LoadSentencesAsync();
             LoadProfiles();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await Animate.Animate(Motions.FadeIn);
+            }
         }
 
         #region Loading
@@ -62,7 +73,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
-        private void LogIn(Profile profile)
+        private async Task LogIn(Profile profile)
         {
             var today = DateTime.Now.Date;
             var lastLoginDate = profile.LastLogin.Date;
@@ -110,6 +121,7 @@ namespace JP_Dictionary.Pages
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
 
+            await Animate.Animate(Motions.FadeOut);
             Nav.NavigateTo("/dashboard");
         }
 

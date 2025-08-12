@@ -25,4 +25,12 @@ namespace JP_Dictionary.Models
             PreviousKanjiGroup = SelectedKanjiGroup.ToList();
         }
     }
+
+    public enum Motions
+    {
+        FadeOut,
+        FadeIn,
+        ZoomIn,
+        ZoomOut
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using ChartJs.Blazor.Common;
@@ -21,6 +22,8 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
+        private Motion Animate = default!;
+
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
 
@@ -42,6 +45,7 @@ namespace JP_Dictionary.Pages
         {
             if (firstRender)
             {
+                await Animate.Animate(Motions.ZoomIn);
                 await JS.InvokeVoidAsync("enableDragDrop");
             }
         }
@@ -192,7 +196,7 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Nav
-        private void GoToLearnKanji()
+        private async Task GoToLearnKanji()
         {
             var kanjiToLearn = KanjiMethods.GetItemsToLearn(Kanji);
 
@@ -201,11 +205,12 @@ namespace JP_Dictionary.Pages
                 User.TriggerLearnMode = true;
                 User.SelectedKanjiGroup = kanjiToLearn;
 
+                await Animate.Animate(Motions.FadeOut);
                 Nav.NavigateTo("/kanjireview");
             }
         }
 
-        private void GoToReviewKanji(KanjiType type)
+        private async void GoToReviewKanji(KanjiType type)
         {
             if (type != KanjiType.Vocab)
             {
@@ -216,20 +221,25 @@ namespace JP_Dictionary.Pages
                 User.SelectedKanjiGroup = KanjiMethods.GetItemsToReview(KanjiVocab);
             }
 
+            await Animate.Animate(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
         }
 
-        private void ToStudy(Deck deck)
+        private async void ToStudy(Deck deck)
         {
             User.SelectedDeck = deck;
+
+            await Animate.Animate(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
         }
         #endregion
 
         #region Decks
-        private void ToViewDeck(Deck deck)
+        private async void ToViewDeck(Deck deck)
         {
             User.SelectedDeck = deck;
+
+            await Animate.Animate(Motions.ZoomOut);
             Nav.NavigateTo("/viewdeck");
         }
 

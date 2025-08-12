@@ -1,111 +1,113 @@
 ﻿@layout MainLayout
 @page "/viewdeck"
 
-<div class="table-controls">
-    <div class="left-controls">
-        <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
-    </div>
-    <div class="right-controls">
-        <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
-        <div class="page-size">
-            <label for="pageSize">Page Size:</label>
-            <select id="pageSize" @onchange="SetPageSize">
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+<Motion @ref="Animate">
+    <div class="table-controls">
+        <div class="left-controls">
+            <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
+        </div>
+        <div class="right-controls">
+            <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />
+            <div class="page-size">
+                <label for="pageSize">Page Size:</label>
+                <select id="pageSize" @onchange="SetPageSize">
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.Word))">
-                    Japanese @SortIndicator(nameof(StudyWord.Word))
-                </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.Romaji))">
-                    Romaji @SortIndicator(nameof(StudyWord.Romaji))
-                </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.Definitions))">
-                    Definition @SortIndicator(nameof(StudyWord.Definitions))
-                </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.CorrectStreak))">
-                    Streak @SortIndicator(nameof(StudyWord.CorrectStreak))
-                </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.MasteryTier))">
-                    Mastery @SortIndicator(nameof(StudyWord.MasteryTier))
-                </th>
-                <th @onclick="() => ToggleSort(nameof(StudyWord.LastStudied))">
-                    Next Review @SortIndicator(nameof(StudyWord.LastStudied))
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var entry in PagedWords)
-            {
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <div style="display: flex; gap: 5px; justify-content: center;">
-                            @entry.Word
-                            <span>
-                                <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry)"></i>
-                            </span>
-                        </div>
-                    </td>
-                    <td>@entry.Romaji</td>
-                    <td>
-                        @if (EditingEntry == entry)
-                        {
-                            <input @bind="EditingValue" @onblur="FinishEditing" class="definition-input" />
-                        }
-                        else
-                        {
-                            <span @onclick="() => StartEditing(entry)" style="cursor: pointer;">
-                                @entry.Definitions
-                            </span>
-                        }
-                    </td>
-                    <td>@entry.CorrectStreak</td>
-                    <td>@entry.MasteryTier</td>
-                    <td>
-                        @if (entry.Unlocked)
-                        {
-                            @HelperMethods.GetNextStudyDate(entry.LastStudied, entry.CorrectStreak).ToShortDateString()
-                        }
-                        else
-                        {
-                            <span style="cursor: pointer" @onclick="() => UnlockWord(entry)">
-                                <i class="fa-solid fa-lock"></i>
-                            </span>
-                        }
-                    </td>
-                    <td>
-                        <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
-                            <img class="jisho-logo" src="images/jisho-logo.png" />
-                        </button>
-                    </td>
-                    <td>
-                        <button class="main-button" @onclick="() => ResetStreak(entry)">
-                            <i class="fa-solid fa-eraser"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="main-button" @onclick="() => DeleteCard(entry)">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.Word))">
+                        Japanese @SortIndicator(nameof(StudyWord.Word))
+                    </th>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.Romaji))">
+                        Romaji @SortIndicator(nameof(StudyWord.Romaji))
+                    </th>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.Definitions))">
+                        Definition @SortIndicator(nameof(StudyWord.Definitions))
+                    </th>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.CorrectStreak))">
+                        Streak @SortIndicator(nameof(StudyWord.CorrectStreak))
+                    </th>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.MasteryTier))">
+                        Mastery @SortIndicator(nameof(StudyWord.MasteryTier))
+                    </th>
+                    <th @onclick="() => ToggleSort(nameof(StudyWord.LastStudied))">
+                        Next Review @SortIndicator(nameof(StudyWord.LastStudied))
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div class="pagination">
-    <button class="main-button" @onclick="@(() => ChangePage(CurrentPage - 1))" disabled="@(CurrentPage == 1)">Prev</button>
-    <span>Page @CurrentPage of @TotalPages</span>
-    <button class="main-button" @onclick="@(() => ChangePage(CurrentPage + 1))" disabled="@(CurrentPage == TotalPages)">Next</button>
-</div>
-<span>*You can edit definitions by clicking them</span>
+            </thead>
+            <tbody>
+                @foreach (var entry in PagedWords)
+                {
+                    <tr>
+                        <td>
+                            <div style="display: flex; gap: 5px; justify-content: center;">
+                                @entry.Word
+                                <span>
+                                    <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry)"></i>
+                                </span>
+                            </div>
+                        </td>
+                        <td>@entry.Romaji</td>
+                        <td>
+                            @if (EditingEntry == entry)
+                            {
+                                <input @bind="EditingValue" @onblur="FinishEditing" class="definition-input" />
+                            }
+                            else
+                            {
+                                <span @onclick="() => StartEditing(entry)" style="cursor: pointer;">
+                                    @entry.Definitions
+                                </span>
+                            }
+                        </td>
+                        <td>@entry.CorrectStreak</td>
+                        <td>@entry.MasteryTier</td>
+                        <td>
+                            @if (entry.Unlocked)
+                            {
+                                @HelperMethods.GetNextStudyDate(entry.LastStudied, entry.CorrectStreak).ToShortDateString()
+                            }
+                            else
+                            {
+                                <span style="cursor: pointer" @onclick="() => UnlockWord(entry)">
+                                    <i class="fa-solid fa-lock"></i>
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
+                                <img class="jisho-logo" src="images/jisho-logo.png" />
+                            </button>
+                        </td>
+                        <td>
+                            <button class="main-button" @onclick="() => ResetStreak(entry)">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="main-button" @onclick="() => DeleteCard(entry)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <button class="main-button" @onclick="@(() => ChangePage(CurrentPage - 1))" disabled="@(CurrentPage == 1)">Prev</button>
+        <span>Page @CurrentPage of @TotalPages</span>
+        <button class="main-button" @onclick="@(() => ChangePage(CurrentPage + 1))" disabled="@(CurrentPage == TotalPages)">Next</button>
+    </div>
+    <span>*You can edit definitions by clicking them</span>
+</Motion>
