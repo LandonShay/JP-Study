@@ -1,12 +1,12 @@
 ﻿
-<div class="@CssClass" style="visibility:@Visibility">
+<div class="@CssClass" style="visibility:@Visibility; overflow: hidden;">
     @ChildContent
 </div>
 
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; } = default!;
     private string CssClass { get; set; } = string.Empty;
-    private string Visibility { get; set; } = "hidden";
+    public string Visibility { get; set; } = "hidden";
 
     public async Task Animate(Motions motion, float duration = .1f)
     {
@@ -38,6 +38,16 @@
         await Task.Delay(TimeSpan.FromSeconds(slideDuration));
     }
 
+    public async Task AnimateFlip(Motions motion)
+    {
+        var flipDuration = .1f; // if you change this, also change the css class's timing
+
+        CssClass = GetCSSClass(motion);
+
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromSeconds(flipDuration));
+    }
+
     private string GetCSSClass(Motions motion)
     {
         return motion switch
@@ -50,6 +60,10 @@
             Motions.SlideLeftOut => "animate-slide-left-out",
             Motions.SlideRightIn => "animate-slide-right-in",
             Motions.SlideRightOut => "animate-slide-right-out",
+            Motions.FlipLeftIn => "animate-flip-left-in",
+            Motions.FlipLeftOut => "animate-flip-left-out",
+            Motions.FlipRightIn => "animate-flip-right-in",
+            Motions.FlipRightOut => "animate-flip-right-out",
             _ => string.Empty
         };
     }

@@ -187,6 +187,22 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
     animation: slideRightIn 0.2s ease forwards;
 }
 
+.animate-flip-left-out {
+    animation: flipLeftHalfOut 0.1s ease forwards;
+}
+
+.animate-flip-left-in {
+    animation: flipLeftHalfIn 0.1s ease forwards;
+}
+
+.animate-flip-right-out {
+    animation: flipRightHalfOut 0.1s ease forwards;
+}
+
+.animate-flip-right-in {
+    animation: flipRightHalfIn 0.1s ease forwards;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -270,6 +286,46 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 
     to {
         transform: translateX(100%);
+    }
+}
+
+@keyframes flipLeftHalfOut {
+    from {
+        transform: perspective(800px) rotateY(0deg);
+    }
+
+    to {
+        transform: perspective(800px) rotateY(-90deg);
+    }
+}
+
+@keyframes flipLeftHalfIn {
+    from {
+        transform: perspective(800px) rotateY(90deg);
+    }
+
+    to {
+        transform: perspective(800px) rotateY(0deg);
+    }
+}
+
+@keyframes flipRightHalfOut {
+    from {
+        transform: perspective(800px) rotateY(0deg);
+    }
+
+    to {
+        transform: perspective(800px) rotateY(90deg);
+    }
+}
+
+@keyframes flipRightHalfIn {
+    from {
+        transform: perspective(800px) rotateY(-90deg);
+    }
+
+    to {
+        transform: perspective(800px) rotateY(0deg);
     }
 }
 /* End Motions Service */

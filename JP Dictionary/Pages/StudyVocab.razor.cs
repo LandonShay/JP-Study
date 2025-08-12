@@ -7,6 +7,7 @@ using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
 using WanaKanaSharp;
 using MoreLinq;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -22,7 +23,9 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
-        private Motion Animate { get; set; } = default!;
+        private Motion PageAnimate { get; set; } = default!;
+        private Motion CardAnimate { get; set; } = default!;
+        private Motion ModalAnimate { get; set; } = default!;
 
         private Queue<VocabCard> StudyCards { get; set; } = new();
         private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
@@ -220,7 +223,16 @@ namespace JP_Dictionary.Pages
                 if (firstRender)
                 {
                     Anim.OnAnimate += AnimatePage;
-                    await AnimatePage(Motions.ZoomIn);
+
+                    if (ShowTestOptionModal)
+                    {
+                        _ = AnimatePage(Motions.ZoomIn);
+                        await AnimateElement(ModalAnimate, Motions.ZoomIn);
+                    }
+                    else
+                    {
+                        await AnimatePage(Motions.ZoomIn);
+                    }
                 }
 
                 if (ElementToFocus != string.Empty)
@@ -248,9 +260,13 @@ namespace JP_Dictionary.Pages
         #region Study Options
         private async Task ConfirmTestOptions()
         {
+            await AnimateElement(ModalAnimate, Motions.FadeOut);
+            await Task.Delay(100);
+
             ShowTestOptionModal = false;
 
-            SetCurrentCard();
+            StateHasChanged();
+            await SetCurrentCard(true);
 
             ElementToFocus = TestReading ? "reading" : "definition";
             await FocusElement(ElementToFocus);
@@ -258,7 +274,7 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Submit
-        private void SubmitAnswer()
+        private async Task SubmitAnswer()
         {
             var readingCorrect = false;
             var definitionCorrect = false;
@@ -289,10 +305,15 @@ namespace JP_Dictionary.Pages
             if (readingCorrect && definitionCorrect)
             {
                 CurrentCard.Correct = true;
+
+                await AnimateElement(CardAnimate, Motions.FlipLeftOut);
+
                 ShowResults = true;
 
                 UpdateWord(1);
                 FetchExampleSentence();
+
+                await AnimateElement(CardAnimate, Motions.FlipLeftIn);
 
                 ElementToFocus = "correct-next";
                 return;
@@ -318,21 +339,28 @@ namespace JP_Dictionary.Pages
 
             if (AttemptsRemaining == 0)
             {
-                ShowResults = true;
-                ElementToFocus = "incorrect-next";
-                UpdateWord(-1);
-            }
+                await AnimateElement(CardAnimate, Motions.FlipLeftOut);
 
-            if (ShowResults)
-            {
+                ShowResults = true;
                 FetchExampleSentence();
+
+                await AnimateElement(CardAnimate, Motions.FlipLeftIn);
+
+                ElementToFocus = "incorrect-next";
+                StateHasChanged();
+
+                UpdateWord(-1);
             }
         }
 
-        private void GiveUp()
+        private async Task GiveUp()
         {
+            await AnimateElement(CardAnimate, Motions.FlipLeftOut);
             ShowResults = true;
+            await AnimateElement(CardAnimate, Motions.FlipLeftIn);
+
             ElementToFocus = "incorrect-next";
+            StateHasChanged();
         }
 
         private async void GoToDashboard()
@@ -343,14 +371,15 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Cards
-        private void ShowNextCard()
+        private async void ShowNextCard()
         {
             if (!CurrentCard.Correct)
             {
                 ReaddFailedCard();
             }
 
-            SetCurrentCard();
+            await AnimateElement(CardAnimate, Motions.FlipLeftOut);
+            await SetCurrentCard(false);
 
             ReadingAnswer = string.Empty;
             DefinitionAnswer = string.Empty;
@@ -389,6 +418,8 @@ namespace JP_Dictionary.Pages
                 ItemTypeCss = string.Empty;
             }
 
+            await AnimateElement(CardAnimate, Motions.FlipLeftIn);
+
             if (TestReading)
             {
                 ElementToFocus = "reading";
@@ -397,13 +428,20 @@ namespace JP_Dictionary.Pages
             {
                 ElementToFocus = "definition";
             }
+
+            StateHasChanged();
         }
 
-        private void SetCurrentCard()
+        private async Task SetCurrentCard(bool animateCard)
         {
             if (StudyCards.Count > 0)
             {
                 CurrentCard = StudyCards.Dequeue();
+
+                if (CardAnimate != null && animateCard)
+                {
+                    await AnimateElement(CardAnimate, Motions.SlideRightIn);
+                }
             }
             else
             {
@@ -650,7 +688,24 @@ namespace JP_Dictionary.Pages
 
         private async Task AnimatePage(Motions motion)
         {
-            await Animate.Animate(motion);
+            await PageAnimate.Animate(motion);
+        }
+
+        private async Task AnimateElement(Motion motion, Motions action)
+        {
+            if (action == Motions.SlideLeftOut || action == Motions.SlideRightOut || action == Motions.SlideLeftIn || action == Motions.SlideRightIn)
+            {
+                motion.Visibility = "visible";
+                await motion.AnimateSlide(action);
+            }
+            else if (action == Motions.FlipLeftIn || action == Motions.FlipLeftOut || action == Motions.FlipRightIn || action == Motions.FlipRightOut)
+            {
+                await motion.AnimateFlip(action);
+            }
+            else
+            {
+                await motion.Animate(action);
+            }
         }
 
         public void Dispose()

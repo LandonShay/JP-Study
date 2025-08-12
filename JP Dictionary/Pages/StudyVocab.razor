@@ -1,230 +1,234 @@
 ﻿@layout MainLayout
 @page "/studyvocab"
 
-<Motion @ref="Animate">
+<Motion @ref="PageAnimate">
     @if (ShowTestOptionModal)
     {
-        <div class="modal-overlay">
-            <div class="custom-modal">
-                <h2>@DeckName</h2>
-                <div class="test-options">
-                    <div>
-                        <input type="radio" name="testMode" @onchange="() => TestReading = true" checked="@TestReading" />
-                        <span>Reading + Definition</span>
-                        <div class="test-options-label">
-                            <span class="italics">Suggested: Vocab, Kanji</span>
+        <Motion @ref="ModalAnimate">
+            <div class="modal-overlay">
+                <div class="custom-modal">
+                    <h2>@DeckName</h2>
+                    <div class="test-options">
+                        <div>
+                            <input type="radio" name="testMode" @onchange="() => TestReading = true" checked="@TestReading" />
+                            <span>Reading + Definition</span>
+                            <div class="test-options-label">
+                                <span class="italics">Suggested: Vocab, Kanji</span>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="radio" name="testMode" @onchange="() => TestReading = false" checked="@(!TestReading)" />
+                            <span>Definition Only</span>
+                            <div class="test-options-label">
+                                <span class="italics">Suggested: Grammar</span>
+                            </div>
                         </div>
                     </div>
                     <div>
-                        <input type="radio" name="testMode" @onchange="() => TestReading = false" checked="@(!TestReading)" />
-                        <span>Definition Only</span>
-                        <div class="test-options-label">
-                            <span class="italics">Suggested: Grammar</span>
-                        </div>
+                        <button class="main-button" @onclick="ConfirmTestOptions">Start</button>
+                        <button class="main-button" @onclick='GoToDashboard'>Cancel</button>
                     </div>
-                </div>
-                <div>
-                    <button class="main-button" @onclick="ConfirmTestOptions">Start</button>
-                    <button class="main-button" @onclick='GoToDashboard'>Cancel</button>
                 </div>
             </div>
-        </div>
+        </Motion>
     }
     else
     {
         @if (!FinishedStudying)
         {
-            @if (!ShowResults)
-            {
-                <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
-                    @if (!TestReading)
-                    {
-                        <div class="speak-word" @onclick="TextToSpeech">
+            <Motion @ref="CardAnimate">
+                @if (!ShowResults)
+                {
+                    <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
+                        @if (!TestReading)
+                        {
+                            <div class="speak-word" @onclick="TextToSpeech">
+                                <div class="@ItemTypeCss">
+                                    <h3>@CurrentCard.Word</h3>
+                                    @if (CardIsNew())
+                                    {
+                                        <span>New!</span>
+                                    }
+                                </div>
+                                @if (CurrentCard.Type != StudyCardType.Radical)
+                                {
+                                    <span>
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
                             <div class="@ItemTypeCss">
-                                <h3>@CurrentCard.Word</h3>
+                                <h2>@CurrentCard.Word</h2>
                                 @if (CardIsNew())
                                 {
                                     <span>New!</span>
                                 }
                             </div>
-                            @if (CurrentCard.Type != StudyCardType.Radical)
-                            {
-                                <span>
-                                    <i class="fa-solid fa-volume-high"></i>
-                                </span>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="@ItemTypeCss">
-                            <h2>@CurrentCard.Word</h2>
-                            @if (CardIsNew())
-                            {
-                                <span>New!</span>
-                            }
-                        </div>
+                            <div class="answer-area">
+                                <label class="label">Reading</label>
+                                <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
+                            </div>
+                        }
+
                         <div class="answer-area">
-                            <label class="label">Reading</label>
-                            <input type="text" id="reading" autocomplete="off" @bind="ReadingAnswer" class="@ReadingStatus" />
+                            <label class="label">Definition</label>
+                            <input type="text" id="definition" autocomplete="off" @bind="DefinitionAnswer" class="@DefinitionStatus" />
                         </div>
-                    }
-
-                    <div class="answer-area">
-                        <label class="label">Definition</label>
-                        <input type="text" id="definition" autocomplete="off" @bind="DefinitionAnswer" class="@DefinitionStatus" />
-                    </div>
-                    <div>
-                        <button class="main-button" id="submit-answer" type="submit">Submit</button>
-                        <button class="main-button" @onclick="GiveUp">Give Up</button>
-                    </div>
-
-                    <span class="label">Attempts Remaining: @AttemptsRemaining</span>
-                    <span class="label">Cards Remaining: @StudyCards.Count</span>
-                </form>
-            }
-            else
-            {
-                <form @onsubmit="ShowNextCard" @onsubmit:preventDefault>
-                    @if (CurrentCard.Correct)
-                    {
-                        <h2>Correct!</h2>
-                        @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
-                        {
-                            <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
-                        }
-
-                        <div class="speak-word" @onclick="TextToSpeech">
-                            <h3>@CurrentCard.Word</h3>
-                            @if (CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
-                            {
-                                <span>
-                                    <i class="fa-solid fa-volume-high"></i>
-                                </span>
-                            }
-                        </div>
-                        <div class="reading-definition">
-                            <div>
-                                <h4>Reading</h4>
-                                <span>@CurrentCard.OriginalFormatReading</span>
-                            </div>
-                            <div>
-                                <h4>Definition</h4>
-                                @if (EditingDefinition)
-                                {
-                                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
-                                }
-                                else
-                                {
-                                    <span @onclick="StartEditing" style="cursor: pointer;">
-                                        @CurrentCard.OriginalFormatDefinition
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                        @if (ExampleSentence != null)
-                        {
-                            <div>
-                                <h4>Example:</h4>
-                                <span>@ExampleSentence.JP</span>
-                            </div>
-                            @if (!ShowExampleSentenceTranslation)
-                            {
-                                <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
-                            }
-                            else
-                            {
-                                <span class="example-sentence-english">@ExampleSentence.EN</span>
-                            }
-                        }
-                        <button class="main-button" id="correct-next" type="submit">Next</button>
-                        <button class="main-button" type="button" @onclick="SearchJisho">
-                            <img class="jisho-logo" src="images/jisho-logo.png" />
-                        </button>
-                    }
-                    else
-                    {
-                        <h2>Incorrect</h2>
-                        @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
-                        {
-                            <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
-                        }
-
-                        <div class="speak-word" @onclick="TextToSpeech">
-                            <h3>@CurrentCard.Word</h3>
-                            <span>
-                                <i class="fa-solid fa-volume-high"></i>
-                            </span>
-                        </div>
-                        <div class="reading-definition">
-                            <div>
-                                <h4>Reading</h4>
-                                <span>@CurrentCard.OriginalFormatReading</span>
-                            </div>
-                            <div>
-                                <h4>Definition</h4>
-                                @if (EditingDefinition)
-                                {
-                                    <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
-                                }
-                                else
-                                {
-                                    <span @onclick="StartEditing" style="cursor: pointer;">
-                                        @CurrentCard.OriginalFormatDefinition
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                        <h3>Your Answer</h3>
-                        <div class="reading-definition">
-                            <div>
-                                <h4>Reading</h4>
-                                <span>@ReadingAnswer</span>
-                            </div>
-                            <div>
-                                <h4>Definition</h4>
-                                <span>@DefinitionAnswer</span>
-                            </div>
-                        </div>
-                        @if (ExampleSentence != null)
-                        {
-                            <div>
-                                <h4>Example:</h4>
-                                <span>@ExampleSentence.JP</span>
-                            </div>
-                            @if (!ShowExampleSentenceTranslation)
-                            {
-                                <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
-                            }
-                            else
-                            {
-                                <span class="example-sentence-english">@ExampleSentence.EN</span>
-                            }
-                        }
                         <div>
-                            <button class="main-button" id="incorrect-next" type="submit">Next</button>
-                            <button class="main-button" @onclick="MarkAsCorrect">Mark As Correct</button>
+                            <button class="main-button" id="submit-answer" type="submit">Submit</button>
+                            <button class="main-button" @onclick="GiveUp">Give Up</button>
                         </div>
-                        <div style="display: flex; gap: 5px;">
+
+                        <span class="label">Attempts Remaining: @AttemptsRemaining</span>
+                        <span class="label">Cards Remaining: @StudyCards.Count</span>
+                    </form>
+                }
+                else
+                {
+                    <form @onsubmit="ShowNextCard" @onsubmit:preventDefault>
+                        @if (CurrentCard.Correct)
+                        {
+                            <h2>Correct!</h2>
+                            @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
+                            {
+                                <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
+                            }
+
+                            <div class="speak-word" @onclick="TextToSpeech">
+                                <h3>@CurrentCard.Word</h3>
+                                @if (CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
+                                {
+                                    <span>
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </span>
+                                }
+                            </div>
+                            <div class="reading-definition">
+                                <div>
+                                    <h4>Reading</h4>
+                                    <span>@CurrentCard.OriginalFormatReading</span>
+                                </div>
+                                <div>
+                                    <h4>Definition</h4>
+                                    @if (EditingDefinition)
+                                    {
+                                        <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                                    }
+                                    else
+                                    {
+                                        <span @onclick="StartEditing" style="cursor: pointer;">
+                                            @CurrentCard.OriginalFormatDefinition
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            @if (ExampleSentence != null)
+                            {
+                                <div>
+                                    <h4>Example:</h4>
+                                    <span>@ExampleSentence.JP</span>
+                                </div>
+                                @if (!ShowExampleSentenceTranslation)
+                                {
+                                    <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
+                                }
+                                else
+                                {
+                                    <span class="example-sentence-english">@ExampleSentence.EN</span>
+                                }
+                            }
+                            <button class="main-button" id="correct-next" type="submit">Next</button>
                             <button class="main-button" type="button" @onclick="SearchJisho">
                                 <img class="jisho-logo" src="images/jisho-logo.png" />
                             </button>
-                            @if (CurrentCard.Type == StudyCardType.Vocab && StudyKanji.Select(x => x.Item).Contains(CurrentCard.StudyKanji.Item))
+                        }
+                        else
+                        {
+                            <h2>Incorrect</h2>
+                            @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
                             {
-                                <button class="main-button" @onclick="ViewItemDetails">View Details</button>
+                                <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
                             }
-                        </div>
-                    }
-                </form>
-            }
 
-            <div class="custom-toggle-container">
+                            <div class="speak-word" @onclick="TextToSpeech">
+                                <h3>@CurrentCard.Word</h3>
+                                <span>
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </span>
+                            </div>
+                            <div class="reading-definition">
+                                <div>
+                                    <h4>Reading</h4>
+                                    <span>@CurrentCard.OriginalFormatReading</span>
+                                </div>
+                                <div>
+                                    <h4>Definition</h4>
+                                    @if (EditingDefinition)
+                                    {
+                                        <input class="definition-input" @bind="NewDefinition" @onblur="FinishEditing" />
+                                    }
+                                    else
+                                    {
+                                        <span @onclick="StartEditing" style="cursor: pointer;">
+                                            @CurrentCard.OriginalFormatDefinition
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            <h3>Your Answer</h3>
+                            <div class="reading-definition">
+                                <div>
+                                    <h4>Reading</h4>
+                                    <span>@ReadingAnswer</span>
+                                </div>
+                                <div>
+                                    <h4>Definition</h4>
+                                    <span>@DefinitionAnswer</span>
+                                </div>
+                            </div>
+                            @if (ExampleSentence != null)
+                            {
+                                <div>
+                                    <h4>Example:</h4>
+                                    <span>@ExampleSentence.JP</span>
+                                </div>
+                                @if (!ShowExampleSentenceTranslation)
+                                {
+                                    <button class="main-button" type="button" @onclick="() => ShowExampleSentenceTranslation = true">Translation</button>
+                                }
+                                else
+                                {
+                                    <span class="example-sentence-english">@ExampleSentence.EN</span>
+                                }
+                            }
+                            <div>
+                                <button class="main-button" id="incorrect-next" type="submit">Next</button>
+                                <button class="main-button" @onclick="MarkAsCorrect">Mark As Correct</button>
+                            </div>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="main-button" type="button" @onclick="SearchJisho">
+                                    <img class="jisho-logo" src="images/jisho-logo.png" />
+                                </button>
+                                @if (CurrentCard.Type == StudyCardType.Vocab && StudyKanji.Select(x => x.Item).Contains(CurrentCard.StudyKanji.Item))
+                                {
+                                    <button class="main-button" @onclick="ViewItemDetails">View Details</button>
+                                }
+                            </div>
+                        }
+                    </form>
+                }
+            </Motion>
+
+            @* <div class="custom-toggle-container">
                 <label class="custom-toggle">
                     <input type="checkbox" id="auto-speech" @bind="AutoSpeak" />
                     <span class="custom-checkbox"></span>
                     Auto-Speak Results
                 </label>
-            </div>
+            </div> *@
         }
         else
         {
