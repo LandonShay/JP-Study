@@ -1,6 +1,8 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Shared
 {
@@ -10,6 +12,7 @@ namespace JP_Dictionary.Shared
 #nullable disable
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
 #nullable enable
         #endregion
 
@@ -23,9 +26,11 @@ namespace JP_Dictionary.Shared
             GroupedKanji = KanjiMethods.LoadDefaultKanjiList().GroupBy(x => x.Level).ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        private void Navigate(string page, bool forceLoad)
+        private async void Navigate(string page, bool forceLoad)
         {
             HideKanjiMenu();
+
+            await Anim.RequestAnimation(Motions.ZoomOut);
             Nav.NavigateTo(page, forceLoad);
         }
 

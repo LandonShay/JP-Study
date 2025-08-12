@@ -154,6 +154,127 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
     opacity: 1;
 }
 
+/* Motions Service */
+.animate-fade-in {
+    animation: fadeIn ease 0.5s forwards;
+}
+
+.animate-fade-out {
+    animation: fadeOut ease 0.5s forwards;
+}
+
+.animate-zoom-in {
+    animation: zoomIn 0.5s ease forwards;
+}
+
+.animate-zoom-out {
+    animation: zoomOut 0.5s ease forwards;
+}
+
+.animate-slide-left-out {
+    animation: slideLeftOut 0.2s ease forwards;
+}
+
+.animate-slide-right-out {
+    animation: slideRightOut 0.2s ease forwards;
+}
+
+.animate-slide-left-in {
+    animation: slideLeftIn 0.2s ease forwards;
+}
+
+.animate-slide-right-in {
+    animation: slideRightIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes slideLeftIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideLeftOut {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideRightIn {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideRightOut {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+/* End Motions Service */
+
+
 
 
 

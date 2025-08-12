@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using ChartJs.Blazor.Common;
@@ -16,10 +17,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate { get; set; } = default!;
 
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
@@ -42,6 +46,9 @@ namespace JP_Dictionary.Pages
         {
             if (firstRender)
             {
+                Anim.OnAnimate += AnimatePage;
+
+                await AnimatePage(Motions.ZoomIn);
                 await JS.InvokeVoidAsync("enableDragDrop");
             }
         }
@@ -192,7 +199,7 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Nav
-        private void GoToLearnKanji()
+        private async Task GoToLearnKanji()
         {
             var kanjiToLearn = KanjiMethods.GetItemsToLearn(Kanji);
 
@@ -201,11 +208,12 @@ namespace JP_Dictionary.Pages
                 User.TriggerLearnMode = true;
                 User.SelectedKanjiGroup = kanjiToLearn;
 
+                await AnimatePage(Motions.ZoomOut);
                 Nav.NavigateTo("/kanjireview");
             }
         }
 
-        private void GoToReviewKanji(KanjiType type)
+        private async void GoToReviewKanji(KanjiType type)
         {
             if (type != KanjiType.Vocab)
             {
@@ -216,20 +224,35 @@ namespace JP_Dictionary.Pages
                 User.SelectedKanjiGroup = KanjiMethods.GetItemsToReview(KanjiVocab);
             }
 
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
         }
 
-        private void ToStudy(Deck deck)
+        private async void ToStudy(Deck deck)
         {
             User.SelectedDeck = deck;
+
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
         #endregion
 
         #region Decks
-        private void ToViewDeck(Deck deck)
+        private async void ToViewDeck(Deck deck)
         {
             User.SelectedDeck = deck;
+
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/viewdeck");
         }
 

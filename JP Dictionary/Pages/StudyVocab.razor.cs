@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -15,10 +16,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate { get; set; } = default!;
 
         private Queue<VocabCard> StudyCards { get; set; } = new();
         private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
@@ -213,6 +217,12 @@ namespace JP_Dictionary.Pages
         {
             try
             {
+                if (firstRender)
+                {
+                    Anim.OnAnimate += AnimatePage;
+                    await AnimatePage(Motions.ZoomIn);
+                }
+
                 if (ElementToFocus != string.Empty)
                 {
                     await FocusElement(ElementToFocus);
@@ -323,6 +333,12 @@ namespace JP_Dictionary.Pages
         {
             ShowResults = true;
             ElementToFocus = "incorrect-next";
+        }
+
+        private async void GoToDashboard()
+        {
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/dashboard");
         }
         #endregion
 
@@ -631,5 +647,15 @@ namespace JP_Dictionary.Pages
             }
         }
         #endregion
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
+        }
     }
 }

@@ -1,0 +1,56 @@
+﻿
+<div class="@CssClass" style="visibility:@Visibility">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    private string CssClass { get; set; } = string.Empty;
+    private string Visibility { get; set; } = "hidden";
+
+    public async Task Animate(Motions motion, float duration = .1f)
+    {
+        if (motion == Motions.FadeIn || motion == Motions.ZoomIn)
+        {
+            Visibility = "visible";
+        }
+
+        CssClass = GetCSSClass(motion);
+
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromSeconds(duration));
+
+        if (motion == Motions.FadeOut || motion == Motions.ZoomOut)
+        {
+            Visibility = "hidden";
+        }
+
+        StateHasChanged();
+    }
+
+    public async Task AnimateSlide(Motions motion)
+    {
+        var slideDuration = .2f; // if you change this, also change the css class's timing
+
+        CssClass = GetCSSClass(motion);
+
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromSeconds(slideDuration));
+    }
+
+    private string GetCSSClass(Motions motion)
+    {
+        return motion switch
+        {
+            Motions.FadeIn => "animate-fade-in",
+            Motions.FadeOut => "animate-fade-out",
+            Motions.ZoomIn => "animate-zoom-in",
+            Motions.ZoomOut => "animate-zoom-out",
+            Motions.SlideLeftIn => "animate-slide-left-in",
+            Motions.SlideLeftOut => "animate-slide-left-out",
+            Motions.SlideRightIn => "animate-slide-right-in",
+            Motions.SlideRightOut => "animate-slide-right-out",
+            _ => string.Empty
+        };
+    }
+}

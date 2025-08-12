@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -8,15 +9,18 @@ namespace JP_Dictionary.Pages
 {
     public partial class Login
     {
+        private Motion Animate { get; set; } = default!;
+
         private List<Profile> Profiles { get; set; } = new();
         private string CreateName { get; set; } = string.Empty;
         private bool LoadingSentences { get; set; }
 
         #region Injections
 #nullable disable
+        [Inject] public ToastService Toast { get; set; }
         [Inject] public UserState UserState { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
-        [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
 #nullable enable
         #endregion
 
@@ -24,6 +28,15 @@ namespace JP_Dictionary.Pages
         {
             LoadSentencesAsync();
             LoadProfiles();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.FadeIn);
+            }
         }
 
         #region Loading
@@ -62,7 +75,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
-        private void LogIn(Profile profile)
+        private async Task LogIn(Profile profile)
         {
             var today = DateTime.Now.Date;
             var lastLoginDate = profile.LastLogin.Date;
@@ -110,6 +123,7 @@ namespace JP_Dictionary.Pages
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
 
+            await AnimatePage(Motions.FadeOut);
             Nav.NavigateTo("/dashboard");
         }
 
@@ -154,6 +168,16 @@ namespace JP_Dictionary.Pages
 
             CreateName = string.Empty;
             LoadProfiles();
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
     }
 }

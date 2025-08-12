@@ -1,18 +1,20 @@
 ﻿@layout MainLayout
 @page "/"
 
-<h3>Login</h3>
-
-<div class="select-profile">
-    <span class="label">Select a profile:</span>
-
-    @foreach (var profile in Profiles)
-    {
-        <button class="main-button" @onclick="() => LogIn(profile)">@profile.Name</button>
-    }
-</div>
-<div class="create-profile">
-    <span class="label">Create Profile:</span>
-    <input type="text" placeholder="Name" @bind="CreateName" />
-    <button class="main-button" @onclick="CreateProfile">Create</button>
-</div>
+<Motion @ref="Animate">
+    <h3>Login</h3>
+    
+    <div class="select-profile">
+        <span class="label">Select a profile:</span>
+    
+        @foreach (var profile in Profiles)
+        {
+            <button class="main-button" @onclick="() => LogIn(profile)">@profile.Name</button>
+        }
+    </div>
+    <div class="create-profile">
+        <span class="label">Create Profile:</span>
+        <input type="text" placeholder="Name" @bind="CreateName" />
+        <button class="main-button" @onclick="CreateProfile">Create</button>
+    </div>
+</Motion>
