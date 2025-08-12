@@ -17,12 +17,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
 #nullable enable
         #endregion
 
-        private Motion Animate = default!;
+        private Motion Animate { get; set; } = default!;
 
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
@@ -45,7 +46,9 @@ namespace JP_Dictionary.Pages
         {
             if (firstRender)
             {
-                await Animate.Animate(Motions.ZoomIn);
+                Anim.OnAnimate += AnimatePage;
+
+                await AnimatePage(Motions.ZoomIn);
                 await JS.InvokeVoidAsync("enableDragDrop");
             }
         }
@@ -205,7 +208,7 @@ namespace JP_Dictionary.Pages
                 User.TriggerLearnMode = true;
                 User.SelectedKanjiGroup = kanjiToLearn;
 
-                await Animate.Animate(Motions.FadeOut);
+                await AnimatePage(Motions.ZoomOut);
                 Nav.NavigateTo("/kanjireview");
             }
         }
@@ -221,7 +224,7 @@ namespace JP_Dictionary.Pages
                 User.SelectedKanjiGroup = KanjiMethods.GetItemsToReview(KanjiVocab);
             }
 
-            await Animate.Animate(Motions.ZoomOut);
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
         }
 
@@ -229,8 +232,18 @@ namespace JP_Dictionary.Pages
         {
             User.SelectedDeck = deck;
 
-            await Animate.Animate(Motions.ZoomOut);
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
         #endregion
 
@@ -239,7 +252,7 @@ namespace JP_Dictionary.Pages
         {
             User.SelectedDeck = deck;
 
-            await Animate.Animate(Motions.ZoomOut);
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/viewdeck");
         }
 

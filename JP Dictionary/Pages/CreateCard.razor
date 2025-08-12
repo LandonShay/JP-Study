@@ -1,34 +1,36 @@
 ﻿@page "/createcard"
 
-<form @onsubmit="Create">
-    <div class="create-page">
-        <div class="card-form">
-            <div class="form-group">
-                <label>Japanese</label>
-                <input type="text" autocomplete="off" @bind="Japanese" class="input-dark" />
-            </div>
-            <div class="form-group">
-                <label>Romaji</label>
-                <input type="text" autocomplete="off" @bind="Romaji" class="input-dark" />
-            </div>
-            <div class="form-group">
-                <label>Definitions</label>
-                <input type="text" autocomplete="off" @bind="Definitions" class="input-dark" />
-            </div>
-            <div>
-                <label class="custom-toggle">
-                    <input type="checkbox" @bind="UnlockImmediately" />
-                    <span class="custom-checkbox"></span>
-                    Unlock Immediately
-                </label>
-            </div>
-            <div class="buttons">
-                <button type="submit" class="main-button" @onclick="Create">Create</button>
-                <button class="main-button" @onclick='() => Nav.NavigateTo("/viewdeck")'>Cancel</button>
+<Motion @ref="Animate">
+    <form @onsubmit="Create">
+        <div class="create-page">
+            <div class="card-form">
+                <div class="form-group">
+                    <label>Japanese</label>
+                    <input type="text" autocomplete="off" @bind="Japanese" class="input-dark" />
+                </div>
+                <div class="form-group">
+                    <label>Romaji</label>
+                    <input type="text" autocomplete="off" @bind="Romaji" class="input-dark" />
+                </div>
+                <div class="form-group">
+                    <label>Definitions</label>
+                    <input type="text" autocomplete="off" @bind="Definitions" class="input-dark" />
+                </div>
+                <div>
+                    <label class="custom-toggle">
+                        <input type="checkbox" @bind="UnlockImmediately" />
+                        <span class="custom-checkbox"></span>
+                        Unlock Immediately
+                    </label>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="main-button" @onclick="Create">Create</button>
+                    <button class="main-button" @onclick='GoToViewDeck'>Cancel</button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</Motion>
 
 @if (ShowConfirmation)
 {

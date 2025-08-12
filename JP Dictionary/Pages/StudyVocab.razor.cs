@@ -16,12 +16,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
 
-        private Motion Animate = default!;
+        private Motion Animate { get; set; } = default!;
 
         private Queue<VocabCard> StudyCards { get; set; } = new();
         private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
@@ -218,7 +219,8 @@ namespace JP_Dictionary.Pages
             {
                 if (firstRender)
                 {
-                    await Animate.Animate(Motions.ZoomIn);
+                    Anim.OnAnimate += AnimatePage;
+                    await AnimatePage(Motions.ZoomIn);
                 }
 
                 if (ElementToFocus != string.Empty)
@@ -335,7 +337,7 @@ namespace JP_Dictionary.Pages
 
         private async void GoToDashboard()
         {
-            await Animate.Animate(Motions.ZoomOut);
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/dashboard");
         }
         #endregion
@@ -645,5 +647,15 @@ namespace JP_Dictionary.Pages
             }
         }
         #endregion
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
+        }
     }
 }

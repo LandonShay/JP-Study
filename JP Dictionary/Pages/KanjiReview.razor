@@ -1,101 +1,103 @@
 ﻿@page "/kanjireview"
 
-<div class="page-container">
-    <div class="content">
-        <div class="main-item-container">
-            <span class="main-item @ItemCSS">@ActiveItem.Item</span>
-            <span class="main-item-name">@ActiveItem.Name</span>
-        </div>
-        <div class="item-info">
-            <div class="readings">
-                @if (ActiveItem.Type != KanjiType.Vocab)
-                {
-                    <div class="reading-container">
-                        <span class="reading-title">Onyomi</span>
-                        <span class="reading">@GetReadings(ActiveItem.Onyomi)</span>
-                    </div>
-                    <div class="reading-container">
-                        <span class="reading-title">Kunyomi</span>
-                        <span class="reading">@GetReadings(ActiveItem.Kunyomi)</span>
-                    </div>
-                }
-                else
-                {
-                    <div class="reading-container">
-                        <span class="reading-title">Reading</span>
-                        <span class="reading">@ActiveItem.Reading</span>
-                    </div>
-                }
+<Motion @ref="Animate">
+    <div class="page-container">
+        <div class="content">
+            <div class="main-item-container">
+                <span class="main-item @ItemCSS">@ActiveItem.Item</span>
+                <span class="main-item-name">@ActiveItem.Name</span>
             </div>
-            <div class="primary-info">
-                <div class="foundation-info">
+            <div class="item-info">
+                <div class="readings">
                     @if (ActiveItem.Type != KanjiType.Vocab)
                     {
-                        <div>
-                            <label class="headline">Meanings</label>
-                            <div>
-                                <span class="meanings">@GetReadings(ActiveItem.Meaning)</span>
-                            </div>
+                        <div class="reading-container">
+                            <span class="reading-title">Onyomi</span>
+                            <span class="reading">@GetReadings(ActiveItem.Onyomi)</span>
                         </div>
-                        <div>
-                            <label class="headline">Radicals</label>
+                        <div class="reading-container">
+                            <span class="reading-title">Kunyomi</span>
+                            <span class="reading">@GetReadings(ActiveItem.Kunyomi)</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="reading-container">
+                            <span class="reading-title">Reading</span>
+                            <span class="reading">@ActiveItem.Reading</span>
+                        </div>
+                    }
+                </div>
+                <div class="primary-info">
+                    <div class="foundation-info">
+                        @if (ActiveItem.Type != KanjiType.Vocab)
+                        {
                             <div>
-                                <span class="meanings">@GetRadicals(ActiveItem.Radicals)</span>
+                                <label class="headline">Meanings</label>
+                                <div>
+                                    <span class="meanings">@GetReadings(ActiveItem.Meaning)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="headline">Radicals</label>
+                                <div>
+                                    <span class="meanings">@GetRadicals(ActiveItem.Radicals)</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <label class="headline">Mnemonic</label>
+                        <div>
+                            <span class="mnemonic">@ActiveItem.Mnemonic</span>
+                        </div>
+                    </div>
+                    @if (ActiveItem.ReadingMnemonic != string.Empty)
+                    {
+                        <div>
+                            <label class="headline">Reading Mnemonic</label>
+                            <div>
+                                <span class="mnemonic">@ActiveItem.ReadingMnemonic</span>
                             </div>
                         </div>
                     }
                 </div>
-                <div>
-                    <label class="headline">Mnemonic</label>
-                    <div>
-                        <span class="mnemonic">@ActiveItem.Mnemonic</span>
-                    </div>
-                </div>
-                @if (ActiveItem.ReadingMnemonic != string.Empty)
-                {
-                    <div>
-                        <label class="headline">Reading Mnemonic</label>
-                        <div>
-                            <span class="mnemonic">@ActiveItem.ReadingMnemonic</span>
-                        </div>
-                    </div>
-                }
+            </div>
+            <div class="bottom-buttons">
+                <button class="main-button" @onclick="GoToWanikani">
+                    <img class="wanikani-logo" src="images/wanikani-logo.png" />
+                </button>
+                <button class="main-button" type="button" @onclick="SearchJisho">
+                    <img class="jisho-logo" src="images/jisho-logo.png" />
+                </button>
             </div>
         </div>
-        <div class="bottom-buttons">
-            <button class="main-button" @onclick="GoToWanikani">
-                <img class="wanikani-logo" src="images/wanikani-logo.png" />
-            </button>
-            <button class="main-button" type="button" @onclick="SearchJisho">
-                <img class="jisho-logo" src="images/jisho-logo.png" />
-            </button>
-        </div>
+        @if (PreviousItem != string.Empty)
+        {
+            <div class="nav-arrow nav-arrow-left" @onclick="SetLeftItem">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="item-icon">@PreviousItem</span>
+            </div>
+        }
+
+        @if (NextItem != string.Empty)
+        {
+            <div class="nav-arrow nav-arrow-right" @onclick="SetRightItem">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span class="item-icon">@NextItem</span>
+            </div>
+        }
+        else if (NextItem == string.Empty && LearnMode)
+        {
+            <div class="nav-arrow nav-arrow-right" @onclick="GoToReview">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span class="item-icon">Review</span>
+            </div>
+        }
+
+        @if (ShowReturnButton)
+        {
+            <button class="main-button return-button" @onclick="ReturnToStudy">Return</button>
+        }
     </div>
-    @if (PreviousItem != string.Empty)
-    {
-        <div class="nav-arrow nav-arrow-left" @onclick="SetLeftItem">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span class="item-icon">@PreviousItem</span>
-        </div>
-    }
-
-    @if (NextItem != string.Empty)
-    {
-        <div class="nav-arrow nav-arrow-right" @onclick="SetRightItem">
-            <i class="fa-solid fa-arrow-right"></i>
-            <span class="item-icon">@NextItem</span>
-        </div>
-    }
-    else if (NextItem == string.Empty && LearnMode)
-    {
-        <div class="nav-arrow nav-arrow-right" @onclick="GoToReview">
-            <i class="fa-solid fa-arrow-right"></i>
-            <span class="item-icon">Review</span>
-        </div>
-    }
-
-    @if (ShowReturnButton)
-    {
-        <button class="main-button return-button" @onclick="ReturnToStudy">Return</button>
-    }
-</div>
+</Motion>

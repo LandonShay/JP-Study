@@ -1,10 +1,12 @@
 ﻿using JP_Dictionary.Models;
 using JP_Dictionary.Services;
+using JP_Dictionary.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using WanaKanaSharp;
 using MoreLinq;
 using MeCab;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -14,10 +16,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate { get; set; } = default!;
 
         private int TimesSpoken { get; set; }
         private bool ShowResults { get; set; }
@@ -29,6 +34,15 @@ namespace JP_Dictionary.Pages
 
         private Sentence Sentence { get; set; } = new();
         private List<Sentence> UsedSentences { get; set; } = new();
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.ZoomIn);
+            }
+        }
 
         private void ConfirmTestOptions()
         {
@@ -114,9 +128,25 @@ namespace JP_Dictionary.Pages
             }
         }
 
+        private async Task ReturnToDashboard()
+        {
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/dashboard");
+        }
+
         private async Task FocusElement(string elementId)
         {
             await JS.InvokeVoidAsync("focusElementById", elementId);
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
     }
 }

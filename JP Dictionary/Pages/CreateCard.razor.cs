@@ -1,7 +1,9 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -11,9 +13,12 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public UserState User { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
         [Inject] public ToastService ToastService { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate { get; set; } = default!;
 
         private bool ShowConfirmation { get; set; } = false;
         private string ConflictDeckName { get; set; } = string.Empty;
@@ -23,6 +28,15 @@ namespace JP_Dictionary.Pages
         private string Romaji { get; set; } = string.Empty;
         private string Definitions { get; set; } = string.Empty;
         private bool UnlockImmediately { get; set; }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.ZoomIn);
+            }
+        }
 
         private void Create()
         {
@@ -72,6 +86,22 @@ namespace JP_Dictionary.Pages
 
             PendingWord = new();
             ShowConfirmation = false;
+        }
+
+        private async Task GoToViewDeck()
+        {
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/viewdeck");
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
     }
 }

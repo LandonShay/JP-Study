@@ -9,7 +9,7 @@ namespace JP_Dictionary.Pages
 {
     public partial class Login
     {
-        private Motion Animate = default!;
+        private Motion Animate { get; set; } = default!;
 
         private List<Profile> Profiles { get; set; } = new();
         private string CreateName { get; set; } = string.Empty;
@@ -17,9 +17,10 @@ namespace JP_Dictionary.Pages
 
         #region Injections
 #nullable disable
+        [Inject] public ToastService Toast { get; set; }
         [Inject] public UserState UserState { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
-        [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
 #nullable enable
         #endregion
 
@@ -33,7 +34,8 @@ namespace JP_Dictionary.Pages
         {
             if (firstRender)
             {
-                await Animate.Animate(Motions.FadeIn);
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.FadeIn);
             }
         }
 
@@ -121,7 +123,7 @@ namespace JP_Dictionary.Pages
             HelperMethods.SaveProfile(profile);
             UserState.Profile = profile;
 
-            await Animate.Animate(Motions.FadeOut);
+            await AnimatePage(Motions.FadeOut);
             Nav.NavigateTo("/dashboard");
         }
 
@@ -166,6 +168,16 @@ namespace JP_Dictionary.Pages
 
             CreateName = string.Empty;
             LoadProfiles();
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using JP_Dictionary.Models;
+using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
@@ -12,10 +13,13 @@ namespace JP_Dictionary.Pages
 #nullable disable
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
-        [Inject] public NavigationManager Nav { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
+        [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
+
+        private Motion Animate { get; set; } = default!;
 
         private StudyKanji ActiveItem { get; set; } = new();
         private List<StudyKanji> Items { get; set; } = new();
@@ -60,6 +64,15 @@ namespace JP_Dictionary.Pages
                 ShowReturnButton = true;
                 User.WipeSelectedKanjiGroup = false;
                 User.SelectedKanjiGroup = new List<StudyKanji>();
+            }
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.ZoomIn);
             }
         }
 
@@ -177,7 +190,7 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private void GoToReview()
+        private async Task GoToReview()
         {
             var allItems = KanjiMethods.LoadUserKanji(User.Profile!);
 
@@ -190,6 +203,7 @@ namespace JP_Dictionary.Pages
             KanjiMethods.SaveUserKanji(User.Profile!, allItems);
             KanjiMethods.UnlockRelatedVocab(User.Profile!);
 
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
         }
 
@@ -220,9 +234,20 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("openInNewTab", link);
         }
 
-        private void ReturnToStudy()
+        private async Task ReturnToStudy()
         {
+            await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
         }
     }
 }

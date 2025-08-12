@@ -4,7 +4,7 @@
 <Motion @ref="Animate">
     <div class="table-controls">
         <div class="left-controls">
-            <button class="main-button" @onclick='() => Nav.NavigateTo("/createcard")'>Create New Card</button>
+            <button class="main-button" @onclick='GoToCreate'>Create New Card</button>
         </div>
         <div class="right-controls">
             <input type="text" class="search-box" placeholder="Search..." @bind="SearchTerm" @bind:event="oninput" />

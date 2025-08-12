@@ -8,6 +8,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<UserState>();
 builder.Services.AddSingleton<ToastService>();
+builder.Services.AddSingleton<AnimationService>();
 
 var app = builder.Build();
 

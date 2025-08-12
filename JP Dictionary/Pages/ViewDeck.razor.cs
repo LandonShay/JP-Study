@@ -4,12 +4,13 @@ using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
     public partial class ViewDeck
     {
-        private Motion Animate = default!;
+        private Motion Animate { get; set; } = default!;
 
         public List<StudyWord> AllWords = new();
 
@@ -35,6 +36,7 @@ namespace JP_Dictionary.Pages
         [Inject] public IJSRuntime JS { get; set; }
         [Inject] public UserState User { get; set; }
         [Inject] public ToastService Toast { get; set; }
+        [Inject] public AnimationService Anim { get; set; }
         [Inject] public NavigationManager Nav { get; set; }
 #nullable enable
         #endregion
@@ -48,7 +50,8 @@ namespace JP_Dictionary.Pages
         {
             if (firstRender)
             {
-                await Animate.Animate(Motions.ZoomIn);
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.ZoomIn);
             }
         }
 
@@ -222,5 +225,21 @@ namespace JP_Dictionary.Pages
             }
         }
         #endregion
+
+        private async Task GoToCreate()
+        {
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/createcard");
+        }
+
+        private async Task AnimatePage(Motions motion)
+        {
+            await Animate.Animate(motion);
+        }
+
+        public void Dispose()
+        {
+            Anim.OnAnimate -= AnimatePage;
+        }
     }
 }
