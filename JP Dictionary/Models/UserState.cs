@@ -36,5 +36,9 @@ namespace JP_Dictionary.Models
         SlideLeftOut,
         SlideRightIn,
         SlideRightOut,
+        FlipLeftIn,
+        FlipLeftOut,
+        FlipRightIn,
+        FlipRightOut
     }
 }
