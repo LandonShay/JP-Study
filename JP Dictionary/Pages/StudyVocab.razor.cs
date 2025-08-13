@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
 using WanaKanaSharp;
+using FuzzySharp;
 using MoreLinq;
 
 namespace JP_Dictionary.Pages
@@ -267,31 +268,11 @@ namespace JP_Dictionary.Pages
         #region Submit
         private async Task SubmitAnswer()
         {
-            var readingCorrect = false;
-            var definitionCorrect = false;
-
             ReadingStatus = string.Empty;
             DefinitionStatus = string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(ReadingAnswer))
-            {
-                var cleanedAnswer = ReadingAnswer.Trim().ToLower();
-                readingCorrect = CurrentCard.ReadingAnswers.Contains(cleanedAnswer);
-            }
-            else if (!TestReading)
-            {
-                readingCorrect = true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(DefinitionAnswer))
-            {
-                var cleanedAnswer = DefinitionAnswer.Trim().ToLower();
-
-                if (CurrentCard.DefinitionAnswers.Any(x => x.Trim().ToLower() == cleanedAnswer))
-                {
-                    definitionCorrect = true;
-                }
-            }
+            var readingCorrect = !TestReading || AnswerIsAccurate(ReadingAnswer, CurrentCard.ReadingAnswers, 100);
+            var definitionCorrect = AnswerIsAccurate(DefinitionAnswer, CurrentCard.DefinitionAnswers, 75);
 
             if (readingCorrect && definitionCorrect)
             {
@@ -344,6 +325,16 @@ namespace JP_Dictionary.Pages
             }
         }
 
+        private bool AnswerIsAccurate(string? userAnswer, IEnumerable<string> validAnswers, int threshold)
+        {
+            if (string.IsNullOrWhiteSpace(userAnswer))
+            {
+                return false;
+            }
+
+            return validAnswers.Any(valid => Fuzz.Ratio(valid.Trim().ToLowerInvariant(), userAnswer.Trim().ToLowerInvariant()) >= threshold);
+        }
+
         private async Task GiveUp()
         {
             await AnimateElement(CardAnimate, Motions.FlipLeftOut);
@@ -367,6 +358,13 @@ namespace JP_Dictionary.Pages
             if (!CurrentCard.Correct)
             {
                 ReaddFailedCard();
+            }
+            else
+            {
+                if (User.SelectedKanjiGroup != null && CurrentCard.StudyKanji.Item != string.Empty)
+                {
+                    User.SelectedKanjiGroup.RemoveAll(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
+                }
             }
 
             await AnimateElement(CardAnimate, Motions.FlipLeftOut);
@@ -409,7 +407,10 @@ namespace JP_Dictionary.Pages
                 ItemTypeCss = string.Empty;
             }
 
-            await AnimateElement(CardAnimate, Motions.FlipLeftIn);
+            if (!FinishedStudying)
+            {
+                await AnimateElement(CardAnimate, Motions.FlipLeftIn);
+            }
 
             if (TestReading)
             {
@@ -677,6 +678,7 @@ namespace JP_Dictionary.Pages
         }
         #endregion
 
+        #region Animation
         private async Task AnimatePage(Motions motion)
         {
             await PageAnimate.Animate(motion);
@@ -706,5 +708,6 @@ namespace JP_Dictionary.Pages
         {
             Anim.OnAnimate -= AnimatePage;
         }
+        #endregion
     }
 }
