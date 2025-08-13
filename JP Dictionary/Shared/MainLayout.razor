@@ -5,12 +5,12 @@
     {
         <div class="sidebar" @onclick:stopPropagation>
             <div class="sidebar-top">
-                <div class="nav-button" @onclick='() => Navigate("/dashboard", false)'>Dashboard</div>
+                <div class="nav-button" @onclick='() => Navigate("/dashboard")'>Dashboard</div>
                 <div class="nav-button" @onclick="ToggleKanjiMenu">Levels</div>
-                <div class="nav-button" @onclick='() => Navigate("/listeningcomp", false)'>Listening Comprehension</div>
+                <div class="nav-button" @onclick='() => Navigate("/listeningcomp")'>Listening Comprehension</div>
             </div>
             <div class="sidebar-bottom">
-                <div class="nav-button" @onclick='() => Navigate("/", false)'>Log Out</div>
+                <div class="nav-button" @onclick='() => Navigate("/")'>Log Out</div>
             </div>
         </div>
         <div class="submenu-panel @(ShowKanjiMenu ? "open" : "")" @onclick:stopPropagation>

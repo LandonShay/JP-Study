@@ -2,7 +2,6 @@
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace JP_Dictionary.Shared
 {
@@ -26,22 +25,23 @@ namespace JP_Dictionary.Shared
             GroupedKanji = KanjiMethods.LoadDefaultKanjiList().GroupBy(x => x.Level).ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        private async void Navigate(string page, bool forceLoad)
+        private async void Navigate(string page)
         {
             HideKanjiMenu();
 
             await Anim.RequestAnimation(Motions.ZoomOut);
-            Nav.NavigateTo(page, forceLoad);
+            Nav.NavigateTo(page);
         }
 
         private void GoToLevelDetail(KeyValuePair<int, List<StudyKanji>> kanji)
         {
-            var vocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!).Where(x => x.Level == kanji.Value.First().Level);
+            var level = kanji.Value.First().Level;
+            var vocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!).Where(x => x.Level == level);
 
             User.SelectedKanjiGroup = kanji.Value;
             User.SelectedKanjiGroup.AddRange(vocab);
 
-            Navigate("/kanjileveldetail", true);
+            Navigate($"/kanjileveldetail/{level}");
         }
 
         private void ToggleKanjiMenu()
