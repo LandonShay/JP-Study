@@ -98,7 +98,7 @@ namespace JP_Dictionary.Pages
         {
             var radicalsAsString = string.Empty;
 
-            foreach (var radical in radicals)
+            foreach (var radical in radicals.Where(x => !string.IsNullOrWhiteSpace(x)))
             {
                 var radicalName = AllRadicals.First(x => x.Item == radical).Name;
 

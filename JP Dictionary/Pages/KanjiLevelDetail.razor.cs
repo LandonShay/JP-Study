@@ -1,8 +1,9 @@
 ﻿using JP_Dictionary.Models;
-using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
 
 namespace JP_Dictionary.Pages
@@ -19,11 +20,44 @@ namespace JP_Dictionary.Pages
 #nullable enable
         #endregion
 
+        [Parameter] public int Level { get; set; }
+        private bool Reloaded { get; set; } // OnLocationChanged gets called several times during routing. Prevents LoadData being called several times in 1 load
+
         private Motion Animate { get; set; } = default!;
         private List<StudyKanji> UserKanji { get; set; } = new();
 
         protected override void OnInitialized()
         {
+            LoadData();
+            Nav.LocationChanged += OnLocationChanged;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Anim.OnAnimate += AnimatePage;
+                await AnimatePage(Motions.ZoomIn);
+            }
+
+            Reloaded = false;
+        }
+
+        private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+        {
+            if (!Reloaded && e.Location.Contains("/kanjileveldetail", StringComparison.OrdinalIgnoreCase))
+            {
+                Reloaded = true;
+
+                LoadData();
+                await AnimatePage(Motions.ZoomIn);
+            }
+        }
+
+        private void LoadData()
+        {
+            UserKanji.Clear();
+
             var userKanji = KanjiMethods.LoadUserKanji(User.Profile!);
             var userVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
@@ -40,15 +74,6 @@ namespace JP_Dictionary.Pages
                     var uv = userVocab.First(x => x.Item == kanji.Item);
                     UserKanji.Add(uv);
                 }
-            }
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                Anim.OnAnimate += AnimatePage;
-                await AnimatePage(Motions.ZoomIn);
             }
         }
 
@@ -79,6 +104,7 @@ namespace JP_Dictionary.Pages
         public void Dispose()
         {
             Anim.OnAnimate -= AnimatePage;
+            Nav.LocationChanged -= OnLocationChanged;
         }
     }
 }

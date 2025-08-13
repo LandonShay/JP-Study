@@ -7,7 +7,6 @@ using MyNihongo.KanaConverter;
 using Microsoft.JSInterop;
 using WanaKanaSharp;
 using MoreLinq;
-using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -60,15 +59,6 @@ namespace JP_Dictionary.Pages
         private bool FirstResults { get; set; } = true; // tracking if it's your first time being shown the results per word (to prevent unintentional auto-speak)
         private bool FinishedStudying { get; set; }
         public static bool Talking { get; set; }
-        private bool AutoSpeak
-        {
-            get => User.Profile!.AutoSpeak;
-            set
-            {
-                User.Profile!.AutoSpeak = value;
-                HelperMethods.SaveProfile(User.Profile);
-            }
-        }
 
         #region Init + Rendering
         protected override void OnInitialized()
@@ -231,6 +221,7 @@ namespace JP_Dictionary.Pages
                     }
                     else
                     {
+                        CardAnimate.ToggleVisibility(true);
                         await AnimatePage(Motions.ZoomIn);
                     }
                 }
@@ -693,18 +684,21 @@ namespace JP_Dictionary.Pages
 
         private async Task AnimateElement(Motion motion, Motions action)
         {
-            if (action == Motions.SlideLeftOut || action == Motions.SlideRightOut || action == Motions.SlideLeftIn || action == Motions.SlideRightIn)
+            if (motion != null)
             {
-                motion.Visibility = "visible";
-                await motion.AnimateSlide(action);
-            }
-            else if (action == Motions.FlipLeftIn || action == Motions.FlipLeftOut || action == Motions.FlipRightIn || action == Motions.FlipRightOut)
-            {
-                await motion.AnimateFlip(action);
-            }
-            else
-            {
-                await motion.Animate(action);
+                if (action == Motions.SlideLeftOut || action == Motions.SlideRightOut || action == Motions.SlideLeftIn || action == Motions.SlideRightIn)
+                {
+                    motion.ToggleVisibility(true);
+                    await motion.AnimateSlide(action);
+                }
+                else if (action == Motions.FlipLeftIn || action == Motions.FlipLeftOut || action == Motions.FlipRightIn || action == Motions.FlipRightOut)
+                {
+                    await motion.AnimateFlip(action);
+                }
+                else
+                {
+                    await motion.Animate(action);
+                }
             }
         }
 
