@@ -222,7 +222,7 @@ namespace JP_Dictionary.Pages
                     }
                     else
                     {
-                        CardAnimate.ToggleVisibility(true);
+                        CardAnimate?.ToggleVisibility(true);
                         await AnimatePage(Motions.ZoomIn);
                     }
                 }
