@@ -166,7 +166,7 @@ namespace JP_Dictionary.Pages
                     OriginalFormatDefinition = string.Join(", ", item.Meaning),
                     OriginalFormatReading = item.Reading,
                     DefinitionAnswers = item.Meaning,
-                    ReadingAnswers = [item.Reading],
+                    ReadingAnswers = WanaKana.IsJapanese(item.Reading) ? [item.Reading.ToRomaji()] : [item.Reading]
                 });
             }
         }
