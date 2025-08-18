@@ -69,7 +69,7 @@ namespace JP_Dictionary.Pages
                 {
                     CreateDeckCards();
                 }
-                else if (User.SelectedKanjiGroup.Count > 0)
+                else
                 {
                     if (User.SelectedKanjiGroup.Count == 0 && User.PreviousKanjiGroup.Count > 0)
                     {
@@ -77,23 +77,26 @@ namespace JP_Dictionary.Pages
                         User.ResetPreviousKanjiGroup();
                     }
 
-                    if (User.SelectedKanjiGroup.All(x => x.Type != StudyType.Vocab))
+                    if (User.SelectedKanjiGroup.Count > 0)
                     {
-                        CreateKanjiAndRadicalCards();
-                    }
-                    else
-                    {
-                        StudyItems = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
-                        CreateDefaultCards(User.SelectedKanjiGroup, StudyCardType.Vocab);
-                    }
+                        if (User.SelectedKanjiGroup.All(x => x.Type != StudyType.Vocab))
+                        {
+                            CreateKanjiAndRadicalCards();
+                        }
+                        else
+                        {
+                            StudyItems = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
+                            CreateDefaultCards(User.SelectedKanjiGroup, StudyCardType.Vocab);
+                        }
 
-                    TestReading = true;
-                    ShowTestOptionModal = false;
+                        TestReading = true;
+                        ShowTestOptionModal = false;
 
-                    ShowNextCard();
+                        ShowNextCard(true);
+                    }
                 }
 
-                if (StudyCards.Count == 0)
+                if (StudyCards.Count == 0 && CurrentCard.StudyItem.Item == string.Empty)
                 {
                     ShowTestOptionModal = false;
                     FinishedStudying = true;
@@ -198,7 +201,7 @@ namespace JP_Dictionary.Pages
                 }
 
                 if (!firstRender &&
-                   ((ShowResults && User.Profile!.AutoSpeak && FirstResults) || 
+                   ((ShowResults && User.Profile!.AutoSpeak && FirstResults) ||
                    (!ShowResults && !TestReading && AttemptsRemaining == 3 && !FinishedStudying)))
                 {
                     FirstResults = false;
@@ -317,15 +320,18 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Cards
-        private async void ShowNextCard()
+        private async void ShowNextCard(bool isInitial)
         {
-            if (!CurrentCard.Correct)
+            if (!isInitial)
             {
-                ReaddFailedCard();
-            }
-            else
-            {
-                User.SelectedKanjiGroup?.RemoveAll(x => x.Item == CurrentCard.StudyItem.Item && x.Type == CurrentCard.StudyItem.Type);
+                if (!CurrentCard.Correct)
+                {
+                    ReaddFailedCard();
+                }
+                else
+                {
+                    User.SelectedKanjiGroup?.RemoveAll(x => x.Item == CurrentCard.StudyItem.Item && x.Type == CurrentCard.StudyItem.Type);
+                }
             }
 
             await AnimateElement(CardAnimate, Motions.FlipLeftOut);
@@ -516,7 +522,7 @@ namespace JP_Dictionary.Pages
             {
                 word = word.Remove(0, 1);
             }
-            
+
             var sentencesWithWord = User.Sentences.FindAll(x => x.Keywords.Contains(word));
 
             if (sentencesWithWord.Count > 0)

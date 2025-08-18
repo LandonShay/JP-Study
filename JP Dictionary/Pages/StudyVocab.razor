@@ -88,7 +88,7 @@
                 }
                 else
                 {
-                    <form @onsubmit="ShowNextCard" @onsubmit:preventDefault>
+                    <form @onsubmit="() => ShowNextCard(false)" @onsubmit:preventDefault>
                         @if (CurrentCard.Correct)
                         {
                             <h2>Correct!</h2>
