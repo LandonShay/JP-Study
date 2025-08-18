@@ -22,9 +22,9 @@ namespace JP_Dictionary.Pages
 
         private Motion Animate { get; set; } = default!;
 
-        private StudyKanji ActiveItem { get; set; } = new();
-        private List<StudyKanji> Items { get; set; } = new();
-        private List<StudyKanji> AllRadicals { get; set; } = new();
+        private StudyItem ActiveItem { get; set; } = new();
+        private List<StudyItem> Items { get; set; } = new();
+        private List<StudyItem> AllRadicals { get; set; } = new();
 
         private string NextItem { get; set; } = string.Empty;
         private string PreviousItem { get; set; } = string.Empty;
@@ -35,7 +35,7 @@ namespace JP_Dictionary.Pages
 
         protected override void OnInitialized()
         {
-            AllRadicals = KanjiMethods.LoadDefaultKanjiList().Where(x => x.Type == KanjiType.Radical).ToList();
+            AllRadicals = KanjiMethods.LoadDefaultKanjiList().Where(x => x.Type == StudyType.Radical).ToList();
 
             if (User.SelectedKanji != null)
             {
@@ -64,7 +64,7 @@ namespace JP_Dictionary.Pages
             {
                 ShowReturnButton = true;
                 User.WipeSelectedKanjiGroup = false;
-                User.SelectedKanjiGroup = new List<StudyKanji>();
+                User.SelectedKanjiGroup = new List<StudyItem>();
             }
         }
 
@@ -185,11 +185,11 @@ namespace JP_Dictionary.Pages
 
         private void SetItemCSS()
         {
-            if (ActiveItem.Type == KanjiType.Kanji)
+            if (ActiveItem.Type == StudyType.Kanji)
             {
                 ItemCSS = "kanji-item";
             }
-            else if (ActiveItem.Type == KanjiType.Radical)
+            else if (ActiveItem.Type == StudyType.Radical)
             {
                 ItemCSS = "radical-item";
             }
@@ -220,12 +220,12 @@ namespace JP_Dictionary.Pages
         {
             string url;
 
-            if (ActiveItem.Type == KanjiType.Radical)
+            if (ActiveItem.Type == StudyType.Radical)
             {
                 url = "https://www.wanikani.com/radicals/" + ActiveItem.Name.ToLower();
 
             }
-            else if (ActiveItem.Type == KanjiType.Vocab)
+            else if (ActiveItem.Type == StudyType.Vocab)
             {
                 url = "https://www.wanikani.com/vocabulary/" + ActiveItem.Item;
             }

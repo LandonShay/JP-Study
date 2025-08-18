@@ -18,7 +18,7 @@ namespace JP_Dictionary.Shared
         private bool IsLoginPage => Nav.Uri.EndsWith("/");
         private bool ShowKanjiMenu = false;
 
-        private Dictionary<int, List<StudyKanji>> GroupedKanji { get; set; } = new();
+        private Dictionary<int, List<StudyItem>> GroupedKanji { get; set; } = new();
 
         protected override void OnInitialized()
         {
@@ -33,7 +33,7 @@ namespace JP_Dictionary.Shared
             Nav.NavigateTo(page);
         }
 
-        private void GoToLevelDetail(KeyValuePair<int, List<StudyKanji>> kanji)
+        private void GoToLevelDetail(KeyValuePair<int, List<StudyItem>> kanji)
         {
             var level = kanji.Value.First().Level;
             var vocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!).Where(x => x.Level == level);

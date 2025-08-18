@@ -4,7 +4,6 @@ using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -12,7 +11,7 @@ namespace JP_Dictionary.Pages
     {
         private Motion Animate { get; set; } = default!;
 
-        public List<StudyWord> AllWords = new();
+        public List<StudyItem> AllWords = new();
 
         // sort/search
         private string? SortColumn = null;
@@ -23,10 +22,10 @@ namespace JP_Dictionary.Pages
         private int CurrentPage = 1;
         private int PageSize = 25;
         private int TotalPages => (int)Math.Ceiling(GetFilteredAndSortedWords().Count / (double)PageSize);
-        private IEnumerable<StudyWord> PagedWords => GetFilteredAndSortedWords().Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+        private IEnumerable<StudyItem> PagedWords => GetFilteredAndSortedWords().Skip((CurrentPage - 1) * PageSize).Take(PageSize);
 
         // inline editing
-        private StudyWord? EditingEntry;
+        private StudyItem? EditingEntry;
         private string EditingValue = string.Empty;
 
         public static bool Talking { get; set; }
@@ -69,53 +68,53 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("openInNewTab", link);
         }
 
-        private void ResetStreak(StudyWord word)
+        private void ResetStreak(StudyItem word)
         {
             var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
-            var studyWord = allWords.First(x => x.Id == word.Id);
+            var StudyItem = allWords.First(x => x.Item == word.Item && x.Meaning == word.Meaning);
 
-            studyWord.CorrectStreak = 0;
-            studyWord.LastStudied = DateTime.MinValue;
+            StudyItem.CorrectStreak = 0;
+            StudyItem.LastStudied = DateTime.MinValue;
 
-            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck!.Name);
+            DeckMethods.UpdateDeck(allWords, User.Profile!, User.SelectedDeck!.Name);
             LoadPage();
         }
 
-        private void UnlockWord(StudyWord word)
+        private void UnlockWord(StudyItem word)
         {
             var allWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
-            allWords.First(x => x.Id == word.Id).Unlocked = true;
+            allWords.First(x => x.Item == word.Item && x.Meaning == word.Meaning).Unlocked = true;
 
-            DeckMethods.UpdateDeck(allWords, User.Profile!.Name, User.SelectedDeck!.Name);
+            DeckMethods.UpdateDeck(allWords, User.Profile!, User.SelectedDeck!.Name);
             LoadPage();
         }
 
-        private void DeleteCard(StudyWord word)
+        private void DeleteCard(StudyItem word)
         {
             var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
 
-            deck.RemoveAll(x => x.Id == word.Id);
-            DeckMethods.OverwriteDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
+            deck.RemoveAll(x => x.Item == word.Item && x.Meaning == word.Meaning);
+            DeckMethods.SaveDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
 
             LoadPage();
         }
         #endregion
 
         #region Definition Editing
-        private void StartEditing(StudyWord entry)
+        private void StartEditing(StudyItem entry)
         {
             EditingEntry = entry;
-            EditingValue = entry.Definitions;
+            EditingValue = string.Join(',', entry.Meaning);
         }
 
         private void FinishEditing()
         {
             if (EditingEntry != null)
             {
-                var word = AllWords.First(x => x.Id == EditingEntry.Id);
-                word.Definitions = EditingValue;
+                var word = AllWords.First(x => x.Item == EditingEntry.Item);
+                word.Meaning = EditingValue.Split(',').ToList();
 
-                DeckMethods.UpdateDeck(AllWords, User.Profile!.Name, User.SelectedDeck!.Name);
+                DeckMethods.UpdateDeck(AllWords, User.Profile!, User.SelectedDeck!.Name);
 
                 EditingEntry = null;
                 EditingValue = string.Empty;
@@ -126,7 +125,7 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Search/Sort
-        private List<StudyWord> GetFilteredAndSortedWords()
+        private List<StudyItem> GetFilteredAndSortedWords()
         {
             var query = AllWords.AsEnumerable();
 
@@ -135,21 +134,21 @@ namespace JP_Dictionary.Pages
                 var term = SearchTerm.ToLower();
 
                 query = query.Where(w =>
-                    w.Word.ToLower().Contains(term) ||
-                    w.Romaji.ToLower().Contains(term) ||
-                    w.Definitions.ToLower().Contains(term));
+                    w.Item.ToLower().Contains(term) ||
+                    w.Reading.ToLower().Contains(term) ||
+                    w.Meaning.Any(x => x.ToLower().Contains(term)));
             }
 
             if (!string.IsNullOrEmpty(SortColumn))
             {
                 query = SortColumn switch
                 {
-                    nameof(StudyWord.Word) => SortDescending ? query.OrderByDescending(w => w.Word) : query.OrderBy(w => w.Word),
-                    nameof(StudyWord.Romaji) => SortDescending ? query.OrderByDescending(w => w.Romaji) : query.OrderBy(w => w.Romaji),
-                    nameof(StudyWord.Definitions) => SortDescending ? query.OrderByDescending(w => w.Definitions) : query.OrderBy(w => w.Definitions),
-                    nameof(StudyWord.CorrectStreak) => SortDescending ? query.OrderByDescending(w => w.CorrectStreak) : query.OrderBy(w => w.CorrectStreak),
-                    nameof(StudyWord.MasteryTier) => SortDescending ? query.OrderByDescending(w => w.MasteryTier) : query.OrderBy(w => w.MasteryTier),
-                    nameof(StudyWord.LastStudied) => SortDescending ? query.OrderByDescending(w => w.LastStudied) : query.OrderBy(w => w.LastStudied),
+                    nameof(StudyItem.Item) => SortDescending ? query.OrderByDescending(w => w.Item) : query.OrderBy(w => w.Item),
+                    nameof(StudyItem.Reading) => SortDescending ? query.OrderByDescending(w => w.Reading) : query.OrderBy(w => w.Reading),
+                    nameof(StudyItem.Meaning) => SortDescending ? query.OrderByDescending(w => w.Meaning) : query.OrderBy(w => w.Meaning),
+                    nameof(StudyItem.CorrectStreak) => SortDescending ? query.OrderByDescending(w => w.CorrectStreak) : query.OrderBy(w => w.CorrectStreak),
+                    nameof(StudyItem.MasteryTier) => SortDescending ? query.OrderByDescending(w => w.MasteryTier) : query.OrderBy(w => w.MasteryTier),
+                    nameof(StudyItem.LastStudied) => SortDescending ? query.OrderByDescending(w => w.LastStudied) : query.OrderBy(w => w.LastStudied),
                     _ => query
                 };
             }
@@ -208,14 +207,14 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Audio
-        private async Task TextToSpeech(StudyWord word)
+        private async Task TextToSpeech(StudyItem word)
         {
             try
             {
                 if (!Talking)
                 {
                     Talking = true;
-                    await JS.InvokeVoidAsync("speakTextBasic", word.Romaji, 1);
+                    await JS.InvokeVoidAsync("speakTextBasic", word.Reading, 1);
                 }
             }
             catch (Exception ex)

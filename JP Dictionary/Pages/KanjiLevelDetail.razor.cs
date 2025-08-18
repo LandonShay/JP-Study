@@ -24,7 +24,7 @@ namespace JP_Dictionary.Pages
         private bool Reloaded { get; set; } // OnLocationChanged gets called several times during routing. Prevents LoadData being called several times in 1 load
 
         private Motion Animate { get; set; } = default!;
-        private List<StudyKanji> UserKanji { get; set; } = new();
+        private List<StudyItem> UserKanji { get; set; } = new();
 
         protected override void OnInitialized()
         {
@@ -77,7 +77,7 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private async Task ViewItem(StudyKanji item)
+        private async Task ViewItem(StudyItem item)
         {
             User.SelectedKanji = item;
 
@@ -85,7 +85,7 @@ namespace JP_Dictionary.Pages
             Nav.NavigateTo("/kanjireview");
         }
 
-        private void DeleteVocab(StudyKanji vocab)
+        private void DeleteVocab(StudyItem vocab)
         {
             var userVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 

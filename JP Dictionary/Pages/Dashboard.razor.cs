@@ -28,8 +28,8 @@ namespace JP_Dictionary.Pages
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
 
-        private List<StudyKanji> Kanji { get; set; } = new();
-        private List<StudyKanji> KanjiVocab { get; set; } = new();
+        private List<StudyItem> Kanji { get; set; } = new();
+        private List<StudyItem> KanjiVocab { get; set; } = new();
 
         private string DeckName { get; set; } = string.Empty;
         private DeckType DeckType { get; set; } = DeckType.Vocab;
@@ -113,9 +113,9 @@ namespace JP_Dictionary.Pages
 
             foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
             {
-                vocabData.Add(KanjiVocab.Count(x => x.Type == KanjiType.Vocab && x.Learned && x.MasteryTier == tier));
-                kanjiData.Add(Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned && x.MasteryTier == tier));
-                radicalData.Add(Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned && x.MasteryTier == tier));
+                vocabData.Add(KanjiVocab.Count(x => x.Type == StudyType.Vocab && x.Learned && x.MasteryTier == tier));
+                kanjiData.Add(Kanji.Count(x => x.Type == StudyType.Kanji && x.Learned && x.MasteryTier == tier));
+                radicalData.Add(Kanji.Count(x => x.Type == StudyType.Radical && x.Learned && x.MasteryTier == tier));
             }
 
             KRVBarConfig.Data.Datasets.Add(new BarDataset<int>(vocabData)
@@ -164,14 +164,14 @@ namespace JP_Dictionary.Pages
         #endregion
 
         #region Statistics
-        private float GetUnlockedPercentage(List<StudyWord> words)
+        private float GetUnlockedPercentage(List<StudyItem> words)
         {
             return float.Round(words.Count(x => x.Unlocked) / (float)words.Count * 100, 2);
         }
 
-        private float GetLearnedPercentage(KanjiType type)
+        private float GetLearnedPercentage(StudyType type)
         {
-            if (type != KanjiType.Vocab)
+            if (type != StudyType.Vocab)
             {
                 var item = Kanji.FindAll(x => x.Type == type);
                 return float.Round(item.Count(x => x.Learned) / (float)item.Count * 100, 2);
@@ -213,9 +213,9 @@ namespace JP_Dictionary.Pages
             }
         }
 
-        private async void GoToReviewKanji(KanjiType type)
+        private async void GoToReviewKanji(StudyType type)
         {
-            if (type != KanjiType.Vocab)
+            if (type != StudyType.Vocab)
             {
                 User.SelectedKanjiGroup = KanjiMethods.GetItemsToReview(Kanji);
             }
@@ -289,7 +289,7 @@ namespace JP_Dictionary.Pages
                 var deck = DeckMethods.LoadDeck(User.Profile!, DeckToDelete.Name);
                 deck.Clear();
 
-                DeckMethods.OverwriteDeck(deck, User.Profile!.Name, DeckToDelete.Name);
+                DeckMethods.SaveDeck(deck, User.Profile!.Name, DeckToDelete.Name);
 
                 User.Profile.Decks.Remove(DeckToDelete);
                 HelperMethods.SaveProfile(User.Profile!);

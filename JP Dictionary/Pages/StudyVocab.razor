@@ -44,7 +44,7 @@
                         {
                             <div class="speak-word" @onclick="TextToSpeech">
                                 <div class="@ItemTypeCss">
-                                    <h3>@CurrentCard.Word</h3>
+                                    <h3>@CurrentCard.StudyItem.Item</h3>
                                     @if (CardIsNew())
                                     {
                                         <span>New!</span>
@@ -61,7 +61,7 @@
                         else
                         {
                             <div class="@ItemTypeCss">
-                                <h2>@CurrentCard.Word</h2>
+                                <h2>@CurrentCard.StudyItem.Item</h2>
                                 @if (CardIsNew())
                                 {
                                     <span>New!</span>
@@ -94,11 +94,11 @@
                             <h2>Correct!</h2>
                             @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
                             {
-                                <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
+                                <span class="item-level">Lv. @CurrentCard.StudyItem.Level</span>
                             }
 
                             <div class="speak-word" @onclick="TextToSpeech">
-                                <h3>@CurrentCard.Word</h3>
+                                <h3>@CurrentCard.StudyItem.Item</h3>
                                 @if (CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
                                 {
                                     <span>
@@ -150,11 +150,11 @@
                             <h2>Incorrect</h2>
                             @if (User.SelectedDeck == null && CurrentCard.Type == StudyCardType.Vocab)
                             {
-                                <span class="item-level">Lv. @CurrentCard.StudyKanji.Level</span>
+                                <span class="item-level">Lv. @CurrentCard.StudyItem.Level</span>
                             }
 
                             <div class="speak-word" @onclick="TextToSpeech">
-                                <h3>@CurrentCard.Word</h3>
+                                <h3>@CurrentCard.StudyItem.Item</h3>
                                 <span>
                                     <i class="fa-solid fa-volume-high"></i>
                                 </span>
@@ -212,7 +212,7 @@
                                 <button class="main-button" type="button" @onclick="SearchJisho">
                                     <img class="jisho-logo" src="images/jisho-logo.png" />
                                 </button>
-                                @if (CurrentCard.Type == StudyCardType.Vocab && StudyKanji.Select(x => x.Item).Contains(CurrentCard.StudyKanji.Item))
+                                @if (CurrentCard.Type == StudyCardType.Vocab && StudyItems.Select(x => x.Item).Contains(CurrentCard.StudyItem.Item))
                                 {
                                     <button class="main-button" @onclick="ViewItemDetails">View Details</button>
                                 }

@@ -1,11 +1,12 @@
 ﻿using JP_Dictionary.Models;
+using System.Text.Json;
 
 namespace JP_Dictionary.Shared.Methods
 {
     public class DeckMethods
     {
         #region Load
-        public static List<StudyWord> LoadDefaultDeck(string deckName)
+        public static List<StudyItem> LoadDefaultDeck(string deckName)
         {
             var filePath = @$"Data\{deckName}.csv";
 
@@ -15,12 +16,12 @@ namespace JP_Dictionary.Shared.Methods
             }
 
             Console.WriteLine($"There is no default deck named {deckName}, no words loaded");
-            return new List<StudyWord>();
+            return new List<StudyItem>();
         }
 
-        public static List<StudyWord> LoadWordsToStudy(List<StudyWord> deck)
+        public static List<StudyItem> LoadWordsToStudy(List<StudyItem> deck)
         {
-            var wordsToStudy = new List<StudyWord>();
+            var wordsToStudy = new List<StudyItem>();
 
             foreach (var word in deck.Where(x => x.Unlocked))
             {
@@ -35,10 +36,12 @@ namespace JP_Dictionary.Shared.Methods
             return wordsToStudy;
         }
 
-        public static List<StudyWord> LoadDeck(Profile user, string deckName)
+        public static List<StudyItem> LoadDeck(Profile user, string deckName)
         {
-            var filePath = HelperMethods.GetFilePath($"{user.Name}Deck-{deckName}.csv");
-            return HelperMethods.LoadCSVFile(filePath);
+            var filePath = HelperMethods.GetFilePath($"{user.Name}Deck-{deckName}.json");
+            var content = File.ReadAllText(filePath);
+
+            return JsonSerializer.Deserialize<List<StudyItem>>(content)!;
         }
         #endregion
 
@@ -53,7 +56,7 @@ namespace JP_Dictionary.Shared.Methods
                 GraphColor = color
             };
 
-            HelperMethods.CreateFile($"{profile!.Name}Deck-{deckName}.csv");
+            HelperMethods.CreateFile($"{profile!.Name}Deck-{deckName}.json");
             profile.Decks.Add(deck);
 
             deckName = string.Empty;
@@ -66,7 +69,7 @@ namespace JP_Dictionary.Shared.Methods
         {
             for (int i = 5; i > 0; i--)
             {
-                var fileName = $"{profile.Name}Deck-N{i} Vocab.csv";
+                var fileName = $"{profile.Name}Deck-N{i} Vocab.json";
                 var filePath = HelperMethods.GetFilePath(fileName);
 
                 if (!File.Exists(filePath))
@@ -95,7 +98,7 @@ namespace JP_Dictionary.Shared.Methods
                                 word.Unlocked = true;
                             }
 
-                            UpdateDeck(deck, profile.Name, $"N{i} Vocab");
+                            UpdateDeck(deck, profile, $"N{i} Vocab");
                         }
                     }
                 }
@@ -104,16 +107,15 @@ namespace JP_Dictionary.Shared.Methods
         #endregion
 
         #region Update
-        public static void UpdateDeck(List<StudyWord> words, string user, string deckName)
+        public static void UpdateDeck(List<StudyItem> words, Profile user, string deckName)
         {
-            var filePath = HelperMethods.GetFilePath($"{user}Deck-{deckName}.csv");
-            var existingWords = HelperMethods.LoadCSVFile(filePath);
+            var existingWords = LoadDeck(user, deckName);
 
             if (existingWords.Count > 0)
             {
                 foreach (var updatedWord in words)
                 {
-                    var index = existingWords.FindIndex(w => w.Id == updatedWord.Id);
+                    var index = existingWords.FindIndex(w => w.Item == updatedWord.Item);
 
                     if (index != -1)
                     {
@@ -130,13 +132,18 @@ namespace JP_Dictionary.Shared.Methods
                 existingWords = words;
             }
 
-            HelperMethods.WriteToCSVFile(filePath, existingWords);
+            SaveDeck(existingWords, user.Name, deckName);
         }
 
-        public static void OverwriteDeck(List<StudyWord> words, string user, string deckName)
+        public static void SaveDeck(List<StudyItem> words, string user, string deckName)
         {
-            var filePath = HelperMethods.GetFilePath($"{user}Deck-{deckName}.csv");
-            HelperMethods.WriteToCSVFile(filePath, words);
+            var filePath = HelperMethods.GetFilePath($"{user}Deck-{deckName}.json");
+
+            File.Delete(filePath);
+            HelperMethods.CreateFile(filePath);
+
+            var content = JsonSerializer.Serialize(words);
+            File.WriteAllText(filePath, content);
         }
         #endregion
     }

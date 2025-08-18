@@ -28,8 +28,7 @@ namespace JP_Dictionary.Pages
         private Motion ModalAnimate { get; set; } = default!;
 
         private Queue<VocabCard> StudyCards { get; set; } = new();
-        private List<StudyWord> StudyWords { get; set; } = new(); // store all words for easy updating
-        private List<StudyKanji> StudyKanji { get; set; } = new(); // store all kanji for easy updating
+        private List<StudyItem> StudyItems { get; set; } = new(); // store all words for easy updating
         private VocabCard CurrentCard { get; set; } = new();
 
         // user's answers
@@ -67,38 +66,10 @@ namespace JP_Dictionary.Pages
             try
             {
                 if (User.SelectedDeck != null)
-                { // Vocab / Grammar
-                    DeckName = User.SelectedDeck!.Name;
-                    StudyWords = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
-
-                    var availableWords = DeckMethods.LoadWordsToStudy(StudyWords);
-                    var type = User.SelectedDeck.Type switch
-                    {
-                        DeckType.Vocab => StudyCardType.Vocab,
-                        DeckType.Grammar => StudyCardType.Grammar,
-                        _ => StudyCardType.Kanji
-                    };
-
-                    foreach (var word in availableWords.Shuffle())
-                    {
-                        var studyCard = new VocabCard
-                        {
-                            StudyWord = word,
-                            Type = type,
-                            Word = word.Word,
-                            CurrentCorrectStreak = word.CorrectStreak,
-                            OriginalFormatDefinition = word.Definitions,
-                            OriginalFormatReading = word.Romaji,
-                            DefinitionAnswers = word.Definitions.Split(',').Select(str => str.Trim().ToLower()).ToList(),
-                            ReadingAnswers = word.Romaji.Split(',').Select(str => str.Trim().ToLower()).ToList()
-                        };
-
-                        StudyCards.Enqueue(studyCard);
-                    }
-
-                    TestReading = User.SelectedDeck.Type != DeckType.Grammar;
+                {
+                    CreateDeckCards();
                 }
-                else
+                else if (User.SelectedKanjiGroup.Count > 0)
                 {
                     if (User.SelectedKanjiGroup.Count == 0 && User.PreviousKanjiGroup.Count > 0)
                     {
@@ -106,104 +77,97 @@ namespace JP_Dictionary.Pages
                         User.ResetPreviousKanjiGroup();
                     }
 
-                    if (User.SelectedKanjiGroup.All(x => x.Type != KanjiType.Vocab))
-                    { // Kanji / Radicals
-                        StudyKanji = KanjiMethods.LoadUserKanji(User.Profile!);
-
-                        foreach (var item in User.SelectedKanjiGroup)
-                        {
-                            var studyCard = new VocabCard
-                            {
-                                Word = item.Item,
-                                Type = StudyCardType.Kanji,
-                                CurrentCorrectStreak = item.CorrectStreak,
-                                OriginalFormatDefinition = string.Join(", ", item.Meaning),
-                                StudyKanji = item
-                            };
-
-                            if (item.Type == KanjiType.Radical)
-                            {
-                                studyCard.Type = StudyCardType.Radical;
-                                studyCard.OriginalFormatDefinition = item.Name;
-                                studyCard.OriginalFormatReading = "None";
-                                studyCard.DefinitionAnswers.Add(item.Name.ToLower());
-                            }
-                            else
-                            {
-                                foreach (var reading in item.Onyomi.Where(WanaKana.IsKana))
-                                {
-                                    var romaji = reading.Trim().ToRomaji();
-                                    studyCard.ReadingAnswers.Add(romaji);
-                                }
-
-                                foreach (var reading in item.Kunyomi.Where(WanaKana.IsKana))
-                                {
-                                    var romaji = reading.Trim().ToRomaji();
-                                    studyCard.ReadingAnswers.Add(romaji);
-                                }
-
-                                studyCard.DefinitionAnswers = item.Meaning;
-                            }
-
-                            if (item.Onyomi.Count > 0)
-                            {
-                                studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi);
-                            }
-
-                            if (item.Kunyomi.Count > 0)
-                            {
-                                var readings = string.Join(", ", item.Kunyomi);
-
-                                if (studyCard.OriginalFormatReading.Length > 0)
-                                {
-                                    studyCard.OriginalFormatReading += ", " + string.Join(", ", item.Kunyomi);
-                                }
-                                else
-                                {
-                                    studyCard.OriginalFormatReading = string.Join(", ", item.Kunyomi);
-                                }
-                            }
-
-                            StudyCards.Enqueue(studyCard);
-                        }
-
-                        TestReading = true;
-                        ShowTestOptionModal = false;
-
-                        ShowNextCard();
+                    if (User.SelectedKanjiGroup.All(x => x.Type != StudyType.Vocab))
+                    {
+                        CreateKanjiAndRadicalCards();
                     }
                     else
-                    { // Kanji Vocab
-                        StudyKanji = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
-
-                        foreach (var item in User.SelectedKanjiGroup)
-                        {
-                            var studyCard = new VocabCard
-                            {
-                                Word = item.Item,
-                                Type = StudyCardType.Vocab,
-                                CurrentCorrectStreak = item.CorrectStreak,
-                                OriginalFormatDefinition = string.Join(", ", item.Meaning),
-                                OriginalFormatReading = item.Reading.ToRomaji(),
-                                DefinitionAnswers = item.Meaning,
-                                ReadingAnswers = [item.Reading.ToRomaji()],
-                                StudyKanji = item
-                            };
-
-                            StudyCards.Enqueue(studyCard);
-                        }
-
-                        TestReading = true;
-                        ShowTestOptionModal = false;
-
-                        ShowNextCard();
+                    {
+                        StudyItems = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
+                        CreateDefaultCards(User.SelectedKanjiGroup, StudyCardType.Vocab);
                     }
+
+                    TestReading = true;
+                    ShowTestOptionModal = false;
+
+                    ShowNextCard();
+                }
+
+                if (StudyCards.Count == 0)
+                {
+                    ShowTestOptionModal = false;
+                    FinishedStudying = true;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 Toast.ShowError("An error occurred during initialization, see console for details");
+            }
+        }
+
+        private void CreateDeckCards()
+        {
+            DeckName = User.SelectedDeck!.Name;
+            StudyItems = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
+
+            CreateDefaultCards(DeckMethods.LoadWordsToStudy(StudyItems).Shuffle().ToList(), StudyCardType.Deck);
+            TestReading = User.SelectedDeck.Type != DeckType.Grammar;
+        }
+
+        private void CreateKanjiAndRadicalCards()
+        {
+            StudyItems = KanjiMethods.LoadUserKanji(User.Profile!);
+
+            foreach (var item in User.SelectedKanjiGroup)
+            {
+                var studyCard = new VocabCard
+                {
+                    StudyItem = item,
+                    CurrentCorrectStreak = item.CorrectStreak,
+                    Type = item.Type == StudyType.Radical ? StudyCardType.Radical : StudyCardType.Kanji
+                };
+
+                if (item.Type == StudyType.Radical)
+                {
+                    studyCard.OriginalFormatReading = "None";
+                    studyCard.OriginalFormatDefinition = item.Name;
+                    studyCard.DefinitionAnswers.Add(item.Name.ToLower());
+                }
+                else
+                {
+                    studyCard.DefinitionAnswers = item.Meaning;
+                    studyCard.OriginalFormatDefinition = string.Join(", ", item.Meaning);
+
+                    var romajiReadings = item.Onyomi.Concat(item.Kunyomi).Where(WanaKana.IsKana).Select(r => r.Trim().ToRomaji());
+
+                    foreach (var r in romajiReadings)
+                    {
+                        studyCard.ReadingAnswers.Add(r);
+                    }
+
+                    studyCard.OriginalFormatReading = string.Join(", ", item.Onyomi.Concat(item.Kunyomi).Where(r => !string.IsNullOrWhiteSpace(r))
+                                                                                                        .Select(r => r.Trim()));
+                }
+
+                StudyCards.Enqueue(studyCard);
+            }
+        }
+
+        private void CreateDefaultCards(List<StudyItem> items, StudyCardType type)
+        {
+            foreach (var item in items)
+            {
+                StudyCards.Enqueue(new VocabCard
+                {
+                    Type = type,
+                    StudyItem = item,
+                    CurrentCorrectStreak = item.CorrectStreak,
+                    OriginalFormatDefinition = string.Join(", ", item.Meaning),
+                    OriginalFormatReading = item.Reading,
+                    DefinitionAnswers = item.Meaning,
+                    ReadingAnswers = [item.Reading],
+                });
             }
         }
 
@@ -361,10 +325,7 @@ namespace JP_Dictionary.Pages
             }
             else
             {
-                if (User.SelectedKanjiGroup != null && CurrentCard.StudyKanji.Item != string.Empty)
-                {
-                    User.SelectedKanjiGroup.RemoveAll(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
-                }
+                User.SelectedKanjiGroup?.RemoveAll(x => x.Item == CurrentCard.StudyItem.Item && x.Type == CurrentCard.StudyItem.Type);
             }
 
             await AnimateElement(CardAnimate, Motions.FlipLeftOut);
@@ -454,17 +415,13 @@ namespace JP_Dictionary.Pages
 
             foreach (var card in remainingCards.Shuffle())
             {
-                if (card.Word != string.Empty)
-                {
-                    StudyCards.Enqueue(card);
-                }
+                StudyCards.Enqueue(card);
             }
         }
 
         private bool CardIsNew()
         {
-            return (CurrentCard.StudyWord.Id != string.Empty && CurrentCard.StudyWord?.LastStudied == DateTime.MinValue) ||
-                   (CurrentCard.StudyKanji.Item != string.Empty && CurrentCard.StudyKanji?.LastStudied == DateTime.MinValue);
+            return CurrentCard.StudyItem.LastStudied == DateTime.MinValue;
         }
         #endregion
 
@@ -477,114 +434,71 @@ namespace JP_Dictionary.Pages
 
         private void FinishEditing()
         {
-            EditingDefinition = false;
-            CurrentCard.StudyWord.Definitions = NewDefinition;
+            var word = StudyItems.First(x => x.Item == CurrentCard.StudyItem.Item && x.Type == CurrentCard.StudyItem.Type);
+            word.Meaning = NewDefinition.Split(',').Select(str => str.Trim().ToLower()).ToList(); ;
+
+            CurrentCard.StudyItem.Meaning = word.Meaning;
+            CurrentCard.DefinitionAnswers = word.Meaning;
             CurrentCard.OriginalFormatDefinition = NewDefinition;
-            CurrentCard.DefinitionAnswers = NewDefinition.Split(',').Select(str => str.Trim().ToLower()).ToList();
 
-            if (User.SelectedDeck != null)
-            {
-                var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
-                word.Definitions = NewDefinition;
-
-                DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
-            }
-            else
-            {
-                var word = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
-                word.Meaning = NewDefinition.Split(',').ToList();
-
-                if (CurrentCard.Type == StudyCardType.Vocab)
-                {
-                    KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyKanji);
-                }
-                else
-                {
-                    KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);
-                }
-            }
+            UpdateByType(word);
+            EditingDefinition = false;
         }
         #endregion
 
         #region Result Actions
         private void UpdateWord(int change)
         {
-            if (User.SelectedDeck != null)
+            var item = StudyItems.First(x => x.Item == CurrentCard.StudyItem.Item && x.Type == CurrentCard.StudyItem.Type);
+            item.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+
+            if (change > 0)
             {
-                var word = StudyWords.First(x => x.Id == CurrentCard.StudyWord.Id);
-                word.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+                item.CorrectStreak += change;
+                item.LastStudied = DateTime.Today.Date;
 
-                if (change > 0)
+                if (item.CorrectStreak > 11)
                 {
-                    word.CorrectStreak += change;
-                    word.LastStudied = DateTime.Today.Date;
-
-                    if (word.CorrectStreak > 11)
-                    {
-                        word.CorrectStreak = 11;
-                    }
+                    item.CorrectStreak = 11;
                 }
-                else
-                { // if you get a word wrong in beginner or below, start from 0. get it wrong in proficient or above, start from beginner
-                    if (word.MasteryTier == MasteryTier.Novice || word.MasteryTier == MasteryTier.Beginner)
-                    {
-                        word.CorrectStreak = 0;
-                        word.LastStudied = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        word.CorrectStreak = HelperMethods.GetTierFloor(MasteryTier.Beginner);
-                        word.LastStudied = DateTime.Today.Date;
-                    }
-                }
-
-                DeckMethods.UpdateDeck(StudyWords, User.Profile!.Name, User.SelectedDeck!.Name);
             }
             else
             {
-                var kanji = StudyKanji.First(x => x.Item == CurrentCard.StudyKanji.Item && x.Type == CurrentCard.StudyKanji.Type);
-                kanji.CorrectStreak = CurrentCard.CurrentCorrectStreak;
-
-                if (change > 0)
+                if (item.MasteryTier == MasteryTier.Novice || item.MasteryTier == MasteryTier.Beginner)
                 {
-                    kanji.CorrectStreak += change;
-                    kanji.LastStudied = DateTime.Today.Date;
-
-                    if (kanji.CorrectStreak > 11)
-                    {
-                        kanji.CorrectStreak = 11;
-                    }
+                    item.CorrectStreak = 0;
+                    item.LastStudied = DateTime.MinValue;
                 }
                 else
                 {
-                    if (kanji.MasteryTier == MasteryTier.Novice || kanji.MasteryTier == MasteryTier.Beginner)
-                    {
-                        kanji.CorrectStreak = 0;
-                        kanji.LastStudied = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        kanji.CorrectStreak = HelperMethods.GetTierFloor(MasteryTier.Beginner);
-                        kanji.LastStudied = DateTime.Today.Date;
-                    }
+                    item.CorrectStreak = HelperMethods.GetTierFloor(MasteryTier.Beginner);
+                    item.LastStudied = DateTime.Today.Date;
                 }
+            }
 
-                if (kanji.Type != KanjiType.Vocab)
-                {
-                    KanjiMethods.SaveUserKanji(User.Profile!, StudyKanji);
-                }
-                else
-                {
-                    KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyKanji);
-                }
+            UpdateByType(item);
+        }
+
+        private void UpdateByType(StudyItem item)
+        {
+            if (item.Type == StudyType.Deck)
+            {
+                DeckMethods.UpdateDeck(StudyItems, User.Profile!, User.SelectedDeck!.Name);
+            }
+            else if (item.Type == StudyType.Vocab)
+            {
+                KanjiMethods.SaveUserKanjiVocab(User.Profile!, StudyItems);
+            }
+            else if (item.Type == StudyType.Kanji || item.Type == StudyType.Radical)
+            {
+                KanjiMethods.SaveUserKanji(User.Profile!, StudyItems);
             }
         }
 
         private void MarkAsCorrect()
         {
             CurrentCard.Correct = true;
-            CurrentCard.StudyKanji.CorrectStreak = CurrentCard.CurrentCorrectStreak;
-            CurrentCard.StudyWord.CorrectStreak = CurrentCard.CurrentCorrectStreak;
+            CurrentCard.StudyItem.CorrectStreak = CurrentCard.CurrentCorrectStreak;
 
             UpdateWord(1);
         }
@@ -596,7 +510,7 @@ namespace JP_Dictionary.Pages
                 return;
             }
 
-            var word = CurrentCard.Word;
+            var word = CurrentCard.StudyItem.Item;
 
             if (word.StartsWith('~') || word.StartsWith('～'))
             {
@@ -619,8 +533,8 @@ namespace JP_Dictionary.Pages
             User.UpdatePreviousKanjiGroup();
 
             User.WipeSelectedKanjiGroup = true;
-            User.SelectedKanji = CurrentCard.StudyKanji;
-            User.SelectedKanjiGroup = new List<StudyKanji>() { CurrentCard.StudyKanji };
+            User.SelectedKanji = CurrentCard.StudyItem;
+            User.SelectedKanjiGroup = new() { CurrentCard.StudyItem };
 
             Nav.NavigateTo("/kanjireview");
         }
@@ -629,7 +543,7 @@ namespace JP_Dictionary.Pages
         {
             if (User.SelectedDeck == null)
             {
-                var currentLevelKanji = StudyKanji.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == KanjiType.Kanji);
+                var currentLevelKanji = StudyItems.Where(x => x.Level == User.Profile!.KanjiLevel && x.Type == StudyType.Kanji);
                 var percentAboveNovice = currentLevelKanji.Count(x => x.MasteryTier != MasteryTier.Novice) / (float)currentLevelKanji.Count() * 100;
 
                 if (percentAboveNovice > 90)
@@ -646,7 +560,7 @@ namespace JP_Dictionary.Pages
         #region JS
         private async Task SearchJisho()
         {
-            var link = Path.Combine("https://jisho.org/search/", CurrentCard.Word);
+            var link = Path.Combine("https://jisho.org/search/", CurrentCard.StudyItem.Item);
             await JS.InvokeVoidAsync("openInNewTab", link);
         }
 
@@ -659,7 +573,7 @@ namespace JP_Dictionary.Pages
         {
             try
             {
-                if (!Talking && CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
+                if (!Talking && (CurrentCard.Type == StudyCardType.Deck || CurrentCard.Type == StudyCardType.Vocab))
                 {
                     var word = CurrentCard.ReadingAnswers.FirstOrDefault();
 

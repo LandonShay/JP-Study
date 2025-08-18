@@ -5,20 +5,20 @@ namespace JP_Dictionary.Shared.Methods
 {
     public static class KanjiMethods
     {
-        public static List<StudyKanji> LoadDefaultKanjiList()
+        public static List<StudyItem> LoadDefaultKanjiList()
         {
             var kanjiFilePath = @"Data\Kanji + Radicals.json";
             var content = File.ReadAllText(kanjiFilePath);
 
-            return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+            return JsonSerializer.Deserialize<List<StudyItem>>(content)!;
         }
 
-        public static List<StudyKanji> LoadDefaultWanikaniVocab()
+        public static List<StudyItem> LoadDefaultWanikaniVocab()
         {
             var filePath = @"Data\Wanikani Vocab.json";
             var content = File.ReadAllText(filePath);
 
-            return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+            return JsonSerializer.Deserialize<List<StudyItem>>(content)!;
         }
 
         public static void CreateUserKanji(Profile profile)
@@ -44,33 +44,33 @@ namespace JP_Dictionary.Shared.Methods
             }
         }
 
-        public static List<StudyKanji> LoadUserKanji(Profile profile)
+        public static List<StudyItem> LoadUserKanji(Profile profile)
         {
             var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji List.json");
             var content = File.ReadAllText(filePath);
 
             if (content.Length > 0)
             {
-                return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+                return JsonSerializer.Deserialize<List<StudyItem>>(content)!;
             }
 
             return new();
         }
 
-        public static List<StudyKanji> LoadUserKanjiVocab(Profile profile)
+        public static List<StudyItem> LoadUserKanjiVocab(Profile profile)
         {
             var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji Vocab.json");
             var content = File.ReadAllText(filePath);
 
             if (content.Length > 0)
             {
-                return JsonSerializer.Deserialize<List<StudyKanji>>(content)!;
+                return JsonSerializer.Deserialize<List<StudyItem>>(content)!;
             }
 
             return new();
         }
 
-        public static void SaveUserKanji(Profile profile, List<StudyKanji> kanji)
+        public static void SaveUserKanji(Profile profile, List<StudyItem> kanji)
         {
             var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji List.json");
 
@@ -81,7 +81,7 @@ namespace JP_Dictionary.Shared.Methods
             File.WriteAllText(filePath, content);
         }
 
-        public static void SaveUserKanjiVocab(Profile profile, List<StudyKanji> kanji)
+        public static void SaveUserKanjiVocab(Profile profile, List<StudyItem> kanji)
         {
             var filePath = HelperMethods.GetFilePath($"{profile.Name} Kanji Vocab.json");
 
@@ -113,7 +113,7 @@ namespace JP_Dictionary.Shared.Methods
 
             foreach (var v in vocab.Where(x => x.Level <= profile.KanjiLevel && !x.Unlocked))
             {
-                var allKanjiLearned = v.Kanji.All(k => kanji.Any(x => x.Item == k && x.Type == KanjiType.Kanji && x.Learned));
+                var allKanjiLearned = v.Kanji.All(k => kanji.Any(x => x.Item == k && x.Type == StudyType.Kanji && x.Learned));
 
                 if (allKanjiLearned)
                 {
@@ -129,14 +129,14 @@ namespace JP_Dictionary.Shared.Methods
             }
         }
 
-        public static List<StudyKanji> GetItemsToLearn(List<StudyKanji> kanji)
+        public static List<StudyItem> GetItemsToLearn(List<StudyItem> kanji)
         {
             return kanji.FindAll(x => x.Unlocked && !x.Learned);
         }
 
-        public static List<StudyKanji> GetItemsToReview(List<StudyKanji> kanji)
+        public static List<StudyItem> GetItemsToReview(List<StudyItem> kanji)
         {
-            var kanjiToStudy = new List<StudyKanji>();
+            var kanjiToStudy = new List<StudyItem>();
 
             foreach (var k in kanji.Where(x => x.Learned && x.Unlocked))
             {
