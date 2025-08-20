@@ -63,7 +63,7 @@
     overflow-x: hidden;
 }
 
-.submenu-panel {
+.kanji-panel {
     position: fixed;
     top: 6%;
     left: -250px;
@@ -79,7 +79,7 @@
     grid-template-columns: auto auto auto auto auto;
 }
 
-    .submenu-panel.open {
+    .kanji-panel.open {
         left: 220px;
     }
 
@@ -90,6 +90,37 @@
 }
 
     .level:hover {
+        cursor: pointer;
+        background-color: #3a3a3a;
+    }
+
+.lessons-panel {
+    position: fixed;
+    top: 6%;
+    left: -250px;
+    border-radius: 15px;
+    width: 75px;
+    height: 42%;
+    background-color: #2a2a2a;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    transition: left 0.3s ease;
+    z-index: 999;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+    .lessons-panel.open {
+        left: 220px;
+    }
+
+.lesson-button{
+    padding: 15px;
+    height: 60px;
+    border-radius: 15px;
+}
+    .lesson-button:hover {
         cursor: pointer;
         background-color: #3a3a3a;
     }

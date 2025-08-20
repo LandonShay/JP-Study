@@ -92,8 +92,9 @@ namespace JP_Dictionary.Pages
                 profile.LoginStreak = 1;
             }
 
-            DeckMethods.CreateDefaultDecks(profile);
             KanjiMethods.CreateUserKanji(profile);
+            DeckMethods.CreateDefaultDecks(profile);
+            GrammarMethods.CreateUserGrammar(profile);
 
             var userKanjis = KanjiMethods.LoadUserKanji(profile);
 

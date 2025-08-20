@@ -2,6 +2,7 @@
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
+using System.Reflection.Emit;
 
 namespace JP_Dictionary.Shared
 {
@@ -16,9 +17,11 @@ namespace JP_Dictionary.Shared
         #endregion
 
         private bool IsLoginPage => Nav.Uri.EndsWith("/");
-        private bool ShowKanjiMenu = false;
+        private bool ShowKanjiMenu { get; set; }
+        private bool ShowLessonsMenu { get; set; }
 
         private Dictionary<int, List<StudyItem>> GroupedKanji { get; set; } = new();
+        private List<string> GrammarLessons { get; set; } = new() { "N5", "N4", "N3", "N2", "N1" };
 
         protected override void OnInitialized()
         {
@@ -27,7 +30,7 @@ namespace JP_Dictionary.Shared
 
         private async void Navigate(string page)
         {
-            HideKanjiMenu();
+            HideMenus();
 
             await Anim.RequestAnimation(Motions.ZoomOut);
             Nav.NavigateTo(page);
@@ -44,13 +47,26 @@ namespace JP_Dictionary.Shared
             Navigate($"/kanjileveldetail/{level}");
         }
 
+        private void GoToLessonDetail(string lesson)
+        {
+            Navigate($"/grammarlessons/{lesson}");
+        }
+
         private void ToggleKanjiMenu()
         {
+            ShowLessonsMenu = false;
             ShowKanjiMenu = !ShowKanjiMenu;
         }
 
-        private void HideKanjiMenu()
+        private void ToggleLessonsMenu()
         {
+            ShowKanjiMenu = false;
+            ShowLessonsMenu = !ShowLessonsMenu;
+        }
+
+        private void HideMenus()
+        {
+            ShowLessonsMenu = false;
             ShowKanjiMenu = false;
         }
     }

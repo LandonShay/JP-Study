@@ -4,7 +4,7 @@
 <Motion @ref="Animate">
     <div class="welcome">
         <h2>Welcome, @User.Profile!.Name!</h2>
-        <label style="font-size: 24px;">Level: @User.Profile.KanjiLevel | Streak: @User.Profile!.LoginStreak Days </label>
+        <label style="font-size: 24px;">Streak: @User.Profile!.LoginStreak Days </label>
     </div>
     <div class="dashboard-content">
         <div class="column">
@@ -45,13 +45,17 @@
             </div>
             <div class="kanji-stats">
                 <div class="kanji-block">
+                    <h4>Level</h4>
+                    <span class="deck-text">@User.Profile.KanjiLevel</span>
+                </div>
+                <div class="kanji-block">
                     <h4>Level Progress</h4>
                     <span class="deck-text">@LevelProgress()%</span>
                 </div>
             </div>
         </div>
         <div class="column">
-            <h4>JLPT</h4>
+            <h4>JLPT Vocab</h4>
             <div class="graph">
                 <Chart Config="@JLPTBarConfig" />
             </div>
@@ -105,7 +109,27 @@
                 </table>
             </div>
         </div>
-        <div class="create-deck">
+        <div class="column">
+            <h4>JLPT Grammar</h4>
+            <div class="graph">
+                <Chart Config="@JLPTBarConfig" />
+            </div>
+            <div class="kanji-buttons">
+                <button class="main-button kanji-button" @onclick="GoToLearnKanji">
+                    Learn
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
+                </button>
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Kanji)">
+                    Review
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
+                </button>
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Vocab)">
+                    Vocab
+                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
+                </button>
+            </div>
+        </div>
+        @* <div class="create-deck">
             <h4>Create Deck</h4>
             <div class="deck-create">
                 <input type="text" autocomplete="off" placeholder="Deck Name" @bind="DeckName" />
@@ -118,7 +142,7 @@
                 </select>
                 <button class="main-button" @onclick='CreateDeck'>Create</button>
             </div>
-        </div>
+        </div> *@
     </div>
 
     @if (DeckToDelete != null)
