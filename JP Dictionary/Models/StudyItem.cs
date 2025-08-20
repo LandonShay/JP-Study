@@ -2,11 +2,11 @@
 
 namespace JP_Dictionary.Models
 {
-    public class StudyKanji
+    public class StudyItem
     {
         public int Level { get; set; }
         public string Item { get; set; } = string.Empty;
-        public KanjiType Type { get; set; }
+        public StudyType Type { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<string> Meaning { get; set; } = new();
         public string Mnemonic { get; set; } = string.Empty;
@@ -27,12 +27,24 @@ namespace JP_Dictionary.Models
                 return HelperMethods.GetMasteryTier(CorrectStreak);
             }
         }
+        public int StudyOrder { get; set; }
     }
 
-    public enum KanjiType
+    public enum StudyType
     {
         Radical,
         Kanji,
-        Vocab
+        Vocab,
+        Deck,
+        Grammar
+    }
+
+    public enum MasteryTier
+    {
+        Novice,
+        Beginner,
+        Proficient,
+        Expert,
+        Mastered
     }
 }

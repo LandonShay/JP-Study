@@ -125,7 +125,7 @@ namespace JP_Dictionary.Shared.Methods
             return filePath;
         }
 
-        public static List<StudyWord> LoadCSVFile(string filePath)
+        public static List<StudyItem> LoadCSVFile(string filePath)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -137,7 +137,7 @@ namespace JP_Dictionary.Shared.Methods
 
             using var reader = new StreamReader(filePath);
             using var csv = new CsvReader(reader, config);
-            return csv.GetRecords<StudyWord>().ToList();
+            return csv.GetRecords<StudyItem>().ToList();
         }
 
         public static async Task<List<Sentence>> LoadExampleSentences()
@@ -169,20 +169,6 @@ namespace JP_Dictionary.Shared.Methods
             });
 
             return sentences;
-        }
-
-        public static void WriteToCSVFile(string filePath, List<StudyWord> words)
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = true,
-                Delimiter = ",",
-                MissingFieldFound = null
-            };
-
-            using var writer = new StreamWriter(filePath);
-            using var csv = new CsvWriter(writer, config);
-            csv.WriteRecords(words);
         }
 
         public static void DeleteFile(string fileName)

@@ -9,7 +9,7 @@
             </div>
             <div class="item-info">
                 <div class="readings">
-                    @if (ActiveItem.Type != KanjiType.Vocab)
+                    @if (ActiveItem.Type != StudyType.Vocab)
                     {
                         <div class="reading-container">
                             <span class="reading-title">Onyomi</span>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="primary-info">
                     <div class="foundation-info">
-                        @if (ActiveItem.Type != KanjiType.Vocab)
+                        @if (ActiveItem.Type != StudyType.Vocab)
                         {
                             <div>
                                 <label class="headline">Meanings</label>

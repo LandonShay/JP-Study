@@ -111,7 +111,7 @@ namespace JP_Dictionary.Pages
                         word.Unlocked = true;
                     }
 
-                    DeckMethods.OverwriteDeck(words, profile.Name, deck.Name);
+                    DeckMethods.SaveDeck(words, profile.Name, deck.Name);
                 }
 
                 if (userKanjis.All(x => !x.Unlocked) || userKanjis.Where(x => x.Unlocked).All(x => x.Learned))

@@ -22,23 +22,23 @@
         <table>
             <thead>
                 <tr>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.Word))">
-                        Japanese @SortIndicator(nameof(StudyWord.Word))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.Item))">
+                        Japanese @SortIndicator(nameof(StudyItem.Item))
                     </th>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.Romaji))">
-                        Romaji @SortIndicator(nameof(StudyWord.Romaji))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.Reading))">
+                        Romaji @SortIndicator(nameof(StudyItem.Reading))
                     </th>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.Definitions))">
-                        Definition @SortIndicator(nameof(StudyWord.Definitions))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.Meaning))">
+                        Definition @SortIndicator(nameof(StudyItem.Meaning))
                     </th>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.CorrectStreak))">
-                        Streak @SortIndicator(nameof(StudyWord.CorrectStreak))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.CorrectStreak))">
+                        Streak @SortIndicator(nameof(StudyItem.CorrectStreak))
                     </th>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.MasteryTier))">
-                        Mastery @SortIndicator(nameof(StudyWord.MasteryTier))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.MasteryTier))">
+                        Mastery @SortIndicator(nameof(StudyItem.MasteryTier))
                     </th>
-                    <th @onclick="() => ToggleSort(nameof(StudyWord.LastStudied))">
-                        Next Review @SortIndicator(nameof(StudyWord.LastStudied))
+                    <th @onclick="() => ToggleSort(nameof(StudyItem.LastStudied))">
+                        Next Review @SortIndicator(nameof(StudyItem.LastStudied))
                     </th>
                     <th></th>
                     <th></th>
@@ -51,13 +51,13 @@
                     <tr>
                         <td>
                             <div style="display: flex; gap: 5px; justify-content: center;">
-                                @entry.Word
+                                @entry.Item
                                 <span>
                                     <i class="fa-solid fa-volume-high" style="cursor: pointer;" @onclick="() => TextToSpeech(entry)"></i>
                                 </span>
                             </div>
                         </td>
-                        <td>@entry.Romaji</td>
+                        <td>@entry.Reading</td>
                         <td>
                             @if (EditingEntry == entry)
                             {
@@ -66,7 +66,7 @@
                             else
                             {
                                 <span @onclick="() => StartEditing(entry)" style="cursor: pointer;">
-                                    @entry.Definitions
+                                    @string.Join(',', entry.Meaning)
                                 </span>
                             }
                         </td>
@@ -85,7 +85,7 @@
                             }
                         </td>
                         <td>
-                            <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Word)">
+                            <button class="main-button" type="button" @onclick="() => SearchJisho(entry.Item)">
                                 <img class="jisho-logo" src="images/jisho-logo.png" />
                             </button>
                         </td>

@@ -9,7 +9,7 @@
                     <label>Radicals</label>
                 </div>
                 <div class="list-items">
-                    @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Radical))
+                    @foreach (var item in UserKanji.Where(x => x.Type == StudyType.Radical))
                     {
                         <div class="item-card radical" @onclick="() => ViewItem(item)">
                             <span class="item-character">@item.Item</span>
@@ -23,7 +23,7 @@
                     <label>Kanji</label>
                 </div>
                 <div class="list-items">
-                    @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Kanji))
+                    @foreach (var item in UserKanji.Where(x => x.Type == StudyType.Kanji))
                     {
                         <div class="item-card kanji" @onclick="() => ViewItem(item)">
                             <span class="item-character">@item.Item</span>
@@ -46,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in UserKanji.Where(x => x.Type != KanjiType.Vocab))
+                        @foreach (var item in UserKanji.Where(x => x.Type != StudyType.Vocab))
                         {
                             <tr>
                                 <td>@item.Type.ToString()</td>
@@ -75,7 +75,7 @@
                     <label>Vocab</label>
                 </div>
                 <div class="vocab-items">
-                    @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Vocab))
+                    @foreach (var item in UserKanji.Where(x => x.Type == StudyType.Vocab))
                     {
                         <div class="vocab-card" @onclick="() => ViewItem(item)">
                             <span class="vocab-character">@item.Item</span>
@@ -95,7 +95,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in UserKanji.Where(x => x.Type == KanjiType.Vocab))
+                    @foreach (var item in UserKanji.Where(x => x.Type == StudyType.Vocab))
                     {
                         <tr>
                             <td>@item.Item</td>

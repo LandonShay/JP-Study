@@ -6,10 +6,10 @@ namespace JP_Dictionary.Models
         public Profile? Profile { get; set; }
 
         public Deck? SelectedDeck { get; set; }
-        public StudyKanji? SelectedKanji { get; set; } = null;
+        public StudyItem? SelectedKanji { get; set; } = null;
 
-        public List<StudyKanji> SelectedKanjiGroup { get; set; } = new();
-        public List<StudyKanji> PreviousKanjiGroup { get; set; } = new();
+        public List<StudyItem> SelectedKanjiGroup { get; set; } = new();
+        public List<StudyItem> PreviousKanjiGroup { get; set; } = new();
 
         public List<Sentence> Sentences { get; set; } = new();
         public bool TriggerLearnMode { get; set; }

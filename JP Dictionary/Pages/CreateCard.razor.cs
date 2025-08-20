@@ -3,7 +3,6 @@ using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace JP_Dictionary.Pages
 {
@@ -22,7 +21,7 @@ namespace JP_Dictionary.Pages
 
         private bool ShowConfirmation { get; set; } = false;
         private string ConflictDeckName { get; set; } = string.Empty;
-        private StudyWord PendingWord { get; set; } = new();
+        private StudyItem PendingWord { get; set; } = new();
 
         private string Japanese { get; set; } = string.Empty;
         private string Romaji { get; set; } = string.Empty;
@@ -44,12 +43,12 @@ namespace JP_Dictionary.Pages
                 !string.IsNullOrEmpty(Romaji) &&
                 !string.IsNullOrEmpty(Definitions))
             {
-                PendingWord = new StudyWord
+                PendingWord = new StudyItem
                 {
-                    Word = Japanese,
-                    Romaji = Romaji,
-                    Definitions = Definitions,
-                    Id = Guid.NewGuid().ToString(),
+                    Item = Japanese,
+                    Reading = Romaji,
+                    Type = StudyType.Deck,
+                    Meaning = Definitions.Split(',').ToList(),
                     LastStudied = DateTime.MinValue,
                     CorrectStreak = 0,
                     Unlocked = UnlockImmediately
@@ -59,7 +58,7 @@ namespace JP_Dictionary.Pages
                 {
                     var checkDeck = DeckMethods.LoadDeck(User.Profile, deck.Name);
 
-                    if (checkDeck.Any(x => x.Word == Japanese))
+                    if (checkDeck.Any(x => x.Item == Japanese))
                     {
                         ShowConfirmation = true;
                         ConflictDeckName = deck.Name;
@@ -77,8 +76,8 @@ namespace JP_Dictionary.Pages
             var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
             deck.Add(PendingWord);
 
-            DeckMethods.UpdateDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
-            ToastService.ShowSuccess($"{PendingWord.Word} added to {User.SelectedDeck.Name} deck");
+            DeckMethods.UpdateDeck(deck, User.Profile!, User.SelectedDeck!.Name);
+            ToastService.ShowSuccess($"{PendingWord.Item} added to {User.SelectedDeck.Name} deck");
 
             Japanese = string.Empty;
             Romaji = string.Empty;

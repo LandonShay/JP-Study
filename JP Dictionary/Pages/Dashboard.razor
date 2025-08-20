@@ -17,11 +17,11 @@
                     Learn
                     <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
                 </button>
-                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Kanji)">
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Kanji)">
                     Review
                     <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
                 </button>
-                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(KanjiType.Vocab)">
+                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Vocab)">
                     Vocab
                     <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
                 </button>
@@ -29,17 +29,17 @@
             <div class="kanji-stats">
                 <div class="kanji-block">
                     <h4>Kanji</h4>
-                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Kanji)%</span>
-                    <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Kanji && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Kanji))</span>
+                    <span class="deck-text">@GetLearnedPercentage(StudyType.Kanji)%</span>
+                    <span class="deck-text">(@Kanji.Count(x => x.Type == StudyType.Kanji && x.Learned)/@Kanji.Count(x => x.Type == StudyType.Kanji))</span>
                 </div>
                 <div class="kanji-block">
                     <h4>Radicals</h4>
-                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Radical)%</span>
-                    <span class="deck-text">(@Kanji.Count(x => x.Type == KanjiType.Radical && x.Learned)/@Kanji.Count(x => x.Type == KanjiType.Radical))</span>
+                    <span class="deck-text">@GetLearnedPercentage(StudyType.Radical)%</span>
+                    <span class="deck-text">(@Kanji.Count(x => x.Type == StudyType.Radical && x.Learned)/@Kanji.Count(x => x.Type == StudyType.Radical))</span>
                 </div>
                 <div class="kanji-block">
                     <h4>Vocab</h4>
-                    <span class="deck-text">@GetLearnedPercentage(KanjiType.Vocab)%</span>
+                    <span class="deck-text">@GetLearnedPercentage(StudyType.Vocab)%</span>
                     <span class="deck-text">(@KanjiVocab.Count(x => x.Learned)/@KanjiVocab.Count)</span>
                 </div>
             </div>
