@@ -592,6 +592,7 @@ namespace JP_Dictionary.Pages
             }
             catch (Exception ex)
             {
+                Talking = false;
                 Console.WriteLine(ex);
                 Toast.ShowError("An error occured during TTS, see console for details");
             }

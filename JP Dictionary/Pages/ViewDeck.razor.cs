@@ -93,7 +93,7 @@ namespace JP_Dictionary.Pages
         {
             var deck = DeckMethods.LoadDeck(User.Profile!, User.SelectedDeck!.Name);
 
-            deck.RemoveAll(x => x.Item == word.Item && x.Meaning == word.Meaning);
+            deck.RemoveAll(x => x.Item == word.Item);
             DeckMethods.SaveDeck(deck, User.Profile!.Name, User.SelectedDeck!.Name);
 
             LoadPage();
