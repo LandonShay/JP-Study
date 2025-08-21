@@ -1,6 +1,6 @@
 ﻿using JP_Dictionary.Models;
-using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -24,7 +24,7 @@ namespace JP_Dictionary.Pages
         private bool Reloaded { get; set; } // OnLocationChanged gets called several times during routing. Prevents LoadData being called several times in 1 load
 
         private Motion Animate { get; set; } = default!;
-        private Dictionary<string, List<GrammarItem>> GroupedGrammar = new();
+        private Dictionary<string, List<GrammarItem>> GroupedGrammar { get; set; } = new();
 
         #region Init + Rendering
         protected override void OnInitialized()
@@ -70,6 +70,16 @@ namespace JP_Dictionary.Pages
             }
 
             return text;
+        }
+
+        private void GoToDetail(GrammarItem item)
+        {
+            var userGrammar = GrammarMethods.LoadUserGrammar(User.Profile!);
+
+            User.SelectedGrammar = item;
+            User.SelectedGrammarGroup = userGrammar.FindAll(x => x.JLPTLevel == Level && x.Lesson == item.Lesson);
+
+            Nav.NavigateTo("/grammardetail");
         }
 
         private async Task AnimatePage(Motions motion)

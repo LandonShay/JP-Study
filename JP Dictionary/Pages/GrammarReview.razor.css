@@ -1,0 +1,90 @@
+﻿
+.page-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-item-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 15px;
+    background-color: #333333;
+    padding: 25px 0;
+}
+
+.main-item {
+    font-size: 60px;
+    border-radius: 15px;
+    padding: 0 15px;
+}
+
+.main-item-name {
+    font-size: 28px;
+}
+
+.item-info{
+    display: flex;
+    justify-content: center;
+}
+
+.about {
+    background-color: #272727; 
+    border: solid 1px #555;
+    border-radius: 15px;
+    padding: 20px;
+    width: 1000px;
+    margin-top: 35px;
+    font-size: 20px;
+}
+
+.about-examples{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.sentence-container {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px #555;
+    border-radius: 15px;
+    background-color: #333333;
+    text-align: center;
+    padding: 20px;
+    width: 600px;
+}
+
+.nav-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 15px 30px;
+    position: absolute;
+}
+
+    .nav-arrow:hover {
+        background-color: #444;
+    }
+
+.nav-arrow-left {
+    top: 65px;
+    left: 110px;
+    font-size: 24px;
+}
+
+.nav-arrow-right {
+    top: 65px;
+    right: 80px;
+    font-size: 24px;
+}
+
+.bottom-buttons{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}

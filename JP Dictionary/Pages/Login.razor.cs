@@ -119,6 +119,8 @@ namespace JP_Dictionary.Pages
                 {
                     KanjiMethods.UnlockNextSet(profile);
                 }
+
+                GrammarMethods.UnlockNextSet(profile);
             }
 
             HelperMethods.SaveProfile(profile);

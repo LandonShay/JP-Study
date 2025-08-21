@@ -110,22 +110,18 @@
             </div>
         </div>
         <div class="column">
-            <h4>JLPT Grammar</h4>
+            <h4>Grammar</h4>
             <div class="graph">
-                <Chart Config="@JLPTBarConfig" />
+                <Chart Config="@GrammarBarConfig" />
             </div>
             <div class="kanji-buttons">
-                <button class="main-button kanji-button" @onclick="GoToLearnKanji">
+                <button class="main-button kanji-button" @onclick="GoToLearnGrammar">
                     Learn
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
+                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToLearn(Grammar).Count</span>
                 </button>
-                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Kanji)">
+                <button class="main-button kanji-button" @onclick="GoToReviewGrammar">
                     Review
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
-                </button>
-                <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Vocab)">
-                    Vocab
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
+                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToReview(Grammar).Count</span>
                 </button>
             </div>
         </div>

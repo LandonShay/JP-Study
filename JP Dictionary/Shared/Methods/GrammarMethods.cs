@@ -39,8 +39,57 @@ namespace JP_Dictionary.Shared.Methods
                 var content = JsonSerializer.Serialize(LoadDefaultGrammar());
                 File.WriteAllText(filePath, content);
 
-                //UnlockNextSet(profile);
+                UnlockNextSet(profile);
             }
+        }
+
+        public static void SaveUserGrammar(Profile profile, List<GrammarItem> items)
+        {
+            var filePath = HelperMethods.GetFilePath($"{profile.Name} Grammar.json");
+
+            File.Delete(filePath);
+            HelperMethods.CreateFile(filePath);
+
+            var content = JsonSerializer.Serialize(items);
+            File.WriteAllText(filePath, content);
+        }
+
+        public static void UnlockNextSet(Profile profile)
+        {
+            var grammar = LoadUserGrammar(profile);
+            var grammarToLearn = GetItemsToLearn(grammar);
+
+            if (grammarToLearn.Count == 0)
+            {
+                foreach (var k in grammar.Take(4))
+                {
+                    k.Unlocked = true;
+                }
+
+                SaveUserGrammar(profile, grammar);
+            }
+        }
+
+        public static List<GrammarItem> GetItemsToLearn(List<GrammarItem> grammar)
+        {
+            return grammar.FindAll(x => x.Unlocked && !x.Learned);
+        }
+
+        public static List<GrammarItem> GetItemsToReview(List<GrammarItem> grammar)
+        {
+            var grammarToStudy = new List<GrammarItem>();
+
+            foreach (var k in grammar.Where(x => x.Learned && x.Unlocked))
+            {
+                var nextDueDate = HelperMethods.GetNextStudyDate(k.LastStudied, k.CorrectStreak);
+
+                if (DateTime.Today.Date >= nextDueDate)
+                {
+                    grammarToStudy.Add(k);
+                }
+            }
+
+            return grammarToStudy;
         }
     }
 }

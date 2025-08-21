@@ -27,9 +27,11 @@ namespace JP_Dictionary.Pages
 
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
+        private BarConfig GrammarBarConfig { get; set; } = new();
 
         private List<StudyItem> Kanji { get; set; } = new();
         private List<StudyItem> KanjiVocab { get; set; } = new();
+        private List<GrammarItem> Grammar { get; set; } = new();
 
         private string DeckName { get; set; } = string.Empty;
         private DeckType DeckType { get; set; } = DeckType.Vocab;
@@ -57,10 +59,12 @@ namespace JP_Dictionary.Pages
         private void LoadDashboard()
         {
             Kanji = KanjiMethods.LoadUserKanji(User.Profile!);
+            Grammar = GrammarMethods.LoadUserGrammar(User.Profile!);
             KanjiVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
             User.SelectedDeck = null;
             User.SelectedKanji = null;
+            User.SelectedGrammar = null;
 
             DeckName = string.Empty;
             DeckColor = string.Empty;
@@ -73,7 +77,7 @@ namespace JP_Dictionary.Pages
             var vocabData = new List<int>();
             var kanjiData = new List<int>();
             var radicalData = new List<int>();
-            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig };
+            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig, GrammarBarConfig };
 
             foreach (var config in configs)
             {
@@ -160,6 +164,8 @@ namespace JP_Dictionary.Pages
                     BorderWidth = 1
                 });
             }
+
+            // to do: grammar config. split by jlpt level. use default deck colors.
         }
         #endregion
 
@@ -226,6 +232,28 @@ namespace JP_Dictionary.Pages
 
             await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
+        }
+
+        private async Task GoToLearnGrammar()
+        {
+            var grammarToLearn = GrammarMethods.GetItemsToLearn(Grammar);
+
+            if (grammarToLearn.Count > 0)
+            {
+                User.TriggerLearnMode = true;
+                User.SelectedGrammarGroup = grammarToLearn;
+
+                await AnimatePage(Motions.ZoomOut);
+                Nav.NavigateTo("/grammardetail");
+            }
+        }
+
+        private async void GoToReviewGrammar()
+        {
+            User.SelectedGrammarGroup = GrammarMethods.GetItemsToReview(Grammar);
+
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/studygrammar");
         }
 
         private async void ToStudy(Deck deck)

@@ -11,7 +11,7 @@
             <div class="lesson-items">
                 @foreach(var item in group.Value)
                 {
-                    <div class="grammar-item">
+                    <div class="grammar-item" @onclick="() => GoToDetail(item)">
                         <span class="item-name">@item.Name</span>
                         <span class="item-meaning">@ShortenString(item.Meaning)</span>
                     </div>
