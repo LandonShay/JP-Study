@@ -202,6 +202,30 @@ namespace JP_Dictionary.Pages
 
             return float.Round(MathF.Min(progress, 1f) * 100, 2);
         }
+
+        private string GetHighestGrammarLevel()
+        {
+            var ranks = new Dictionary<string, int> { ["N1"] = 1, ["N2"] = 2, ["N3"] = 3, ["N4"] = 4, ["N5"] = 5 };
+            return Grammar.Where(x => x.Unlocked).OrderBy(x => ranks[x.JLPTLevel]).Select(x => x.JLPTLevel).FirstOrDefault() ?? "N5";
+        }
+
+        private string GetCurrentGrammarLesson()
+        {
+            var currentLevel = GetHighestGrammarLevel();
+            var lessonNum = Grammar.Where(x => x.JLPTLevel == currentLevel && x.Unlocked).Select(x => ParseLessonNumber(x.Lesson)).DefaultIfEmpty(1).Max();
+            
+            return $"Lesson {lessonNum}";
+        }
+
+        private static int ParseLessonNumber(string lesson)
+        {
+            if (lesson != null && lesson.StartsWith("Lesson") && int.TryParse(lesson.Split(' ').Last(), out var num))
+            {
+                return num;
+            }
+
+            return 1;
+        }
         #endregion
 
         #region Nav

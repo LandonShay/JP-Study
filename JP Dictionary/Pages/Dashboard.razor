@@ -124,6 +124,16 @@
                     <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToReview(Grammar).Count</span>
                 </button>
             </div>
+            <div class="kanji-stats">
+                <div class="kanji-block">
+                    <h4>JLPT</h4>
+                    <span class="deck-text">@GetHighestGrammarLevel()</span>
+                </div>
+                <div class="kanji-block">
+                    <h4>Lesson</h4>
+                    <span class="deck-text">@GetCurrentGrammarLesson()</span>
+                </div>
+            </div>
         </div>
         @* <div class="create-deck">
             <h4>Create Deck</h4>
