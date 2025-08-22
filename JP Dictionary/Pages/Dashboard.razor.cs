@@ -165,7 +165,36 @@ namespace JP_Dictionary.Pages
                 });
             }
 
-            // to do: grammar config. split by jlpt level. use default deck colors.
+            var counter = 1;
+
+            foreach (var level in new[] { "N5", "N4", "N3", "N2", "N1" })
+            {
+                var grammarData = new List<int>();
+
+                var color = counter switch
+                {
+                    1 => "rgba(100, 149, 237, 1)",
+                    2 => "rgba(72, 209, 204, 1)",
+                    3 => "rgba(144, 238, 144, 1)",
+                    4 => "#8174A0",
+                    _ => "#EFB6C8"
+                };
+
+                foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
+                {
+                    grammarData.Add(Grammar.Count(x => x.JLPTLevel == level && x.MasteryTier == tier && x.Unlocked));
+                }
+
+                GrammarBarConfig.Data.Datasets.Add(new BarDataset<int>(grammarData)
+                {
+                    Label = level,
+                    BackgroundColor = color,
+                    HoverBackgroundColor = color,
+                    BorderWidth = 1
+                });
+
+                counter++;
+            }
         }
         #endregion
 
