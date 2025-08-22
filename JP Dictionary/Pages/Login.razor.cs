@@ -96,10 +96,11 @@ namespace JP_Dictionary.Pages
             DeckMethods.CreateDefaultDecks(profile);
             GrammarMethods.CreateUserGrammar(profile);
 
-            var userKanjis = KanjiMethods.LoadUserKanji(profile);
-
             if (lastLoginDate != today)
             {
+                var userKanjis = KanjiMethods.LoadUserKanji(profile);
+                var grammar = GrammarMethods.LoadUserGrammar(profile);
+
                 profile.LastLogin = DateTime.Now;
 
                 // unlock 15 locked words from each deck that isn't paused for gradual study
@@ -120,7 +121,10 @@ namespace JP_Dictionary.Pages
                     KanjiMethods.UnlockNextSet(profile);
                 }
 
-                GrammarMethods.UnlockNextSet(profile);
+                if (grammar.All(x => !x.Unlocked) || grammar.Where(x => x.Unlocked).All(x => x.Learned))
+                {
+                    GrammarMethods.UnlockNextSet(profile);
+                }
             }
 
             HelperMethods.SaveProfile(profile);

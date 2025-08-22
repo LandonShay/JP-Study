@@ -57,17 +57,13 @@ namespace JP_Dictionary.Shared.Methods
         public static void UnlockNextSet(Profile profile)
         {
             var grammar = LoadUserGrammar(profile);
-            var grammarToLearn = GetItemsToLearn(grammar);
 
-            if (grammarToLearn.Count == 0)
+            foreach (var item in grammar.Where(x => !x.Unlocked && x.JLPTLevel == profile.GrammarLevel).Take(4))
             {
-                foreach (var k in grammar.Take(4))
-                {
-                    k.Unlocked = true;
-                }
-
-                SaveUserGrammar(profile, grammar);
+                item.Unlocked = true;
             }
+
+            SaveUserGrammar(profile, grammar);
         }
 
         public static List<GrammarItem> GetItemsToLearn(List<GrammarItem> grammar)
@@ -90,6 +86,30 @@ namespace JP_Dictionary.Shared.Methods
             }
 
             return grammarToStudy;
+        }
+
+        public static string GetHighestGrammarLevel(List<GrammarItem> grammar)
+        {
+            var ranks = new Dictionary<string, int> { ["N1"] = 1, ["N2"] = 2, ["N3"] = 3, ["N4"] = 4, ["N5"] = 5 };
+            return grammar.Where(x => x.Unlocked).OrderBy(x => ranks[x.JLPTLevel]).Select(x => x.JLPTLevel).FirstOrDefault() ?? "N5";
+        }
+
+        public static string GetCurrentGrammarLesson(List<GrammarItem> grammar)
+        {
+            var currentLevel = GetHighestGrammarLevel(grammar);
+            var lessonNum = grammar.Where(x => x.JLPTLevel == currentLevel && x.Unlocked).Select(x => ParseLessonNumber(x.Lesson)).DefaultIfEmpty(1).Max();
+
+            return $"Lesson {lessonNum}";
+        }
+
+        public static int ParseLessonNumber(string lesson)
+        {
+            if (lesson != null && lesson.StartsWith("Lesson") && int.TryParse(lesson.Split(' ').Last(), out var num))
+            {
+                return num;
+            }
+
+            return 1;
         }
     }
 }

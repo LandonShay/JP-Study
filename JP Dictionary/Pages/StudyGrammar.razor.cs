@@ -164,6 +164,8 @@ namespace JP_Dictionary.Pages
             {
                 FinishedStudying = true;
                 ElementToFocus = "return";
+
+                CheckLevelUp();
             }
         }
 
@@ -276,6 +278,36 @@ namespace JP_Dictionary.Pages
 
             ElementToFocus = "incorrect-next";
             StateHasChanged();
+        }
+
+        private void CheckLevelUp()
+        {
+            var highestLesson = GrammarMethods.GetCurrentGrammarLesson(StudyItems);
+            var highestGrammar = StudyItems.Where(x => x.JLPTLevel == User.Profile!.GrammarLevel && x.Lesson == highestLesson);
+
+            if (highestGrammar.All(x => x.MasteryTier == MasteryTier.Beginner))
+            {
+                var nextLesson = GrammarMethods.ParseLessonNumber(highestLesson) + 1;
+                var nextLessonGrammar = StudyItems.FindAll(x => x.JLPTLevel == User.Profile!.GrammarLevel && x.Lesson == $"Lesson {nextLesson}");
+
+                if (nextLessonGrammar.Count > 0)
+                {
+                    GrammarMethods.UnlockNextSet(User.Profile!);
+                }
+                else
+                {
+                    var jlptLevel = int.TryParse(User.Profile!.GrammarLevel.Split('N').Last(), out var num);
+                    num--;
+
+                    if (num > 0)
+                    {
+                        User.Profile.GrammarLevel = $"N{num}";
+                        HelperMethods.SaveProfile(User.Profile!);
+                    }
+
+                    GrammarMethods.UnlockNextSet(User.Profile!);
+                }
+            }
         }
 
         private async void GoToDashboard()
