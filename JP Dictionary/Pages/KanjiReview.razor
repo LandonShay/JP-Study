@@ -30,14 +30,14 @@
                 </div>
                 <div class="primary-info">
                     <div class="foundation-info">
+                        <div>
+                            <label class="headline">Meanings</label>
+                            <div>
+                                <span class="meanings">@GetReadings(ActiveItem.Meaning)</span>
+                            </div>
+                        </div>
                         @if (ActiveItem.Type != StudyType.Vocab)
                         {
-                            <div>
-                                <label class="headline">Meanings</label>
-                                <div>
-                                    <span class="meanings">@GetReadings(ActiveItem.Meaning)</span>
-                                </div>
-                            </div>
                             <div>
                                 <label class="headline">Radicals</label>
                                 <div>
