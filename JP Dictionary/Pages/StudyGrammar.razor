@@ -1,0 +1,80 @@
+﻿@page "/studygrammar"
+
+<Motion @ref="PageAnimate">
+    @if (!FinishedStudying)
+    {
+        <Motion @ref="CardAnimate">
+            @if (!ShowResults)
+            {
+                <form @onsubmit="SubmitAnswer" @onsubmit:preventDefault>
+                    <div>
+                        <h2>@CurrentCard.JP</h2>
+                        <h2>@((MarkupString)CurrentCard.EN)</h2>
+                        @if (CardIsNew())
+                        {
+                            <span>New!</span>
+                        }
+                    </div>
+                    <div class="answer-area">
+                        <input type="text" id="definition" placeholder="Answer" autocomplete="off" @bind="Answer" class="@AnswerStatus" />
+                    </div>
+                    <div>
+                        <button class="main-button" id="submit-answer" type="submit">Submit</button>
+                        <button class="main-button" @onclick="GiveUp">Give Up</button>
+                    </div>
+
+                    <span class="label">Attempts Remaining: @AttemptsRemaining</span>
+                    <span class="label">Cards Remaining: @StudyCards.Count</span>
+                </form>
+            }
+            else
+            {
+                <form @onsubmit="() => ShowNextCard(false)" @onsubmit:preventDefault>
+                    @if (CurrentCard.Correct)
+                    {
+                        <h2>Correct!</h2>
+                        <div>
+                            <span class="item-level">@CurrentCard.GrammarItem.JLPTLevel</span>
+                            <span class="item-level">@CurrentCard.GrammarItem.Lesson</span>
+                        </div>
+                        <div>
+                            <h3>@((MarkupString)CurrentCard.FullJP)</h3>
+                            <h3>@((MarkupString)CurrentCard.EN)</h3>
+                        </div>
+                        <button class="main-button" id="correct-next" type="submit">Next</button>
+                    }
+                    else
+                    {
+                        <h2>Incorrect</h2>
+                        <div>
+                            <span class="item-level">@CurrentCard.GrammarItem.JLPTLevel</span>
+                            <span class="item-level">@CurrentCard.GrammarItem.Lesson</span>
+                        </div>
+                        <div>
+                            <h4>Answer</h4>
+                            <h3>@CurrentCard.GrammarItem.Name</h3>
+                        </div>
+                        <h3>Your Answer</h3>
+                        <div class="reading-definition">
+                            <span>@Answer</span>
+                        </div>
+                        <div>
+                            <button class="main-button" id="incorrect-next" type="submit">Next</button>
+                            <button class="main-button" @onclick="MarkAsCorrect">Mark As Correct</button>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="main-button" @onclick="ViewItemDetails">View Details</button>
+                        </div>
+                    }
+                </form>
+            }
+        </Motion>
+    }
+    else
+    {
+        <div class="complete">
+            <h3>You've completed today's review!</h3>
+            <button class="main-button" id="return" @onclick='GoToDashboard'>Return To Dashboard</button>
+        </div>
+    }
+</Motion>

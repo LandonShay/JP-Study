@@ -1,23 +1,32 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="layout" @onclick="HideKanjiMenu">
+<div class="layout" @onclick="HideMenus">
     @if (!IsLoginPage)
     {
         <div class="sidebar" @onclick:stopPropagation>
             <div class="sidebar-top">
                 <div class="nav-button" @onclick='() => Navigate("/dashboard")'>Dashboard</div>
-                <div class="nav-button" @onclick="ToggleKanjiMenu">Levels</div>
+                <div class="nav-button" @onclick="ToggleKanjiMenu">Kanji</div>
+                <div class="nav-button" @onclick="ToggleLessonsMenu">Grammar</div>
                 <div class="nav-button" @onclick='() => Navigate("/listeningcomp")'>Listening Comprehension</div>
             </div>
             <div class="sidebar-bottom">
                 <div class="nav-button" @onclick='() => Navigate("/")'>Log Out</div>
             </div>
         </div>
-        <div class="submenu-panel @(ShowKanjiMenu ? "open" : "")" @onclick:stopPropagation>
+        <div class="kanji-panel @(ShowKanjiMenu ? "open" : "")" @onclick:stopPropagation>
             @foreach (var kanji in GroupedKanji.OrderBy(x => x.Key))
             {
                 <div class="level" @onclick="() => GoToLevelDetail(kanji)">
                     <span class="level-text">@kanji.Key</span>
+                </div>
+            }
+        </div>
+        <div class="lessons-panel @(ShowLessonsMenu ? "open" : "")" @onclick:stopPropagation>
+            @foreach (var lesson in GrammarLessons)
+            {
+                <div class="lesson-button" @onclick="() => GoToLessonDetail(lesson)">
+                    <span class="level-text">@lesson</span>
                 </div>
             }
         </div>

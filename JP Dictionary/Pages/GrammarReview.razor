@@ -1,0 +1,61 @@
+﻿@page "/grammardetail"
+
+<Motion @ref="Animate">
+    <div class="page-container">
+        <div class="content">
+            <div class="main-item-container">
+                <span class="main-item">@ActiveItem.Name</span>
+                <span class="main-item-name">@ActiveItem.Meaning</span>
+            </div>
+            <div class="item-info">
+                <div class="about">
+                    <div>
+                        <h4>About @ActiveItem.Name</h4>
+                        <span>@((MarkupString)ActiveItem.About)</span>
+                    </div>
+                    <div class="about-examples">
+                        @foreach (var example in ActiveItem.AboutExamples)
+                        {
+                            <div class="sentence-container">
+                                <span>@((MarkupString)example.JapaneseHTML)</span>
+                                <span>@((MarkupString)example.EnglishHTML)</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="bottom-buttons">
+                        <button class="main-button" @onclick="GoToBunpro">
+                            Bunpro
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (PreviousItem != string.Empty)
+        {
+            <div class="nav-arrow nav-arrow-left" @onclick="SetLeftItem">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="item-icon">@PreviousItem</span>
+            </div>
+        }
+
+        @if (NextItem != string.Empty)
+        {
+            <div class="nav-arrow nav-arrow-right" @onclick="SetRightItem">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span class="item-icon">@NextItem</span>
+            </div>
+        }
+        else if (NextItem == string.Empty && LearnMode)
+        {
+            <div class="nav-arrow nav-arrow-right" @onclick="GoToReview">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span class="item-icon">Review</span>
+            </div>
+        }
+
+        @if (ShowReturnButton)
+        {
+            <button class="main-button return-button" @onclick="GoToStudy">Return</button>
+        }
+    </div>
+</Motion>

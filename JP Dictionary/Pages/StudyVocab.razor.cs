@@ -122,7 +122,7 @@ namespace JP_Dictionary.Pages
         {
             StudyItems = KanjiMethods.LoadUserKanji(User.Profile!);
 
-            foreach (var item in User.SelectedKanjiGroup)
+            foreach (var item in User.SelectedKanjiGroup.Shuffle())
             {
                 var studyCard = new VocabCard
                 {
@@ -159,7 +159,7 @@ namespace JP_Dictionary.Pages
 
         private void CreateDefaultCards(List<StudyItem> items, StudyCardType type)
         {
-            foreach (var item in items)
+            foreach (var item in items.Shuffle())
             {
                 StudyCards.Enqueue(new VocabCard
                 {

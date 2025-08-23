@@ -1,0 +1,60 @@
+﻿
+.headline {
+    height: 45px;
+    font-size: 24px;
+    border-bottom: solid 1px gray;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-style: italic;
+    color: darkgray;
+}
+
+.main-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.lesson-items {
+    display: grid;
+    grid-template-columns: 325px 325px 325px;
+}
+
+.grammar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    border: solid 1px darkgray;
+    background-color: #333;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+    .grammar-item:hover {
+        background-color: #444;
+        border-color: #777;
+        cursor: pointer;
+    }
+
+.item-name{
+    font-size: 32px;
+}
+
+.item-meaning{
+    font-size: 18px;
+    /*font-style: italic;*/
+}
+
+.table-container {
+    max-height: 750px;
+    overflow-y: scroll;
+    border-radius: 15px;
+    width: 600px;
+    padding: 10px;
+}
+
+table{
+    width: 100%;
+    margin: 0;
+}

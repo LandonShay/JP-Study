@@ -7,11 +7,15 @@ namespace JP_Dictionary.Models
 
         public Deck? SelectedDeck { get; set; }
         public StudyItem? SelectedKanji { get; set; } = null;
+        public GrammarItem? SelectedGrammar { get; set; } = null;
 
         public List<StudyItem> SelectedKanjiGroup { get; set; } = new();
         public List<StudyItem> PreviousKanjiGroup { get; set; } = new();
 
+        public List<GrammarItem> SelectedGrammarGroup { get; set; } = new();
+
         public List<Sentence> Sentences { get; set; } = new();
+
         public bool TriggerLearnMode { get; set; }
         public bool WipeSelectedKanjiGroup { get; set; }
 

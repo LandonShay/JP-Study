@@ -27,9 +27,11 @@ namespace JP_Dictionary.Pages
 
         private BarConfig KRVBarConfig { get; set; } = new();
         private BarConfig JLPTBarConfig { get; set; } = new();
+        private BarConfig GrammarBarConfig { get; set; } = new();
 
         private List<StudyItem> Kanji { get; set; } = new();
         private List<StudyItem> KanjiVocab { get; set; } = new();
+        private List<GrammarItem> Grammar { get; set; } = new();
 
         private string DeckName { get; set; } = string.Empty;
         private DeckType DeckType { get; set; } = DeckType.Vocab;
@@ -57,10 +59,12 @@ namespace JP_Dictionary.Pages
         private void LoadDashboard()
         {
             Kanji = KanjiMethods.LoadUserKanji(User.Profile!);
+            Grammar = GrammarMethods.LoadUserGrammar(User.Profile!);
             KanjiVocab = KanjiMethods.LoadUserKanjiVocab(User.Profile!);
 
             User.SelectedDeck = null;
             User.SelectedKanji = null;
+            User.SelectedGrammar = null;
 
             DeckName = string.Empty;
             DeckColor = string.Empty;
@@ -73,7 +77,7 @@ namespace JP_Dictionary.Pages
             var vocabData = new List<int>();
             var kanjiData = new List<int>();
             var radicalData = new List<int>();
-            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig };
+            var configs = new List<BarConfig>() { KRVBarConfig, JLPTBarConfig, GrammarBarConfig };
 
             foreach (var config in configs)
             {
@@ -160,6 +164,37 @@ namespace JP_Dictionary.Pages
                     BorderWidth = 1
                 });
             }
+
+            var counter = 1;
+
+            foreach (var level in new[] { "N5", "N4", "N3", "N2", "N1" })
+            {
+                var grammarData = new List<int>();
+
+                var color = counter switch
+                {
+                    1 => "rgba(100, 149, 237, 1)",
+                    2 => "rgba(72, 209, 204, 1)",
+                    3 => "rgba(144, 238, 144, 1)",
+                    4 => "#8174A0",
+                    _ => "#EFB6C8"
+                };
+
+                foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
+                {
+                    grammarData.Add(Grammar.Count(x => x.JLPTLevel == level && x.MasteryTier == tier && x.Unlocked));
+                }
+
+                GrammarBarConfig.Data.Datasets.Add(new BarDataset<int>(grammarData)
+                {
+                    Label = level,
+                    BackgroundColor = color,
+                    HoverBackgroundColor = color,
+                    BorderWidth = 1
+                });
+
+                counter++;
+            }
         }
         #endregion
 
@@ -226,6 +261,28 @@ namespace JP_Dictionary.Pages
 
             await AnimatePage(Motions.ZoomOut);
             Nav.NavigateTo("/studyvocab");
+        }
+
+        private async Task GoToLearnGrammar()
+        {
+            var grammarToLearn = GrammarMethods.GetItemsToLearn(Grammar);
+
+            if (grammarToLearn.Count > 0)
+            {
+                User.TriggerLearnMode = true;
+                User.SelectedGrammarGroup = grammarToLearn;
+
+                await AnimatePage(Motions.ZoomOut);
+                Nav.NavigateTo("/grammardetail");
+            }
+        }
+
+        private async void GoToReviewGrammar()
+        {
+            User.SelectedGrammarGroup = GrammarMethods.GetItemsToReview(Grammar);
+
+            await AnimatePage(Motions.ZoomOut);
+            Nav.NavigateTo("/studygrammar");
         }
 
         private async void ToStudy(Deck deck)

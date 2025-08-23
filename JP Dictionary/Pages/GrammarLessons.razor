@@ -1,0 +1,52 @@
+﻿@page "/grammarlessons/{Level}"
+
+<Motion @ref="Animate">
+    <h2>JLPT @GroupedGrammar.First().Value.First().JLPTLevel Grammar</h2>
+    @foreach (var group in GroupedGrammar)
+    {
+        <div class="headline">
+            <label>@group.Key</label>
+        </div>
+        <div class="main-content">
+            <div class="lesson-items">
+                @foreach(var item in group.Value)
+                {
+                    <div class="grammar-item" @onclick="() => GoToDetail(item)">
+                        <span class="item-name">@item.Name</span>
+                        <span class="item-meaning">@ShortenString(item.Meaning)</span>
+                    </div>
+                }
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Streak</th>
+                            <th>Mastery</th>
+                            <th>Study</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in group.Value)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.CorrectStreak</td>
+                                <td>@item.MasteryTier</td>
+                                @if (item.Unlocked)
+                                {
+                                    <td>@HelperMethods.GetNextStudyDate(item.LastStudied, item.CorrectStreak).ToShortDateString()</td>
+                                }
+                                else
+                                {
+                                    <td><i class="fa-solid fa-lock"></i></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</Motion>
