@@ -2,11 +2,12 @@
 using JP_Dictionary.Shared;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
-using MyNihongo.KanaConverter;
+using System.Text.RegularExpressions;
 using Microsoft.JSInterop;
+using WanaKanaSharp;
 using MoreLinq;
+using MeCab;
 
 namespace JP_Dictionary.Pages
 {
@@ -191,9 +192,31 @@ namespace JP_Dictionary.Pages
         #region Submit
         private async void SubmitAnswer()
         {
+            var answer = string.Empty;
             AnswerStatus = string.Empty;
 
-            var correct = CurrentCard.Answer.Trim().ToRomaji().Equals(Answer.Trim(), StringComparison.CurrentCultureIgnoreCase);
+            using (var tagger = MeCabTagger.Create())
+            {
+                var nodes = tagger.ParseToNodes(CurrentCard.Answer.Trim());
+
+                foreach (var node in nodes)
+                {
+                    if (node.CharType > 0)
+                    {
+                        var features = node.Feature.Split(',');
+                        var katakana = features.Length > 7 ? features[7] : node.Surface;
+
+                        var romaji = WanaKana.ToRomaji(katakana);
+
+                        if (romaji != "." && romaji != "?" && romaji != "!")
+                        {
+                            answer += romaji;
+                        }
+                    }
+                }
+            }
+
+            var correct = answer.Equals(Answer.Trim(), StringComparison.CurrentCultureIgnoreCase);
 
             if (correct)
             {
