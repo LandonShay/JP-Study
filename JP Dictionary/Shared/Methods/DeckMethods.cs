@@ -1,10 +1,13 @@
 ﻿using JP_Dictionary.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace JP_Dictionary.Shared.Methods
 {
     public class DeckMethods
     {
+        private static readonly JsonSerializerOptions Options = new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+
         #region Load
         public static List<StudyItem> LoadDefaultDeck(string deckName)
         {
@@ -142,7 +145,7 @@ namespace JP_Dictionary.Shared.Methods
             File.Delete(filePath);
             HelperMethods.CreateFile(filePath);
 
-            var content = JsonSerializer.Serialize(words);
+            var content = JsonSerializer.Serialize(words, Options);
             File.WriteAllText(filePath, content);
         }
         #endregion

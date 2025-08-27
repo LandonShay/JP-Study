@@ -103,7 +103,14 @@ namespace JP_Dictionary.Pages
 
                 if (matches.Count > 0)
                 {
-                    studyCard.Answer = matches[0].Groups[1].Value;
+                    foreach (Match match in matches)
+                    {
+                        var matchAnswer = match.Groups[1].Value;
+                        matchAnswer = matchAnswer.Replace("<i>", string.Empty);
+                        matchAnswer = matchAnswer.Replace("</i>", string.Empty);
+
+                        studyCard.Answer += matchAnswer;
+                    }
 
                     studyCard.EN = item.Questions[rndIndex].EnglishHTML;
                     studyCard.JP = Regex.Replace(studyCard.FullJP, @"<strong>.*?</strong>", "___");

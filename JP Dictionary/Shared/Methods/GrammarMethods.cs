@@ -1,10 +1,13 @@
-﻿using System.Text.Json;
-using JP_Dictionary.Models;
+﻿using JP_Dictionary.Models;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace JP_Dictionary.Shared.Methods
 {
     public static class GrammarMethods
     {
+        private static readonly JsonSerializerOptions Options = new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+
         #region Load
         public static List<GrammarItem> LoadDefaultGrammar()
         {
@@ -50,7 +53,7 @@ namespace JP_Dictionary.Shared.Methods
             File.Delete(filePath);
             HelperMethods.CreateFile(filePath);
 
-            var content = JsonSerializer.Serialize(items);
+            var content = JsonSerializer.Serialize(items, Options);
             File.WriteAllText(filePath, content);
         }
 

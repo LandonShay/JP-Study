@@ -1,10 +1,13 @@
 ﻿using JP_Dictionary.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace JP_Dictionary.Shared.Methods
 {
     public static class KanjiMethods
     {
+        private static readonly JsonSerializerOptions Options = new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+
         public static List<StudyItem> LoadDefaultKanjiList()
         {
             var kanjiFilePath = @"Data\Kanji + Radicals.json";
@@ -77,7 +80,7 @@ namespace JP_Dictionary.Shared.Methods
             File.Delete(filePath);
             HelperMethods.CreateFile(filePath);
 
-            var content = JsonSerializer.Serialize(kanji);
+            var content = JsonSerializer.Serialize(kanji, Options);
             File.WriteAllText(filePath, content);
         }
 
@@ -88,7 +91,7 @@ namespace JP_Dictionary.Shared.Methods
             File.Delete(filePath);
             HelperMethods.CreateFile(filePath);
 
-            var content = JsonSerializer.Serialize(kanji);
+            var content = JsonSerializer.Serialize(kanji, Options);
             File.WriteAllText(filePath, content);
         }
 
