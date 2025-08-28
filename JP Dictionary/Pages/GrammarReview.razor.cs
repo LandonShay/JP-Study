@@ -177,7 +177,7 @@ namespace JP_Dictionary.Pages
 
             foreach (var item in User.SelectedGrammarGroup)
             {
-                var grammar = allGrammar.First(x => x.Name == item.Name);
+                var grammar = allGrammar.First(x => x.Name == item.Name && x.Lesson == item.Lesson);
                 grammar.Learned = true;
             }
 

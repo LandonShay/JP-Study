@@ -262,7 +262,7 @@ namespace JP_Dictionary.Pages
 
         private void UpdateWord(int change)
         {
-            var item = StudyItems.First(x => x.Name == CurrentCard.GrammarItem.Name);
+            var item = StudyItems.First(x => x.Name == CurrentCard.GrammarItem.Name && x.Lesson == CurrentCard.GrammarItem.Lesson);
             item.CorrectStreak = CurrentCard.CurrentCorrectStreak;
 
             if (change > 0)
