@@ -103,7 +103,14 @@ namespace JP_Dictionary.Pages
 
                 if (matches.Count > 0)
                 {
-                    studyCard.Answer = matches[0].Groups[1].Value;
+                    foreach (Match match in matches)
+                    {
+                        var matchAnswer = match.Groups[1].Value;
+                        matchAnswer = matchAnswer.Replace("<i>", string.Empty);
+                        matchAnswer = matchAnswer.Replace("</i>", string.Empty);
+
+                        studyCard.Answer += matchAnswer;
+                    }
 
                     studyCard.EN = item.Questions[rndIndex].EnglishHTML;
                     studyCard.JP = Regex.Replace(studyCard.FullJP, @"<strong>.*?</strong>", "___");
@@ -255,7 +262,7 @@ namespace JP_Dictionary.Pages
 
         private void UpdateWord(int change)
         {
-            var item = StudyItems.First(x => x.Name == CurrentCard.GrammarItem.Name);
+            var item = StudyItems.First(x => x.Name == CurrentCard.GrammarItem.Name && x.Lesson == CurrentCard.GrammarItem.Lesson);
             item.CorrectStreak = CurrentCard.CurrentCorrectStreak;
 
             if (change > 0)
