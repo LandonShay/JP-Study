@@ -4,5 +4,6 @@
     {
         public string EnglishHTML { get; set; } = string.Empty;
         public string JapaneseHTML { get; set; } = string.Empty;
+        public bool IsRevealed { get; set; }
     }
 }
