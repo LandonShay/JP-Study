@@ -18,7 +18,10 @@
                         {
                             <div class="sentence-container">
                                 <span>@((MarkupString)example.JapaneseHTML)</span>
-                                <span>@((MarkupString)example.EnglishHTML)</span>
+                                <span class="@(example.IsRevealed ? "blurred revealed" : "blurred")"
+                                      @onclick="() => example.IsRevealed = !example.IsRevealed">
+                                    @((MarkupString)example.EnglishHTML)
+                                </span>
                             </div>
                         }
                     </div>
