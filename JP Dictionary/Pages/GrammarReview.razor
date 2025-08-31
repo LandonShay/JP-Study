@@ -29,6 +29,12 @@
                         <button class="main-button" @onclick="GoToBunpro">
                             Bunpro
                         </button>
+                        <select class="type-dropdown" @bind="ActiveItem.Type" @bind:after="SetType">
+                            @foreach (GrammarType type in Enum.GetValues(typeof(GrammarType)))
+                            {
+                                <option value="@type.ToString()">@type</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>

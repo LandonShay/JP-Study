@@ -10,9 +10,9 @@
                     <div>
                         <h2>@CurrentCard.JP</h2>
                         <h2>@((MarkupString)CurrentCard.EN)</h2>
-                        @if (CardIsNew())
+                        @if (CurrentCard.GrammarItem.Type != GrammarType.None)
                         {
-                            <span>New!</span>
+                            <h3>(@CurrentCard.GrammarItem.Type.ToString())</h3>
                         }
                     </div>
                     <div class="answer-area">
