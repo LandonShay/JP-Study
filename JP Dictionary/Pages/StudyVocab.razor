@@ -44,7 +44,7 @@
                         {
                             <div class="speak-word" @onclick="TextToSpeech">
                                 <div class="@ItemTypeCss">
-                                    <h3>@CurrentCard.StudyItem.Item</h3>
+                                    <div class="item-main">@CurrentCard.StudyItem.Item</div>
                                     @if (CardIsNew())
                                     {
                                         <span>New!</span>
@@ -61,7 +61,7 @@
                         else
                         {
                             <div class="@ItemTypeCss">
-                                <h2>@CurrentCard.StudyItem.Item</h2>
+                                <div class="item-main">@CurrentCard.StudyItem.Item</div>
                                 @if (CardIsNew())
                                 {
                                     <span>New!</span>
@@ -98,7 +98,7 @@
                             }
 
                             <div class="speak-word" @onclick="TextToSpeech">
-                                <h3>@CurrentCard.StudyItem.Item</h3>
+                                <h3 class="item-main">@CurrentCard.StudyItem.Item</h3>
                                 @if (CurrentCard.Type != StudyCardType.Radical && CurrentCard.Type != StudyCardType.Kanji)
                                 {
                                     <span>
@@ -154,7 +154,7 @@
                             }
 
                             <div class="speak-word" @onclick="TextToSpeech">
-                                <h3>@CurrentCard.StudyItem.Item</h3>
+                                <h3 class="item-main">@CurrentCard.StudyItem.Item</h3>
                                 <span>
                                     <i class="fa-solid fa-volume-high"></i>
                                 </span>

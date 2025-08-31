@@ -11,7 +11,7 @@ namespace JP_Dictionary.Models
         public string About { get; set; } = string.Empty;
         public List<GrammarSentence> AboutExamples { get; set; } = new();
         public List<GrammarSentence> Questions { get; set; } = new();
-
+        public GrammarType Type { get; set; }
         public bool Learned { get; set; }
         public bool Unlocked { get; set; }
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
@@ -23,5 +23,13 @@ namespace JP_Dictionary.Models
                 return HelperMethods.GetMasteryTier(CorrectStreak);
             }
         }
+    }
+
+    public enum GrammarType
+    {
+        None,
+        Casual,
+        Polite,
+        Formal
     }
 }

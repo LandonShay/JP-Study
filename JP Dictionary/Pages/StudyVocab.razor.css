@@ -153,3 +153,8 @@ input[type="text"] {
 .item-level{
     font-size: 22px;
 }
+
+.item-main{
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 34px;
+}

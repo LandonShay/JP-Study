@@ -70,6 +70,7 @@ namespace JP_Dictionary.Pages
             ActiveItem = new GrammarItem
             {
                 Name = item.Name,
+                Type = item.Type,
                 About = item.About,
                 Lesson = item.Lesson,
                 Learned = item.Learned,
@@ -197,6 +198,16 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("openInNewTab", link);
         }
         #endregion
+
+        private void SetType()
+        {
+            var userGrammar = GrammarMethods.LoadUserGrammar(User.Profile!);
+
+            userGrammar.First(x => x.Name == ActiveItem.Name && x.Lesson == ActiveItem.Lesson && x.JLPTLevel == ActiveItem.JLPTLevel).Type = ActiveItem.Type;
+            User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Lesson == ActiveItem.Lesson && x.JLPTLevel == ActiveItem.JLPTLevel).Type = ActiveItem.Type;
+
+            GrammarMethods.SaveUserGrammar(User.Profile!, userGrammar);
+        }
 
         private async Task AnimatePage(Motions motion)
         {
