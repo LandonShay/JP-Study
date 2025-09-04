@@ -70,6 +70,10 @@
                 <button class="main-button" type="button" @onclick="SearchJisho">
                     <img class="jisho-logo" src="images/jisho-logo.png" />
                 </button>
+                @if (ShowReturnButton)
+                {
+                    <button class="main-button return-button" @onclick="ReturnToStudy">Return</button>
+                }
             </div>
         </div>
         @if (PreviousItem != string.Empty)
@@ -93,11 +97,6 @@
                 <i class="fa-solid fa-arrow-right"></i>
                 <span class="item-icon">Review</span>
             </div>
-        }
-
-        @if (ShowReturnButton)
-        {
-            <button class="main-button return-button" @onclick="ReturnToStudy">Return</button>
         }
     </div>
 </Motion>
