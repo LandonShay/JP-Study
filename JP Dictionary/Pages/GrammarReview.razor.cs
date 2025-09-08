@@ -1,10 +1,11 @@
-﻿using JP_Dictionary.Models;
+﻿using ChartJs.Blazor.Common.Enums;
+using JP_Dictionary.Models;
 using JP_Dictionary.Services;
 using JP_Dictionary.Shared;
 using JP_Dictionary.Shared.Methods;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Text.RegularExpressions;
 
 namespace JP_Dictionary.Pages
 {
@@ -96,9 +97,10 @@ namespace JP_Dictionary.Pages
         }
 
         #region Left + Right Items
-        private string GetLeftItem()
+        private (string, string) GetLeftItem()
         {
-            var item = User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name);
+            var meaning = string.Empty;
+            var item = User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning);
 
             var activeItemIndex = User.SelectedGrammarGroup.IndexOf(item);
             var targetIndex = activeItemIndex - 1;
@@ -106,18 +108,20 @@ namespace JP_Dictionary.Pages
             if (targetIndex > -1)
             {
                 PreviousItem = User.SelectedGrammarGroup[targetIndex].Name;
+                meaning = User.SelectedGrammarGroup[targetIndex].Meaning;
             }
             else
             {
                 PreviousItem = string.Empty;
             }
 
-            return PreviousItem;
+            return (PreviousItem, meaning);
         }
 
-        private string GetRightItem()
+        private (string, string) GetRightItem()
         {
-            var item = User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name);
+            var meaning = string.Empty;
+            var item = User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning);
 
             var activeItemIndex = User.SelectedGrammarGroup.IndexOf(item);
             var targetIndex = activeItemIndex + 1;
@@ -125,24 +129,25 @@ namespace JP_Dictionary.Pages
             if (targetIndex <= User.SelectedGrammarGroup.Count - 1)
             {
                 NextItem = User.SelectedGrammarGroup[targetIndex].Name;
+                meaning = User.SelectedGrammarGroup[targetIndex].Meaning;
             }
             else
             {
                 NextItem = string.Empty;
             }
 
-            return NextItem;
+            return (NextItem, meaning);
         }
 
         private async Task SetLeftItem()
         {
-            var leftItem = GetLeftItem();
+            (var leftItem, var meaning) = GetLeftItem();
 
             if (leftItem != string.Empty)
             {
                 await Animate.AnimateSlide(Motions.SlideRightOut);
 
-                var targetItem = User.SelectedGrammarGroup.First(x => x.Name == leftItem);
+                var targetItem = User.SelectedGrammarGroup.First(x => x.Name == leftItem && x.Meaning == meaning);
                 SetActiveItem(targetItem);
 
                 GetLeftItem();
@@ -154,13 +159,13 @@ namespace JP_Dictionary.Pages
 
         private async Task SetRightItem()
         {
-            var rightItem = GetRightItem();
+            (var rightItem, var meaning) = GetRightItem();
 
             if (rightItem != string.Empty)
             {
                 await Animate.AnimateSlide(Motions.SlideLeftOut);
 
-                var targetItem = User.SelectedGrammarGroup.First(x => x.Name == rightItem);
+                var targetItem = User.SelectedGrammarGroup.First(x => x.Name == rightItem && x.Meaning == meaning);
                 SetActiveItem(targetItem);
 
                 GetLeftItem();
@@ -178,7 +183,7 @@ namespace JP_Dictionary.Pages
 
             foreach (var item in User.SelectedGrammarGroup)
             {
-                var grammar = allGrammar.First(x => x.Name == item.Name && x.Lesson == item.Lesson);
+                var grammar = allGrammar.First(x => x.Name == item.Name && x.Meaning == item.Meaning);
                 grammar.Learned = true;
             }
 
@@ -203,8 +208,8 @@ namespace JP_Dictionary.Pages
         {
             var userGrammar = GrammarMethods.LoadUserGrammar(User.Profile!);
 
-            userGrammar.First(x => x.Name == ActiveItem.Name && x.Lesson == ActiveItem.Lesson && x.JLPTLevel == ActiveItem.JLPTLevel).Type = ActiveItem.Type;
-            User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Lesson == ActiveItem.Lesson && x.JLPTLevel == ActiveItem.JLPTLevel).Type = ActiveItem.Type;
+            userGrammar.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning).Type = ActiveItem.Type;
+            User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning).Type = ActiveItem.Type;
 
             GrammarMethods.SaveUserGrammar(User.Profile!, userGrammar);
         }
