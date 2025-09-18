@@ -153,5 +153,22 @@ namespace JP_Dictionary.Shared.Methods
 
             return kanjiToStudy;
         }
+
+        public static int GetTommorowCount(List<StudyItem> kanji)
+        {
+            var count = 0;
+
+            foreach (var k in kanji.Where(x => x.Learned && x.Unlocked))
+            {
+                var nextDueDate = HelperMethods.GetNextStudyDate(k.LastStudied, k.CorrectStreak);
+
+                if (DateTime.Today.Date.AddDays(1) >= nextDueDate)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }

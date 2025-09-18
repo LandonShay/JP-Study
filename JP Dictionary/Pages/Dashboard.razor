@@ -8,6 +8,28 @@
     </div>
     <div class="dashboard-content">
         <div class="column">
+            <h4>Grammar</h4>
+            <div class="graph">
+                <Chart Config="@GrammarBarConfig" />
+            </div>
+            <div class="kanji-buttons">
+                <button class="main-button kanji-button" @onclick="GoToLearnGrammar">
+                    Learn
+                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToLearn(Grammar).Count</span>
+                </button>
+                <button class="main-button kanji-button" @onclick="GoToReviewGrammar">
+                    Review
+                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToReview(Grammar).Count</span>
+                </button>
+            </div>
+            <div class="kanji-stats">
+                <div class="kanji-block">
+                    <h4>Progress</h4>
+                    <span class="deck-text">@GrammarMethods.GetHighestGrammarLevel(Grammar) @GrammarMethods.GetCurrentGrammarLesson(Grammar)</span>
+                </div>
+            </div>
+        </div>
+        <div class="column">
             <h4>Kanji / Radicals / Vocab</h4>
             <div class="graph">
                 <Chart Config="@KRVBarConfig" />
@@ -15,15 +37,17 @@
             <div class="kanji-buttons">
                 <button class="main-button kanji-button" @onclick="GoToLearnKanji">
                     Learn
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
+                    <span class="deck-text">Today: @KanjiMethods.GetItemsToLearn(Kanji).Count</span>
                 </button>
                 <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Kanji)">
                     Review
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
+                    <span class="deck-text">Today: @KanjiMethods.GetItemsToReview(Kanji).Count</span>
+                    <span class="deck-text">Tomorrow: @KanjiMethods.GetTommorowCount(Kanji)</span>
                 </button>
                 <button class="main-button kanji-button" @onclick="() => GoToReviewKanji(StudyType.Vocab)">
                     Vocab
-                    <span class="deck-text">Today's Study: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
+                    <span class="deck-text">Today: @KanjiMethods.GetItemsToReview(KanjiVocab).Count</span>
+                    <span class="deck-text">Tomorrow: @KanjiMethods.GetTommorowCount(KanjiVocab)</span>
                 </button>
             </div>
             <div class="kanji-stats">
@@ -103,28 +127,6 @@
                         }
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="column">
-            <h4>Grammar</h4>
-            <div class="graph">
-                <Chart Config="@GrammarBarConfig" />
-            </div>
-            <div class="kanji-buttons">
-                <button class="main-button kanji-button" @onclick="GoToLearnGrammar">
-                    Learn
-                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToLearn(Grammar).Count</span>
-                </button>
-                <button class="main-button kanji-button" @onclick="GoToReviewGrammar">
-                    Review
-                    <span class="deck-text">Today's Study: @GrammarMethods.GetItemsToReview(Grammar).Count</span>
-                </button>
-            </div>
-            <div class="kanji-stats">
-                <div class="kanji-block">
-                    <h4>Progress</h4>
-                    <span class="deck-text">@GrammarMethods.GetHighestGrammarLevel(Grammar) @GrammarMethods.GetCurrentGrammarLesson(Grammar)</span>
-                </div>
             </div>
         </div>
         @* <div class="create-deck">
