@@ -71,14 +71,14 @@ namespace JP_Dictionary.Shared.Methods
 
         public static List<GrammarItem> GetItemsToLearn(List<GrammarItem> grammar)
         {
-            return grammar.FindAll(x => x.Unlocked && !x.Learned);
+            return grammar.FindAll(x => x.Unlocked && !x.Learned && x.Study);
         }
 
         public static List<GrammarItem> GetItemsToReview(List<GrammarItem> grammar)
         {
             var grammarToStudy = new List<GrammarItem>();
 
-            foreach (var k in grammar.Where(x => x.Learned && x.Unlocked))
+            foreach (var k in grammar.Where(x => x.Learned && x.Unlocked && x.Study))
             {
                 var nextDueDate = HelperMethods.GetNextStudyDate(k.LastStudied, k.CorrectStreak);
 

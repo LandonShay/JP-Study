@@ -182,7 +182,7 @@ namespace JP_Dictionary.Pages
 
                 foreach (var tier in new[] { MasteryTier.Novice, MasteryTier.Beginner, MasteryTier.Proficient, MasteryTier.Expert, MasteryTier.Mastered })
                 {
-                    grammarData.Add(Grammar.Count(x => x.JLPTLevel == level && x.MasteryTier == tier && x.Unlocked));
+                    grammarData.Add(Grammar.Count(x => x.JLPTLevel == level && x.MasteryTier == tier && x.Unlocked && x.Study));
                 }
 
                 GrammarBarConfig.Data.Datasets.Add(new BarDataset<int>(grammarData)
