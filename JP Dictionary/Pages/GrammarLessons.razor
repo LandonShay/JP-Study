@@ -14,6 +14,10 @@
                     <div class="grammar-item" @onclick="() => GoToDetail(item)">
                         <span class="item-name">@item.Name</span>
                         <span class="item-meaning">@ShortenString(item.Meaning)</span>
+                        @if (!item.Study)
+                        {
+                            <span class="not-studying">(Not Studying)</span>
+                        }
                     </div>
                 }
             </div>

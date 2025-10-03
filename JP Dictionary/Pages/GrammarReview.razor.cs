@@ -1,11 +1,10 @@
-﻿using ChartJs.Blazor.Common.Enums;
-using JP_Dictionary.Models;
-using JP_Dictionary.Services;
+﻿using JP_Dictionary.Models;
 using JP_Dictionary.Shared;
+using JP_Dictionary.Services;
 using JP_Dictionary.Shared.Methods;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Text.RegularExpressions;
 
 namespace JP_Dictionary.Pages
 {
@@ -73,6 +72,7 @@ namespace JP_Dictionary.Pages
                 Name = item.Name,
                 Type = item.Type,
                 About = item.About,
+                Study = item.Study,
                 Lesson = item.Lesson,
                 Learned = item.Learned,
                 Meaning = item.Meaning,
@@ -203,6 +203,16 @@ namespace JP_Dictionary.Pages
             await JS.InvokeVoidAsync("openInNewTab", link);
         }
         #endregion
+
+        private void ToggleStudy()
+        {
+            var userGrammar = GrammarMethods.LoadUserGrammar(User.Profile!);
+
+            userGrammar.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning).Study = ActiveItem.Study;
+            User.SelectedGrammarGroup.First(x => x.Name == ActiveItem.Name && x.Meaning == ActiveItem.Meaning).Study = ActiveItem.Study;
+
+            GrammarMethods.SaveUserGrammar(User.Profile!, userGrammar);
+        }
 
         private void SetType()
         {

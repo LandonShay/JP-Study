@@ -162,7 +162,7 @@ namespace JP_Dictionary.Shared.Methods
             {
                 var nextDueDate = HelperMethods.GetNextStudyDate(k.LastStudied, k.CorrectStreak);
 
-                if (DateTime.Today.Date.AddDays(1) >= nextDueDate)
+                if (DateTime.Today.Date.AddDays(1) == nextDueDate)
                 {
                     count++;
                 }

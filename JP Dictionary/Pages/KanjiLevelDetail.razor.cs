@@ -65,14 +65,18 @@ namespace JP_Dictionary.Pages
             {
                 var uk = userKanji.FirstOrDefault(x => x.Item == kanji.Item && x.Type == kanji.Type);
 
-                if (uk != null)
+                if (uk != null && !UserKanji.Contains(uk))
                 {
                     UserKanji.Add(uk);
                 }
                 else
                 {
                     var uv = userVocab.First(x => x.Item == kanji.Item);
-                    UserKanji.Add(uv);
+
+                    if (!UserKanji.Contains(uv))
+                    {
+                        UserKanji.Add(uv);
+                    }
                 }
             }
         }

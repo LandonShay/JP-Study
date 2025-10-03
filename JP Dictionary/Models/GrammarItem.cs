@@ -14,6 +14,7 @@ namespace JP_Dictionary.Models
         public GrammarType Type { get; set; }
         public bool Learned { get; set; }
         public bool Unlocked { get; set; }
+        public bool Study { get; set; } = true;
         public DateTime LastStudied { get; set; } = DateTime.MinValue;
         public int CorrectStreak { get; set; }
         public MasteryTier MasteryTier

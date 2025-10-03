@@ -58,3 +58,8 @@ table{
     width: 100%;
     margin: 0;
 }
+
+.not-studying {
+    font-style: italic;
+    color: darkgray
+}
